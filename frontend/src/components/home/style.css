@@ -1,0 +1,62 @@
+.h_2::after {
+  content: "Explore for more";
+  position: absolute;
+  padding: 2px 10px;
+  background-color: white;
+  box-shadow: 0 0 1px gray;
+  border-radius: 5px;
+  bottom: -20px;
+  width: 179px;
+  font-size: 15px;
+  color: #555;
+  left: 40px;
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+.slick-slide {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.slick-slider > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.slick-prev,
+.slick-next {
+  width: 35px;
+  height: 35px;
+  transition: all ease 0.3s;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-size: 30px;
+  color: orange !important;
+}
+
+.slick-next:hover .slick-prev:hover {
+  box-shadow: 0 2px 8px orange;
+}
+
+.slick-next {
+  right: -50px;
+}
+.slick-prev {
+  left: -50px;
+}
+
+@media (max-width: 800px) {
+  .slick-next {
+    right: -25px;
+    z-index: 99;
+  }
+  .slick-prev {
+    left: -25px;
+    z-index: 99;
+  }
+}

@@ -1,0 +1,30 @@
+.category_li {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.category_li:hover {
+  background: rgba(245, 245, 245, 0.523);
+}
+
+@media (max-width: 580px) {
+  .blogContainer .blog_box {
+    margin: auto;
+    width: 80%;
+    height: 440px !important;
+  }
+  .blog_box .blogImg {
+    height: 250px;
+  }
+}
+
+@media (max-width: 450px) {
+  .blogContainer .blog_box {
+    margin: auto;
+    width: 260px;
+    height: 370px !important;
+  }
+  .blog_box .blogImg {
+    height: 160px;
+  }
+}
