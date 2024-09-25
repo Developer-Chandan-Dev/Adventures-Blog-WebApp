@@ -1,11 +1,20 @@
-import './style.css'
-import { useState, useRef, useMemo } from "react";
+import "./style.css";
+import { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
 
 const AddBlogs = () => {
   const editor = useRef(null);
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
 
+  useEffect(() => {
+    setSlug(title && title.replaceAll(" ", "+"));
+    console.log(slug);
+  }, [slug, title]);
+
+  console.log(title, slug, author);
 
   return (
     <section className="w-full">
@@ -19,6 +28,8 @@ const AddBlogs = () => {
               type="text"
               id="title"
               name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="w-full h-10 mt-2 px-3 py-2 outline-red-300 border-2 rounded"
               placeholder="Enter post title"
             />
@@ -31,6 +42,8 @@ const AddBlogs = () => {
               type="text"
               id="slug"
               name="slug"
+              value={slug}
+              onChange={(e) => setSlug(e.target.value)}
               className="w-full h-10 mt-2 px-3 py-2 outline-green-300 border-2 rounded"
               placeholder="Enter post slug"
             />
@@ -43,6 +56,8 @@ const AddBlogs = () => {
               type="text"
               name="authorName"
               id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
               className="w-full h-10 mt-2 px-3 py-2 outline-blue-300 border-2 rounded"
               placeholder="Enter Author name"
             />

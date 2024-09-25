@@ -7,10 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // <============= Route Imports ============>
-const homeData = require("./routes/user_routes/home.route");
 
 // <============= Routes ============>
-app.use("/api/v1", homeData); // Home page data
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome on home page" });
+});
 
 // <============= Server is listning here ============>
 app.listen(PORT, () => {

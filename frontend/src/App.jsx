@@ -38,8 +38,7 @@ function App() {
             path="/"
             element={
               <Layout>
-                {" "}
-                <Home />{" "}
+                <Home />
               </Layout>
             }
           />
@@ -49,8 +48,7 @@ function App() {
             path="/blogs"
             element={
               <Layout>
-                {" "}
-                <Blogs />{" "}
+                <Blogs />
               </Layout>
             }
           />
@@ -60,8 +58,7 @@ function App() {
             path="/blogs/details"
             element={
               <Layout>
-                {" "}
-                <BlogDetailsPage />{" "}
+                <BlogDetailsPage />
               </Layout>
             }
           />
@@ -71,8 +68,7 @@ function App() {
             path="/contact"
             element={
               <Layout>
-                {" "}
-                <Contact />{" "}
+                <Contact />
               </Layout>
             }
           />
@@ -82,8 +78,7 @@ function App() {
             path="/about"
             element={
               <Layout>
-                {" "}
-                <About />{" "}
+                <About />
               </Layout>
             }
           />
