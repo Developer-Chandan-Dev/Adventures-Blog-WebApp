@@ -6,22 +6,22 @@ import DashboardPage from "./DashboardPage";
 import AddBlogs from "./AddBlogs";
 import Settings from "./Settings";
 import PendingBlogs from "./PendingBlogs";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const [sidebar, setSidebar] = useState(false);
-  console.log(sidebar);
+  const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
+  console.log(isSidebarOpen);
 
   return (
     <section className="w-full bg-[#f7fcfc]">
       <DashboardNavbar />
       <div className="flex h-[90vh]">
-        <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
+        <Sidebar />
         <section
           className={`w-[93.5vw] ${
-            sidebar === true ? "lg:w-[93.5vw]" : "lg:w-[82vw]"
+            isSidebarOpen === true ? "lg:w-[93.5vw]" : "lg:w-[82vw]"
           } h-[90vh] bg-[#f7fcfc] overflow-auto pb-5 ${
-            sidebar === true ? "bg-green-200" : "bg-yellow-200"
+            isSidebarOpen === true ? "bg-green-200" : "bg-yellow-200"
           }`}
         >
           <Outlet>
