@@ -20,9 +20,7 @@ const Dashboard = () => {
         <section
           className={`w-[93.5vw] ${
             isSidebarOpen === true ? "lg:w-[93.5vw]" : "lg:w-[82vw]"
-          } h-[90vh] bg-[#f7fcfc] overflow-auto pb-5 ${
-            isSidebarOpen === true ? "bg-green-200" : "bg-yellow-200"
-          }`}
+          } h-[90vh] bg-[#f7fcfc] overflow-auto pb-5`}
         >
           <Outlet>
             <DashboardPage />

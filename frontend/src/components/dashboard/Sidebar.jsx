@@ -106,7 +106,7 @@ const Sidebar = () => {
         {navItems &&
           navItems.map(({ name, slug, svg }, index) => (
             <Link to={slug} key={index}>
-              <li
+              <li title={name}
                 className={`sidebar_li ${
                   location.pathname === slug ? "active_sidebar_li" : ""
                 } `}
