@@ -24,6 +24,10 @@ import FeaturedBlog from "./home/FeaturedBlog";
 import FeaturedBlogInfo from "./home/FeaturedBlogInfo";
 import FeaturedBlogs from "./home/FeaturedBlogs";
 import HeroSection from "./home/HeroSection";
+import Container from "./utlity/Container";
+import PopularCategories from "./home/PopularCategories";
+import AboutUs from "./about/AboutUs";
+import AboutDev from "./about/AboutDev";
 
 
-export {Footer, Layout, HomePageBlogs, Navbar, ScrollToTop, BlogCard, BlogCardInfo, BlogContent, BlogForm, BlogPageSidebar, BlogsContainer, BlogTags, RelatedTopics, CommunityHeroSection, CommunityMembersSection, ContactUsForm, MapBox, DashboardCards, DashboardNavbar, Form, Sidebar, UpdateBlogs, FeaturedBlog, FeaturedBlogInfo, FeaturedBlogs, HeroSection}
+export {AboutDev, Footer, Layout, HomePageBlogs, Navbar, ScrollToTop, BlogCard, BlogCardInfo, BlogContent, BlogForm, BlogPageSidebar, BlogsContainer, BlogTags, RelatedTopics, CommunityHeroSection, CommunityMembersSection, ContactUsForm, MapBox, DashboardCards, DashboardNavbar, Form, Sidebar, UpdateBlogs, FeaturedBlog, FeaturedBlogInfo, FeaturedBlogs, HeroSection, Container, PopularCategories, AboutUs}

@@ -1,8 +1,9 @@
 // import axios from "axios";
 
 export class AuthService {
-  async createAccount({ email, password, name }) {
+  async createAccount(name, email, password) {
     try {
+      console.log(email, password, name);
       const res = await fetch("/api/v1/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -21,8 +22,9 @@ export class AuthService {
     }
   }
 
-  async login({ email, password }) {
+  async login(email, password) {
     try {
+      console.log(email, password);
       const res = await fetch("/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

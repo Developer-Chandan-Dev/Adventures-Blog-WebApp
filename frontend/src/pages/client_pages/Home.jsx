@@ -1,6 +1,4 @@
-import FeaturedBlogs from "../../components/home/FeaturedBlogs";
-import HeroSection from "../../components/home/HeroSection";
-import HomePageBlogs from "../../components/home/HomePageBlogs";
+import { PopularCategories, FeaturedBlogs, HeroSection, HomePageBlogs } from "../../components/index";
 
 const Home = () => {
 
@@ -17,6 +15,8 @@ const Home = () => {
 
       <FeaturedBlogs />
       <HomePageBlogs/>
+      <PopularCategories/>
+
     </section>
   );
 };
