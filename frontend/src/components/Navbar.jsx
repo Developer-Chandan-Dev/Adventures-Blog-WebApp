@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAnimatedMenu from "../hooks/useAnimatedMenu";
+import { useState } from "react";
 
 const Navbar = () => {
   const {
@@ -8,6 +9,8 @@ const Navbar = () => {
     closeMenu: closeHamburger,
     menuRef: hamburgerRef,
   } = useAnimatedMenu("x", -80, "x", 0, "x", 0, "x", -80);
+
+  const [auth, setAuth] = useState(false);
 
   return (
     <nav className="w-full py-0 flex items-center justify-center text-sm sticky top-0 navbar drop-shadow bg-white !z-50">
@@ -133,7 +136,20 @@ const Navbar = () => {
             </li>
           </Link>
         </ul>
-        <div className="w-8 h-8 bg-green-200 rounded-full cursor-pointer"></div>
+        <>
+          {auth === true ? (
+            <div className="w-8 h-8 bg-green-200 rounded-full cursor-pointer"></div>
+          ) : (
+            <div className="flex items-center gap-x-2">
+              <Link to="/login">
+                <button className="btn drop-shadow-sm">Login</button>
+              </Link>
+              <Link to="/signup">
+                <button className="btn drop-shadow-sm">Signup</button>
+              </Link>
+            </div>
+          )}
+        </>
       </div>
     </nav>
   );
