@@ -6,11 +6,6 @@ const app = express();
 // <============= PORT ==============>
 const PORT = process.env.PORT || 5000;
 
-// <============= Route Imports ============>
-const homeData = require("./routes/user_routes/home.route");
-
-// <============= Routes ============>
-app.use("/api/v1", homeData); // Home page data
 
 // <============= Server is listning here ============>
 app.listen(PORT, () => {

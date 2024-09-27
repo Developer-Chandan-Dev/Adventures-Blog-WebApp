@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
       match: [
         /^+[a-zA-Z0-9_]$/,
         "Username can only contain letters, numbers, and underscores",
@@ -30,13 +29,16 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["reader", "author", "admin"],
-      default: "reader",
+      default: "reader", // Role based access
     },
     bio: {
-      type: String,
+      type: String, // Optional field for authors
     },
     profilePic: {
-      type: String,
+      type: String, // cloudinary URL for the user's profile picture
+    },
+    profilePicPublicId: {
+      type: string, // public id for profilepic
     },
   },
   { timestamps: true }
