@@ -1,4 +1,4 @@
-const Category = require("../../models/category.models");
+const Category = require("../models/category.models");
 
 const addCategory = async (req, res) => {
   const { name, description } = req.body;
@@ -38,13 +38,33 @@ const getAllCategory = async (req, res) => {
   }
 };
 
-const updateCategory = async (req, res) => {};
+const updateCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedData = req.body;
+
+    // Replace the blogs details with new data
+    const updatedCategory = await Category.findByIdAndUpdate(id, updatedData, {
+      new: true,
+      overwrite: true, // Overwrite the document with the new data
+    });
+
+    if (!updatedCategory) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.status(200).json(updatedCategory);
+  } catch (error) {
+    console.log("Error in adding tag", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 const deleteCategory = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const categoryDelete = await Category.findByIdAndDelete({ _id: id });
+    await Category.findByIdAndDelete({ _id: id });
 
     const category = await Category.findById({ _id: id });
     if (!category) {

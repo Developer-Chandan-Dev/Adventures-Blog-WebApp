@@ -10,15 +10,17 @@ app.use(express.json());
 
 // files imports start here
 const authRoutes = require("./routes/auth.routes");
-const homeRoutes = require("./routes/client/home.routes");
-const blogsRoutes = require("./routes/dashboard/blogs.routes");
-const categoryRoutes = require("./routes/dashboard/category.routes");
+const homeRoutes = require("./routes/home.routes");
+const blogsRoutes = require("./routes/blogs.routes");
+const categoryRoutes = require("./routes/category.routes");
+const commentRoutes = require("./routes/comment.routes");
 
 // client routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", homeRoutes);
 app.use("/api/v1/dashboard/blogs", blogsRoutes);
 app.use("/api/v1/dashboard/category", categoryRoutes);
+app.use("/api/v1/dashboard/comments", commentRoutes);
 // app.use("/api/v1/dashboard/author")
 // app.use("/api/v1", blogsRoutes);
 

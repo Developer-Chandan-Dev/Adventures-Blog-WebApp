@@ -5,16 +5,12 @@ const {
   allBlogs,
   updateBlog,
   deleteBlog,
-  addCategory,
-  getAllCategory,
-  updateCategory,
-  deleteCategory,
   getSingleBlog,
-  addTag,
-  allTags,
-  updateTag,
-  deleteTag,
-} = require("../../controller/dashboard/blogs.controller");
+  addComment,
+  allComments,
+  updateComment,
+  deleteComment,
+} = require("../controller/blogs.controller");
 
 // Blogs
 router.post("/add-blog", addBlogs);
@@ -23,11 +19,10 @@ router.get("/:id", getSingleBlog);
 router.put("/:id", updateBlog);
 router.delete("/:id", deleteBlog);
 
+// Comments
+router.post("/comments/new", addComment);
+router.get("/comments/")
 
-// tags
-router.post("/tags/add", );
-router.get("/tags/add", );
-router.put("/tags/add", );
-router.delete("/tags/add", );
+
 
 module.exports = router;

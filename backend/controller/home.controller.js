@@ -1,5 +1,5 @@
-const Post = require("../../models/post.models");
-const Category = require("../../models/category.models");
+const Post = require("../models/post.models");
+const Category = require("../models/category.models");
 
 const homeData = async (req, res) => {
   try {

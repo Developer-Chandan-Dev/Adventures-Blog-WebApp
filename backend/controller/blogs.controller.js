@@ -1,9 +1,10 @@
-const Post = require("../../models/post.models");
+const Post = require("../models/post.models");
+const Category = require("../models/category.models");
+const Comment = require("../models/comment.models");
 
 const addBlogs = async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     if (!data) {
       return res.status(400).json({ error: "Data not provided" });
     }
@@ -32,13 +33,14 @@ const addBlogs = async (req, res) => {
 
 const allBlogs = async (req, res) => {
   try {
-    const data = await Post.find();
+    const blogs = await Post.find();
+    const categories = await Category.find().select("_id name");
 
-    if (!data) {
-      return res.status(400).json({ error: "Data not found" });
+    if (!blogs || !categories) {
+      return res.status(400).json({ error: "Blogs or categories not found" });
     }
 
-    res.status(200).json(data);
+    res.status(200).json({ blogs, categories });
   } catch (error) {
     console.log("Error :", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -64,9 +66,19 @@ const getSingleBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = req.body;
+    const updatedData = req.body;
 
-    res.send(data);
+    // Replace the blogs details with new data
+    const updatedBlog = await Post.findByIdAndUpdate(id, updatedData, {
+      new: true,
+      overwrite: true, // Overwrite the document with the new data
+    });
+
+    if (!updatedBlog) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.status(200).json(updatedBlog);
   } catch (error) {
     console.log("Error in adding tag", error);
     res.status(500).json({ error: "Internal server error" });
@@ -92,19 +104,49 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-const addTag = async (req, res) => {
+const addComment = async (req, res) => {
   try {
+    const data = req.body;
+    console.log(data);
+    res.send(data);
   } catch (error) {
-    console.log("Error in adding tag", error);
+    console.log("Error in adding comment", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-const allTags = async (req, res) => {};
+const allComments = async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log("Error in adding comment", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
-const updateTag = async (req, res) => {};
+const updateComment = async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log("Error in adding comment", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
-const deleteTag = async (req, res) => {};
+const deleteComment = async (req, res) => {
+  try {
+    const data = req.body;
+    console.log(data);
+    res.send(data);
+  } catch (error) {
+    console.log("Error in adding comment", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 module.exports = {
   addBlogs,
@@ -112,8 +154,8 @@ module.exports = {
   updateBlog,
   deleteBlog,
   getSingleBlog,
-  addTag,
-  allTags,
-  updateTag,
-  deleteTag,
+  addComment,
+  allComments,
+  updateComment,
+  deleteComment,
 };
