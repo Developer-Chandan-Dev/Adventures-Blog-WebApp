@@ -5,10 +5,6 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      match: [
-        /^+[a-zA-Z0-9_]$/,
-        "Username can only contain letters, numbers, and underscores",
-      ],
       minlength: 3,
       maxlength: 30,
     },
@@ -16,10 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      match: [
-        /^[^\s@]+[^\s@]+\.[^\s@]+$/,
-        "Please enter a valid email address",
-      ],
+      // match: [
+      //   /^[^\s@]+[^\s@]+\.[^\s@]+$/,
+      //   "Please enter a valid email address",
+      // ],
     },
     password: {
       type: String,
@@ -38,7 +34,7 @@ const userSchema = new mongoose.Schema(
       type: String, // cloudinary URL for the user's profile picture
     },
     profilePicPublicId: {
-      type: string, // public id for profilepic
+      type: String, // public id for profilepic
     },
   },
   { timestamps: true }

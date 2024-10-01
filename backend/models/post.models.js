@@ -6,6 +6,11 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug:{
+      type:String,
+      required:true,
+      unique:true,
+    },
     content: {
       type: String,
       required: true,
@@ -14,6 +19,10 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       require: true,
+    },
+    featuredBlog: {
+      type: Boolean,
+      default: false,
     },
     categories: [
       {

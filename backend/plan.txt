@@ -8,8 +8,54 @@
 /api/v1/login
 /api/v1/logout
 
+<----- client routes ------>
+
 home 
 /api/v1/home-data
+--> featured blogs, latest blogs, categories
+
+blogs
+/api/v1/blogs
+--> blog categories, recent blogs, categories, category vise blogs, pagination
+
+blog page 
+/api/v1/blogs/slug
+--> blog banner, blog content comments, categories, author, author profilePic
+
+community 
+/api/v1/community
+--> community members [name, bio, profilePic]
+
+about 
+/api/v1/about
+
+<----- dashboard routes ------>
+
+dashboard 
+/api/v1/dashboard/data
+--> total blogs, total categories, total authors, users chart
+
+add blogs
+/api/v1/dashboard/blogs/add-blog
+--> categories, authors, 
+
+blogs
+/api/v1/dashboard/blogs
+--> all blogs with pagination
+
+draft 
+/api/v1/dashboard/blogs/draft
+--> all draft blogs
+
+settings
+/api/v1/dashboard/settings
+--> logged user details, changable
+
+
+
+
+
+
 
 
 
