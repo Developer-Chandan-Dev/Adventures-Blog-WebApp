@@ -106,45 +106,97 @@ const deleteBlog = async (req, res) => {
 
 const addComment = async (req, res) => {
   try {
-    const data = req.body;
-    console.log(data);
-    res.send(data);
+    const { postId } = req.params;
+    const { content } = req.body;
+    const userId = req.user._id;
+
+    const newComment = await Comment.create({
+      postId,
+      userId,
+      content,
+    });
+
+    res.status(201).json({ success: true, comment: newComment });
   } catch (error) {
     console.log("Error in adding comment", error);
-    res.status(500).json({ error: "Internal server error" });
+    res
+      .status(500)
+      .json({ success: false, error: "Internal server error", error });
   }
 };
 
 const allComments = async (req, res) => {
   try {
-    const data = req.body;
-    console.log(data);
-    res.send(data);
+    const { postId } = req.params;
+
+    const comments = await Comment.find({ postId }).populate(
+      "userId",
+      "username profilePic"
+    );
+
+    res.status(200).json({ success: true, comments });
   } catch (error) {
-    console.log("Error in adding comment", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.log("Failed to fetch comments", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to fetch comments", error });
   }
 };
 
 const updateComment = async (req, res) => {
   try {
-    const data = req.body;
-    console.log(data);
-    res.send(data);
+    const { commentId } = req.params;
+    const { content } = req.body;
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ seccess: false, message: "Comment not found" });
+    }
+
+    // Check if the user is the owner of the comment
+    if (comment.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
+
+    comment.content = content;
+    await comment.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Comment updated", comment });
   } catch (error) {
     console.log("Error in adding comment", error);
-    res.status(500).json({ error: "Internal server error" });
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to update comment", error });
   }
 };
 
 const deleteComment = async (req, res) => {
   try {
-    const data = req.body;
-    console.log(data);
-    res.send(data);
+    const { commentId } = req.params;
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      res.status(404).json({ success: false, error: "Comment not found" });
+    }
+    // Check if the user is the owner of the comment or an admin
+    if (
+      comment.userId.toString() !== req.user._id.toString() &&
+      req.user.role !== admin
+    ) {
+      return res.status(403).json({ success: false, error: "Unauthorized" });
+    }
+
+    await comment.deleteOne();
+    res.status(200).json({ success: true, message: "Comment deleted" });
   } catch (error) {
     console.log("Error in adding comment", error);
-    res.status(500).json({ error: "Internal server error" });
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to delete", error });
   }
 };
 

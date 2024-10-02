@@ -1,12 +1,17 @@
 const express = require("express");
 const dotenv = require("dotenv").config(); // dotenv configured
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const db = require("./db/ConnectToMongoDB"); // MongoDB connection
 const app = express();
 
 // <============= PORT ==============>
 const PORT = process.env.PORT || 5000;
 
+app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// app.use(cors({origin: "http://localhost:5173"}));
 
 // files imports start here
 const authRoutes = require("./routes/auth.routes");
@@ -14,13 +19,19 @@ const homeRoutes = require("./routes/home.routes");
 const blogsRoutes = require("./routes/blogs.routes");
 const categoryRoutes = require("./routes/category.routes");
 const commentRoutes = require("./routes/comment.routes");
+const dashboardRoutes = require("./routes/dashboard.routes");
+const teamRoutes = require("./routes/team.routes");
+const usersRoutes = require("./routes/users.routes");
 
 // client routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", homeRoutes);
-app.use("/api/v1/dashboard/blogs", blogsRoutes);
-app.use("/api/v1/dashboard/category", categoryRoutes);
-app.use("/api/v1/dashboard/comments", commentRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
+app.use("/api/v1/blogs", blogsRoutes);
+app.use("/api/v1/blogs/category", categoryRoutes);
+app.use("/api/v1/blogs/comments", commentRoutes);
+app.use("/api/v1/team/members", teamRoutes);
+app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/dashboard/author")
 // app.use("/api/v1", blogsRoutes);
 

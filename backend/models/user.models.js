@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       enum: ["reader", "author", "admin"],
       default: "reader", // Role based access
     },
+    teamMember: {
+      type: Boolean,
+      default: false,
+    },
     bio: {
       type: String, // Optional field for authors
     },

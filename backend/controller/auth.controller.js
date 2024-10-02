@@ -34,6 +34,7 @@ const signup = async (req, res) => {
         _id: response._id,
         username: response.username,
         email: response.email,
+        role: response.role,
       });
     } else {
       return res.status(400).json({ message: "Invalid User" });
@@ -74,6 +75,7 @@ const login = async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      role: user.role,
       profilePic: user?.profilePic || "",
     });
   } catch (error) {
@@ -91,5 +93,7 @@ const logout = async (req, res) => {
     res.status(500).json({ err: "Internal Server Error" });
   }
 };
+
+
 
 module.exports = { signup, login, logout };
