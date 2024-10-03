@@ -1,213 +1,177 @@
 const Post = require("../models/post.models");
 const Category = require("../models/category.models");
-const Comment = require("../models/comment.models");
 
-const addBlogs = async (req, res) => {
+// add a new post
+const addPost = async (req, res) => {
   try {
     const data = req.body;
-    if (!data) {
-      return res.status(400).json({ error: "Data not provided" });
+    if (
+      !data ||
+      !data.title ||
+      !data.slug ||
+      !data.content ||
+      !data.author ||
+      !data.coverImage
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Data not provided" });
     }
 
     const slug = await Post.findOne({ slug: data.slug });
 
     if (slug) {
-      return res.status(400).json({ error: "Slug already exists" });
+      return res
+        .status(400)
+        .json({ success: false, error: "Slug already exists" });
     }
 
     const newPost = new Post(data);
 
     if (newPost) {
       const response = await newPost.save();
-      res.status(201).json(response);
+      res.status(201).json({ success: true, response });
     } else {
       return res
         .status(400)
-        .json({ error: "Something went wrong saving time" });
+        .json({ success: false, error: "Something went wrong saving time" });
     }
   } catch (error) {
     console.log("Error :", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
-const allBlogs = async (req, res) => {
+// Get all posts
+const getAllPosts = async (req, res) => {
   try {
-    const blogs = await Post.find();
+    const posts = await Post.find();
     const categories = await Category.find().select("_id name");
 
-    if (!blogs || !categories) {
-      return res.status(400).json({ error: "Blogs or categories not found" });
+    if (!posts || !categories) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Blogs or categories not found" });
     }
 
-    res.status(200).json({ blogs, categories });
+    res.status(200).json({ success: true, posts, categories });
   } catch (error) {
     console.log("Error :", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
-const getSingleBlog = async (req, res) => {
+// Get a single posts
+const getSinglePost = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    const blog = await Post.findOne({ _id: id });
+    const post = await Post.findById(id);
 
-    if (!blog) {
-      return res.status(404).json({ error: "Blog not found" });
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Blog not found" });
     }
-    res.status(200).json(blog);
+    res.status(200).json({ success: true, post });
   } catch (error) {
     console.log("Error in getting single blog", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
-const updateBlog = async (req, res) => {
+// Update a post
+const updatePost = async (req, res) => {
   try {
     const id = req.params.id;
     const updatedData = req.body;
 
-    // Replace the blogs details with new data
-    const updatedBlog = await Post.findByIdAndUpdate(id, updatedData, {
+    const post = await Post.findById(id);
+    if (!post) {
+      return res
+        .status(404)
+        .json({ seccess: false, message: "Post not found" });
+    }
+
+    // Replace the post details with new data
+    const updatedPost = await Post.findByIdAndUpdate(id, updatedData, {
       new: true,
       overwrite: true, // Overwrite the document with the new data
     });
 
-    if (!updatedBlog) {
-      return res.status(404).json({ error: "Student not found" });
-    }
-
-    res.status(200).json(updatedBlog);
-  } catch (error) {
-    console.log("Error in adding tag", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const deleteBlog = async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    await Post.findByIdAndDelete({ _id: id });
-
-    const confirmDelete = await Post.findOne({ _id: id });
-
-    if (confirmDelete) {
-      return res.status(400).json({ error: "Something went on delete time" });
-    } else {
-      return res.status(200).json({ message: "Blog delete successfully" });
-    }
-  } catch (error) {
-    console.log("Error in deleting blog", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const addComment = async (req, res) => {
-  try {
-    const { postId } = req.params;
-    const { content } = req.body;
-    const userId = req.user._id;
-
-    const newComment = await Comment.create({
-      postId,
-      userId,
-      content,
-    });
-
-    res.status(201).json({ success: true, comment: newComment });
-  } catch (error) {
-    console.log("Error in adding comment", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Internal server error", error });
-  }
-};
-
-const allComments = async (req, res) => {
-  try {
-    const { postId } = req.params;
-
-    const comments = await Comment.find({ postId }).populate(
-      "userId",
-      "username profilePic"
-    );
-
-    res.status(200).json({ success: true, comments });
-  } catch (error) {
-    console.log("Failed to fetch comments", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to fetch comments", error });
-  }
-};
-
-const updateComment = async (req, res) => {
-  try {
-    const { commentId } = req.params;
-    const { content } = req.body;
-
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
+    if (!updatedPost) {
       return res
         .status(404)
-        .json({ seccess: false, message: "Comment not found" });
+        .json({ success: false, error: "Student not found" });
     }
 
-    // Check if the user is the owner of the comment
-    if (comment.userId.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ success: false, error: "Unauthorized" });
-    }
-
-    comment.content = content;
-    await comment.save();
-
-    res
-      .status(200)
-      .json({ success: true, message: "Comment updated", comment });
+    res.status(200).json({ success: true, updatedPost });
   } catch (error) {
-    console.log("Error in adding comment", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to update comment", error });
+    console.log("Error in adding tag", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
-const deleteComment = async (req, res) => {
+// Delete a post by its ID
+const deletePost = async (req, res) => {
   try {
-    const { commentId } = req.params;
+    const { id } = req.params;
 
-    const comment = await Comment.findById(commentId);
-    if (!comment) {
-      res.status(404).json({ success: false, error: "Comment not found" });
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
     }
-    // Check if the user is the owner of the comment or an admin
+
+    // Check if the user is the owner of the post or an admin
     if (
-      comment.userId.toString() !== req.user._id.toString() &&
-      req.user.role !== admin
+      post.author.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
     ) {
-      return res.status(403).json({ success: false, error: "Unauthorized" });
+      return res.status(401).json({ success: false, error: "Unauthorized - You have not access to delete this post" });
     }
 
-    await comment.deleteOne();
-    res.status(200).json({ success: true, message: "Comment deleted" });
+    await post.deleteOne();
+    res.status(200).json({ success: true, message: "Post deleted" });
   } catch (error) {
-    console.log("Error in adding comment", error);
+    console.log("Error in deleting post", error);
+    res.status(500).json({ success: true, error: "Failed to delete post" });
+  }
+};
+
+// Like or unlike a post
+const likePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+
+    if (post.likes.includes(userId)) {
+      post.likes.pull(userId);
+    } else {
+      post.likes.push(userId);
+    }
+
+    await post.save();
+    res.status(200).json({
+      success: true,
+      message: "Like status updated",
+      likes: post.likes,
+    });
+  } catch (error) {
+    console.log("Failed to like/unlike comment", error);
     res
       .status(500)
-      .json({ success: false, error: "Failed to delete", error });
+      .json({ success: false, error: "Failed to like/unlike comment" });
   }
 };
 
 module.exports = {
-  addBlogs,
-  allBlogs,
-  updateBlog,
-  deleteBlog,
-  getSingleBlog,
-  addComment,
-  allComments,
-  updateComment,
-  deleteComment,
+  addPost,
+  getAllPosts,
+  getSinglePost,
+  updatePost,
+  deletePost,
+  likePost,
 };

@@ -1,47 +1,70 @@
 const Category = require("../models/category.models");
 
 const addCategory = async (req, res) => {
-  const { name, description } = req.body;
+  try {
+    const { name, description } = req.body;
 
-  if (!name) {
-    return res.status(400).json({ error: "Category name not found" });
-  }
+    if (!name) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Category name not provided" });
+    }
 
-  const category = await Category.findOne({ name: name });
+    const category = await Category.findOne({ name: name });
 
-  if (category) {
-    return res.status(400).json({ error: "Category name already exists" });
-  }
+    if (category) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Category name already exists" });
+    }
 
-  const newCategory = new Category({ name, description });
+    const newCategory = new Category({ name, description });
 
-  if (newCategory) {
-    await newCategory.save();
-    res.status(201).json({ message: "Category added successfully" });
-  } else {
-    res.status(400).json({ error: "Something went wrong" });
+    if (newCategory) {
+      await newCategory.save();
+      res
+        .status(201)
+        .json({ success: true, message: "Category added successfully" });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, error: "Failed to creating category" });
+    }
+  } catch (error) {
+    console.log("Error in signup controller", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
 const getAllCategory = async (req, res) => {
   try {
     const categories = await Category.find();
+    console.log(categories);
 
     if (!categories) {
-      return res.status(400).json({ error: "No category available" });
+      return res
+        .status(400)
+        .json({ success: false, error: "No category available" });
     }
 
-    res.status(200).json(categories);
+    res.status(200).json({ success: true, categories });
   } catch (error) {
     console.log("Error in signup controller", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
 const updateCategory = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const updatedData = req.body;
+
+    const name = await Category.findById(id);
+    if (!name) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Category name not found" });
+    }
 
     // Replace the blogs details with new data
     const updatedCategory = await Category.findByIdAndUpdate(id, updatedData, {
@@ -62,16 +85,17 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
 
-    await Category.findByIdAndDelete({ _id: id });
-
-    const category = await Category.findById({ _id: id });
-    if (!category) {
-      res.status(200).json({ message: "Category deleted successfully" });
-    } else {
-      return res.status(500).json({ error: "Problem in deleting category" });
+    const name = await Category.findById(id);
+    if (!name) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Category name not found" });
     }
+
+    await Category.findByIdAndDelete(id);
+    res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     console.log("Error in signup controller", error);
     res.status(500).json({ error: "Internal server error" });

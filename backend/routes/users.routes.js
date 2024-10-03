@@ -12,9 +12,9 @@ const {
 const { isAdmin } = require("../middlewares/roleProtector");
 
 router.get("/", isAuthenticated, isAdmin, getAllUsers);
-router.get("/:id", getUser);
+router.get("/:id", isAuthenticated, getUser);
 router.delete("/:id", isAuthenticated, isAdmin, deleteUser);
-router.put("/:id", updateUser);
+router.put("/:id", isAuthenticated, updateUser);
 router.patch("/role/:id", isAuthenticated, isAdmin, updateRole);
 
 module.exports = router;

@@ -28,8 +28,8 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", homeRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/blogs", blogsRoutes);
-app.use("/api/v1/blogs/category", categoryRoutes);
-app.use("/api/v1/blogs/comments", commentRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/team/members", teamRoutes);
 app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/dashboard/author")
