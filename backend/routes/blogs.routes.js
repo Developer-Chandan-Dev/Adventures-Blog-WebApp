@@ -7,8 +7,10 @@ const {
   updatePost,
   deletePost,
   likePost,
+  featuredPost,
 } = require("../controller/blogs.controller");
 const { isAuthenticated } = require("../middlewares/isAuthenticated");
+const { isAdmin } = require("../middlewares/roleProtector");
 
 // Add new post
 router.post("/new-post", isAuthenticated, addPost);
@@ -27,5 +29,8 @@ router.delete("/:id", isAuthenticated, deletePost);
 
 // Like or dislike a post
 router.post("/:postId/like", isAuthenticated, likePost);
+
+// Featured post
+router.patch("/:postId", isAuthenticated, isAdmin, featuredPost);
 
 module.exports = router;

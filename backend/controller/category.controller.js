@@ -39,7 +39,7 @@ const addCategory = async (req, res) => {
 const getAllCategory = async (req, res) => {
   try {
     const categories = await Category.find();
-    
+
     if (!categories) {
       return res
         .status(400)
@@ -101,9 +101,46 @@ const deleteCategory = async (req, res) => {
   }
 };
 
+const setOnHome = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const category = await Category.findById(id);
+    if (!category) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Category not found" });
+    }
+
+    const updatedCategory = await Category.findByIdAndUpdate(
+      id,
+      { setOnHome: category.setOnHome === true ? false : true },
+      { new: true }
+    );
+
+    if (!updatedCategory) {
+      return res
+        .status(404)
+        .json({ status: false, error: "Category not found" });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: `${
+        updatedCategory.setOnHome === true ? "Set on" : "Removed from"
+      } home page`,
+      categories: updatedCategory,
+    });
+  } catch (error) {
+    console.log("Failed to update home categories", error);
+    res.status(500).json({ error: "Failed to update home categories" });
+  }
+};
+
 module.exports = {
   addCategory,
   getAllCategory,
   updateCategory,
   deleteCategory,
+  setOnHome
 };

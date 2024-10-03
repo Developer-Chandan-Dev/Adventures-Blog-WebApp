@@ -15,9 +15,11 @@ const addPost = async (req, res) => {
 
     // If validation fails, return errors
     if (!isValid) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Validation failed - Please fill all required fields", errors });
+      return res.status(400).json({
+        success: false,
+        error: "Validation failed - Please fill all required fields",
+        errors,
+      });
     }
 
     const slug = await Post.findOne({ slug: data.slug });
@@ -86,9 +88,7 @@ const updatePost = async (req, res) => {
 
     const post = await Post.findById(id);
     if (!post) {
-      return res
-        .status(404)
-        .json({ seccess: false, message: "Post not found" });
+      return res.status(404).json({ seccess: false, error: "Post not found" });
     }
 
     // Replace the post details with new data
@@ -139,6 +139,44 @@ const deletePost = async (req, res) => {
   }
 };
 
+// Featured post true/false
+const featuredPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        featuredBlog: post.featuredBlog === true ? false : true,
+      },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ status: false, error: "Post not found" });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: `${
+        updatedPost.featuredBlog === true ? "Set as" : "Remove from"
+      } featured post`,
+      posts: updatedPost,
+    });
+
+  } catch (error) {
+    console.log("Failed to update featured post", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to update featured post" });
+  }
+};
+
 // Like or unlike a post
 const likePost = async (req, res) => {
   try {
@@ -177,4 +215,5 @@ module.exports = {
   updatePost,
   deletePost,
   likePost,
+  featuredPost,
 };

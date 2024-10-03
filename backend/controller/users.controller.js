@@ -128,6 +128,10 @@ const promoteToTeamMember = async (req, res) => {
 
     const user = await User.findById(userId).select("_id teamMember");
 
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { teamMember: user.teamMember === true ? false : true }, // Promote the user
