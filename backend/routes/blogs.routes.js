@@ -8,7 +8,7 @@ const {
   deletePost,
   likePost,
 } = require("../controller/blogs.controller");
-const isAuthenticated = require("../middlewares/isAuthenticated");
+const { isAuthenticated } = require("../middlewares/isAuthenticated");
 
 // Add new post
 router.post("/new-post", isAuthenticated, addPost);

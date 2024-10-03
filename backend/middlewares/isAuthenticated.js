@@ -42,4 +42,20 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
-module.exports = isAuthenticated;
+const protectDashboard = async (req, res, next) => {
+  if (
+    (req.user && req.user.role === "admin") ||
+    req.user.role === "author" ||
+    req.user.teamMember === true
+  ) {
+    console.log(req.user);
+    next();
+  } else {
+    return res.status(401).json({
+      status: false,
+      error: "Unauthorized - You have not access in dashboard",
+    });
+  }
+};
+
+module.exports = { isAuthenticated, protectDashboard };

@@ -7,7 +7,7 @@ const homeData = async (req, res) => {
 
     // const latestBlogs = await Post.find({});
 
-    const categories = await Category.find();
+    const categories = await Category.find({ setOnHome: true });
 
     res
       .status(200)

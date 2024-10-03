@@ -8,7 +8,7 @@ const {
   deleteComment,
   likeComment,
 } = require("../controller/comment.controller");
-const isAuthenticated = require("../middlewares/isAuthenticated");
+const { isAuthenticated } = require("../middlewares/isAuthenticated");
 
 // Add a comment
 router.post("/:postId", isAuthenticated, addComment);

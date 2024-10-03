@@ -7,6 +7,12 @@ const addComment = async (req, res) => {
     const { content } = req.body;
     const userId = req.user._id;
 
+    if (!content) {
+      return res
+        .status(400)
+        .json({ status: false, error: "Message is required" });
+    }
+
     const newComment = await Comment.create({
       postId,
       userId,

@@ -20,7 +20,6 @@ const blogsRoutes = require("./routes/blogs.routes");
 const categoryRoutes = require("./routes/category.routes");
 const commentRoutes = require("./routes/comment.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
-const teamRoutes = require("./routes/team.routes");
 const usersRoutes = require("./routes/users.routes");
 
 // client routes
@@ -30,7 +29,6 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/blogs", blogsRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/comments", commentRoutes);
-app.use("/api/v1/team/members", teamRoutes);
 app.use("/api/v1/users", usersRoutes);
 // app.use("/api/v1/dashboard/author")
 // app.use("/api/v1", blogsRoutes);

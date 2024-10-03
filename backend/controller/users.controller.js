@@ -1,15 +1,8 @@
 const User = require("../models/user.models");
 
+// Get all users by Admin
 const getAllUsers = async (req, res) => {
   try {
-    // if (req.user.role !== "admin") {
-    //   console.log(req.user.role);
-    //   return res.status(401).json({
-    //     success: false,
-    //     error: "Unauthorized - You have not access to do this",
-    //   });
-    // }
-
     const users = await User.find().select("-password");
 
     if (!users) {
@@ -25,6 +18,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// Get a user details by user
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,17 +38,9 @@ const getUser = async (req, res) => {
   }
 };
 
+// Delete users by Admin
 const deleteUser = async (req, res) => {
   try {
-    // Check if the user role is admin or not
-    // if (req.user.role !== "admin") {
-    //   console.log(req.user.role);
-    //   return res.status(401).json({
-    //     success: false,
-    //     error: "Unauthorized - You have not access to do this",
-    //   });
-    // }
-
     const { id } = req.params;
 
     const user = await User.findById(id);
@@ -72,6 +58,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Update user details by user
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -103,19 +90,17 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Updating user role by Admin
 const updateRole = async (req, res) => {
   try {
-    // Check if the user role is admin or not
-    // if (req.user.role !== "admin") {
-    //   console.log(req.user.role);
-    //   return res.status(401).json({
-    //     success: false,
-    //     error: "Unauthorized - You have not access to do this",
-    //   });
-    // }
-
     const { id } = req.params;
     const { role } = req.body;
+
+    if (!role) {
+      return res
+        .status(400)
+        .json({ status: false, error: "Please provide role" });
+    }
 
     const user = await User.findById(id);
     if (!user) {
@@ -136,4 +121,57 @@ const updateRole = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getUser, deleteUser, updateUser, updateRole };
+// Promote/Demote a user to team member by Admin
+const promoteToTeamMember = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const user = await User.findById(userId).select("_id teamMember");
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { teamMember: user.teamMember === true ? false : true }, // Promote the user
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ status: false, error: "User not found" });
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "User promoted to team member",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.log("Error promoting user", error);
+    res
+      .status(500)
+      .json({ status: false, error: "Error promoting user", error });
+  }
+};
+
+// Get al team members
+const getTeamMembers = async (req, res) => {
+  try {
+    const teamMembers = await User.find({ teamMember: true }).select(
+      "-password"
+    );
+    res.status(200).json({ status: true, teamMembers });
+  } catch (error) {
+    console.log("Error fetching team members", error);
+    res
+      .status(500)
+      .json({ status: false, error: "Error fetching team members", error });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUser,
+  deleteUser,
+  updateUser,
+  updateRole,
+  promoteToTeamMember,
+  getTeamMembers,
+};

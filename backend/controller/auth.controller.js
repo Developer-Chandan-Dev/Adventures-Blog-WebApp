@@ -1,7 +1,6 @@
 const User = require("../models/user.models");
 const bcrypt = require("bcryptjs");
 const generateTokenAndSetCookie = require("../utils/generateToken");
-const validateFields = require("../utils/validateFields");
 
 const signup = async (req, res) => {
   try {
@@ -54,16 +53,18 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     if (!email || !password) {
       return res
         .status(404)
         .json({ status: false, error: "Please fill all fields" });
     }
 
-    const user = await User.findOne({ status: false, email: email });
+    const user = await User.findOne({ email: email });
+    console.log(user);
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ status: false, error: "User not found" });
     }
 
     if (user.blocked === true) {

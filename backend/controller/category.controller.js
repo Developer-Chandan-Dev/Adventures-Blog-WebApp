@@ -39,8 +39,7 @@ const addCategory = async (req, res) => {
 const getAllCategory = async (req, res) => {
   try {
     const categories = await Category.find();
-    console.log(categories);
-
+    
     if (!categories) {
       return res
         .status(400)
