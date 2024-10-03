@@ -1,25 +1,26 @@
 const Post = require("../models/post.models");
 const Category = require("../models/category.models");
+const validateFields = require("../utils/validateFields");
 
 // add a new post
 const addPost = async (req, res) => {
   try {
     const data = req.body;
-    if (
-      !data ||
-      !data.title ||
-      !data.slug ||
-      !data.content ||
-      !data.author ||
-      !data.coverImage
-    ) {
+
+    // Required fields for the post
+    const requiredFields = ["title", "slug", "content", "author", "coverImage"];
+
+    // Validate the incoming data
+    const { isValid, errors } = validateFields(data, requiredFields);
+
+    // If validation fails, return errors
+    if (!isValid) {
       return res
         .status(400)
-        .json({ success: false, error: "Data not provided" });
+        .json({ success: false, error: "Validation failed - Please fill all required fields", errors });
     }
 
     const slug = await Post.findOne({ slug: data.slug });
-
     if (slug) {
       return res
         .status(400)
@@ -27,7 +28,6 @@ const addPost = async (req, res) => {
     }
 
     const newPost = new Post(data);
-
     if (newPost) {
       const response = await newPost.save();
       res.status(201).json({ success: true, response });
@@ -125,7 +125,10 @@ const deletePost = async (req, res) => {
       post.author.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
     ) {
-      return res.status(401).json({ success: false, error: "Unauthorized - You have not access to delete this post" });
+      return res.status(401).json({
+        success: false,
+        error: "Unauthorized - You have not access to delete this post",
+      });
     }
 
     await post.deleteOne();
