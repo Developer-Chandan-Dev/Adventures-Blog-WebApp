@@ -1,6 +1,7 @@
 const User = require("../models/user.models");
 const bcrypt = require("bcryptjs");
 const generateTokenAndSetCookie = require("../utils/generateToken");
+const validateFields = require("../utils/validateFields");
 
 const signup = async (req, res) => {
   try {
@@ -8,12 +9,16 @@ const signup = async (req, res) => {
     console.log(username, email, password);
 
     if (!username || !email || !password) {
-      return res.status(404).json({ error: "Data not found" });
+      return res
+        .status(404)
+        .json({ status: false, error: "Please fill all fields" });
     }
 
     const user = await User.findOne({ email: email });
     if (user) {
-      return res.status(400).json({ error: "Email already registered" });
+      return res
+        .status(400)
+        .json({ status: false, error: "Email already registered" });
     }
 
     // Hash Password
@@ -31,33 +36,41 @@ const signup = async (req, res) => {
     if (newUser) {
       const response = await newUser.save();
       res.status(201).json({
+        status: true,
         _id: response._id,
         username: response.username,
         email: response.email,
         role: response.role,
       });
     } else {
-      return res.status(400).json({ message: "Invalid User" });
+      return res.status(400).json({ status: false, error: "Invalid User" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ status: false, error: "Internal Server Error" });
   }
 };
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
+    if (!email || !password) {
+      return res
+        .status(404)
+        .json({ status: false, error: "Please fill all fields" });
+    }
 
-    if(!user){
-      return res.status(404).json({error:"User not found"});
+    const user = await User.findOne({ status: false, email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
 
     if (user.blocked === true) {
-      return res
-        .status(400)
-        .json({ err: "User blocked, you cannot access this account." });
+      return res.status(400).json({
+        status: false,
+        error: "User blocked, you cannot access this account.",
+      });
     }
 
     const comparePassword = await bcrypt.compare(
@@ -66,12 +79,15 @@ const login = async (req, res) => {
     );
 
     if (!user || !comparePassword) {
-      return res.status(400).json({ err: "Incorrect email or password" });
+      return res
+        .status(400)
+        .json({ status: false, error: "Incorrect email or password" });
     }
 
     // Generate Token and set cookie
     generateTokenAndSetCookie(user._id, res);
     res.status(200).json({
+      status: true,
       _id: user._id,
       username: user.username,
       email: user.email,
@@ -80,20 +96,18 @@ const login = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ err: "Internal Server Error" });
+    res.status(500).json({ status: false, error: "Internal Server Error" });
   }
 };
 
 const logout = async (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ message: "Logged out Successfully" });
+    res.status(200).json({ status: true, message: "Logged out Successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ err: "Internal Server Error" });
+    res.status(500).json({ status: false, error: "Internal Server Error" });
   }
 };
-
-
 
 module.exports = { signup, login, logout };
