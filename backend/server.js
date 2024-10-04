@@ -30,10 +30,6 @@ app.use("/api/v1/blogs", blogsRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/users", usersRoutes);
-// app.use("/api/v1/dashboard/author")
-// app.use("/api/v1", blogsRoutes);
-
-// dashboard routes
 
 // <============= Server is listning here ============>
 app.listen(PORT, () => {

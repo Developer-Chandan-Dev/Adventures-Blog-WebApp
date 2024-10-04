@@ -40,4 +40,4 @@ const homeData = async (req, res) => {
   }
 };
 
-module.exports = {homeData};
+module.exports = { homeData };

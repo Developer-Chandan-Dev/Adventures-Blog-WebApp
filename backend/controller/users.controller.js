@@ -1,4 +1,8 @@
 const User = require("../models/user.models");
+const {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+} = require("../utils/uploadToCloudinary");
 
 // Get all users by Admin
 const getAllUsers = async (req, res) => {
@@ -38,42 +42,55 @@ const getUser = async (req, res) => {
   }
 };
 
-// Delete users by Admin
-const deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
-
-    await User.deleteOne();
-    res.status(200).json({ success: true, message: "User deleted" });
-  } catch (error) {
-    console.log("Failed to delete user", error);
-    res
-      .status(500)
-      .json({ success: false, error: "Failed to delete user", error });
-  }
-};
-
 // Update user details by user
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userData = req.body;
+    const profilePic = req.file ? req.file.path : null; // Get local file path
+
+    let profilePicUrl = null;
+    let profilePicPublicId = null;
 
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ seccess: false, error: "User not found" });
     }
+    console.log(profilePic, user.profilePicPublicId);
+    // Delete the old profile picture of a new one is provided
+    if (user.profilePicPublicId && profilePic) {
+      console.log(
+        "Deleting old image with public ID:",
+        user.profilePicPublicId
+      );
+      await deleteFromCloudinary(user.profilePicPublicId);
+    }
+
+    // Upload the new profile picture if provided
+    if (profilePic) {
+      const uploadResult = await uploadToCloudinary(
+        profilePic,
+        "users",
+        `users/${user.username}_${Date.now()}`
+      );
+      profilePicUrl = uploadResult.secure_url;
+      profilePicPublicId = uploadResult.public_id;
+    }
 
     // Replace the blogs details with new data
-    const updatedUser = await User.findByIdAndUpdate(id, userData, {
-      new: true,
-      overwrite: true, // Overwrite the document with the new data
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        profilePic: profilePicUrl,
+        profilePicPublicId: profilePicPublicId,
+        ...userData,
+      },
+      {
+        new: true,
+        runValidators: true,
+        overwrite: true, // Overwrite the document with the new data
+      }
+    );
 
     if (!updatedUser) {
       return res
@@ -87,6 +104,32 @@ const updateUser = async (req, res) => {
     res
       .status(500)
       .json({ success: false, error: "Failed to update user details", error });
+  }
+};
+
+// Delete users by Admin
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    // Delete profilePic from cloudinary
+    if (user.profilePicPublicId && user.profilePic) {
+      console.log("Deleting old image with pulic ID:", user.profilePicPublicId);
+      await deleteFromCloudinary(user.profilePicPublicId);
+    }
+
+    await User.deleteOne();
+    res.status(200).json({ success: true, message: "User deleted" });
+  } catch (error) {
+    console.log("Failed to delete user", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to delete user", error });
   }
 };
 

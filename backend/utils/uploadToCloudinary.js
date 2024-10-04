@@ -30,7 +30,6 @@ const deleteFromCloudinary = async (publicId) => {
 
     // Check Cloudinary's response
     if (result.result === "ok") {
-      
       console.log("Image successfully deleted from Cloudinary:", result);
       return result;
     } else {
