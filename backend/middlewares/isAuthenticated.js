@@ -9,7 +9,7 @@ const createError = (message, statusCode) => {
   return error;
 };
 
-// Middleware
+// check authentication
 const isAuthenticated = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
@@ -42,20 +42,62 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
+// Dashboard protection
 const protectDashboard = async (req, res, next) => {
   if (
     (req.user && req.user.role === "admin") ||
     req.user.role === "author" ||
     req.user.teamMember === true
   ) {
-    console.log(req.user);
     next();
   } else {
     return res.status(401).json({
-      status: false,
+      success: false,
       error: "Unauthorized - You have not access in dashboard",
     });
   }
 };
 
-module.exports = { isAuthenticated, protectDashboard };
+// Prevent access blocked user
+const checkBlocked = async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email: email });
+  if (user && user.isBlocked) {
+    return res
+      .status(403)
+      .json({ success: false, error: "Your account has been blocked" });
+  }
+  next();
+};
+const checkBlockedAfterAuth = async (req, res, next) => {
+  if (req.user && req.user.isBlocked) {
+    console.log(req.user, req.user.isBlocked);
+    return res
+      .status(403)
+      .json({ success: false, error: "Your account has been blocked" });
+  }
+  next();
+};
+
+// Prevent CUD operations
+const protectCRUD = async (req, res, next) => {
+  if ((req.user && req.user.role === "admin") || req.user.role === "author") {
+    console.log(req.user);
+    next();
+  } else {
+    return res.status(401).json({
+      success: false,
+      error:
+        "Unauthorized - You have not access for create update and delete posts",
+    });
+  }
+};
+
+module.exports = {
+  isAuthenticated,
+  protectDashboard,
+  protectCRUD,
+  checkBlocked,
+  checkBlockedAfterAuth,
+};

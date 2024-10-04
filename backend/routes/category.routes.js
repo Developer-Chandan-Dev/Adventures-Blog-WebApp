@@ -8,22 +8,49 @@ const {
   deleteCategory,
   setOnHome,
 } = require("../controller/category.controller");
-const { isAuthenticated } = require("../middlewares/isAuthenticated");
+const {
+  isAuthenticated,
+  checkBlockedAfterAuth,
+} = require("../middlewares/isAuthenticated");
 const { isAdmin } = require("../middlewares/roleProtector");
 
 // Add category - admin
-router.post("/add", isAuthenticated, isAdmin, addCategory);
+router.post(
+  "/add",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  addCategory
+);
 
 // Get all categories
 router.get("/", getAllCategory);
 
 // Update categories - admin
-router.put("/:id", isAuthenticated, isAdmin, updateCategory);
+router.put(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  updateCategory
+);
 
 // Delete category - admin
-router.delete("/:id", isAuthenticated, isAdmin, deleteCategory);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  deleteCategory
+);
 
 // Update home categories
-router.patch("/:id", isAuthenticated, isAdmin, setOnHome);
+router.patch(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  setOnHome
+);
 
 module.exports = router;

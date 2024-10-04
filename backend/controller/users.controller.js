@@ -8,12 +8,12 @@ const {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
-
+    console.log(users);
     if (!users) {
       return res.status(404).json({ success: false, error: "Users not found" });
     }
 
-    res.status(200).json(users);
+    res.status(200).json({success:true, users});
   } catch (error) {
     console.log("Failed to get all user", error);
     res
@@ -133,6 +133,40 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Block or Unblock user by Admin
+const blockUnblockUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    if (user.isBlocked === true) {
+      user.isBlocked = false; // Unblock the user
+      res
+        .status(200)
+        .json({ success: true, message: "Uesr unblocked successfully" });
+    } else if (user.isBlocked === false) {
+      user.isBlocked = true; // Block the user
+      res
+        .status(200)
+        .json({ success: true, message: "User blocked successfully" });
+    } else {
+      return res.status(400).json({ success: false, error: "Invalid user" });
+    }
+
+    await user.save();
+  } catch (error) {
+    console.log("Failed to block/unblock user", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to block/unblock user", error });
+  }
+};
+
 // Updating user role by Admin
 const updateRole = async (req, res) => {
   try {
@@ -188,7 +222,6 @@ const promoteToTeamMember = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "User promoted to team member",
-      user: updatedUser,
     });
   } catch (error) {
     console.log("Error promoting user", error);
@@ -221,4 +254,5 @@ module.exports = {
   updateRole,
   promoteToTeamMember,
   getTeamMembers,
+  blockUnblockUser
 };

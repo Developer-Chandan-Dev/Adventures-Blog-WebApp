@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
       enum: ["reader", "author", "admin"],
       default: "reader", // Role based access
     },
+    isBlocked: {
+      type: Boolean,
+      default: false, // By default, the user is not blocked
+    },
     teamMember: {
       type: Boolean,
       default: false,

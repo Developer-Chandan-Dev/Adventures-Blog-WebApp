@@ -7,37 +7,75 @@ const {
   updateUser,
   updateRole,
   promoteToTeamMember,
+  blockUnblockUser,
   getTeamMembers,
 } = require("../controller/users.controller");
 
-const { isAuthenticated } = require("../middlewares/isAuthenticated");
+const {
+  isAuthenticated,
+  checkBlockedAfterAuth,
+} = require("../middlewares/isAuthenticated");
 const { isAdmin } = require("../middlewares/roleProtector");
 const upload = require("../middlewares/fileUploadMiddleware");
 
 // Get all users
-router.get("/", isAuthenticated, isAdmin, getAllUsers);
+router.get("/", isAuthenticated, checkBlockedAfterAuth, isAdmin, getAllUsers);
 
 // Get user profile
-router.get("/:id", isAuthenticated, getUser);
+router.get("/:id", isAuthenticated, checkBlockedAfterAuth, getUser);
 
 // Delete user
-router.delete("/:id", isAuthenticated, isAdmin, deleteUser);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  deleteUser
+);
+
+// Block or Unblock a user
+router.patch(
+  "/block-unblock/:userId",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  blockUnblockUser
+);
 
 // Update user profile
-router.put("/:id", isAuthenticated, upload.single("profilePic"), updateUser);
+router.put(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  upload.single("profilePic"),
+  updateUser
+);
 
 // Change user role
-router.patch("/role/:id", isAuthenticated, isAdmin, updateRole);
+router.patch(
+  "/role/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  updateRole
+);
 
 // Change team members - true/false
 router.patch(
   "/promote/members/:userId",
   isAuthenticated,
+  checkBlockedAfterAuth,
   isAdmin,
   promoteToTeamMember
 );
 
 // Get all team members
-router.get("/promote/members", getTeamMembers);
+router.get(
+  "/promote/members",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  getTeamMembers
+);
 
 module.exports = router;

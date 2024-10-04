@@ -9,12 +9,23 @@ const {
   likePost,
   featuredPost,
 } = require("../controller/blogs.controller");
-const { isAuthenticated } = require("../middlewares/isAuthenticated");
+const {
+  isAuthenticated,
+  protectCRUD,
+  checkBlockedAfterAuth,
+} = require("../middlewares/isAuthenticated");
 const { isAdmin } = require("../middlewares/roleProtector");
 const upload = require("../middlewares/fileUploadMiddleware");
 
 // Add new post
-router.post("/new-post", isAuthenticated, upload.single("coverImage"), addPost);
+router.post(
+  "/new-post",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  protectCRUD,
+  upload.single("coverImage"),
+  addPost
+);
 
 // Aet all posts
 router.get("/", getAllPosts);
@@ -23,15 +34,34 @@ router.get("/", getAllPosts);
 router.get("/:id", getSinglePost);
 
 // Update a post
-router.put("/:id", isAuthenticated, upload.single("coverImage"), updatePost);
+router.put(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  protectCRUD,
+  upload.single("coverImage"),
+  updatePost
+);
 
 // Delete a post
-router.delete("/:id", isAuthenticated, deletePost);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  protectCRUD,
+  deletePost
+);
 
 // Like or dislike a post
-router.patch("/:postId/like", isAuthenticated, likePost);
+router.patch("/:postId/like", isAuthenticated, checkBlockedAfterAuth, likePost);
 
 // Featured post
-router.patch("/:postId", isAuthenticated, isAdmin, featuredPost);
+router.patch(
+  "/:postId",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  isAdmin,
+  featuredPost
+);
 
 module.exports = router;
