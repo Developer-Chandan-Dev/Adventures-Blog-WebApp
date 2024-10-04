@@ -1,5 +1,5 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
@@ -89,7 +89,7 @@ function App() {
           />
 
           {/* <-------------- Contact Page ---------------> */}
-         <Route path="/team"element={<Layout><Team /></Layout>}/>
+          <Route path="/team"element={<Layout><Team /></Layout>}/>
 
           {/* <-------------- Login & Signup Page ---------------> */}
           <Route path="/login" element={<Login />} />

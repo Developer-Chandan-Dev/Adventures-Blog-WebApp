@@ -1,37 +1,36 @@
-// import axios from "axios";
+import axios from "axios";
 
 export class AuthService {
-  async createAccount(name, email, password) {
+  async createAccount(username, email, password) {
     try {
-      console.log(email, password, name);
-      const res = await fetch("/api/v1/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+      const res = await axios.post("/api/v1/auth/signup", {
+        username,
+        email,
+        password,
       });
 
-      if (res) {
+      if (res.data.status === true) {
         // call another method
+
         return this.login(email, password);
       } else {
         return res;
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.error);
       return error;
     }
   }
 
   async login(email, password) {
     try {
-      console.log(email, password);
-      const res = await fetch("/api/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post("/api/v1/auth/login", {
+        email,
+        password,
       });
 
       if (res) {
+        console.log(res.data.message);
         return res;
       }
     } catch (error) {

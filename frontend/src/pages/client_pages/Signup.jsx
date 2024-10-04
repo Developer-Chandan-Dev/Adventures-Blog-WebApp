@@ -4,7 +4,7 @@ import { useState } from "react";
 import authService from "../../features/auth";
 
 const Signup = () => {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ const Signup = () => {
     e.preventDefault();
 
     // handle Inputs
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return setError("Please fill all the fields");
     }
 
@@ -21,7 +21,7 @@ const Signup = () => {
       return setError("Password must be atleast 6 characters");
     }
 
-    const a = await authService.createAccount( name, email, password );
+    const a = await authService.createAccount( username, email, password );
     console.log(a);
   };
   console.log(error);
@@ -45,8 +45,8 @@ const Signup = () => {
             onSubmit={handleSubmit}
           >
             <div>
-              <label htmlFor="name" className="font-semibold text-gray-500">
-                Name
+              <label htmlFor="username" className="font-semibold text-gray-500">
+                Username
               </label>
               <div>
                 <input
@@ -54,10 +54,10 @@ const Signup = () => {
                   className="w-[400px] mt-2 h-[44px] rounded-lg px-3 py-1 border border-blue-300 outline-blue-300 inputBox"
                   placeholder="Enter your name"
                   required
-                  name="name"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  name="username"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
             </div>
