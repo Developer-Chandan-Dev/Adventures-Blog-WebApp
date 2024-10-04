@@ -29,7 +29,7 @@ const homeData = async (req, res) => {
       },
     ]);
 
-    const categories = await Category.find({ setOnHome: true });
+    const categories = await Category.find({ setOnHome: true }).select("_id name");
 
     res
       .status(200)

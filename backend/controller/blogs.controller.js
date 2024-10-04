@@ -120,10 +120,7 @@ const updatePost = async (req, res) => {
 
     // Delete the old profile picture if a new one is provided
     if (post.coverImagePublicId && coverImage) {
-      console.log(
-        "Deleting old image with pulic ID:",
-        post.coverImagePublicId
-      );
+      console.log("Deleting old image with pulic ID:", post.coverImagePublicId);
       await deleteFromCloudinary(post.coverImagePublicId);
     }
 
@@ -193,13 +190,9 @@ const deletePost = async (req, res) => {
 
     // Delete coverImage from cloudinary
     if (post.coverImagePublicId && post.coverImage) {
-      console.log(
-        "Deleting old image with pulic ID:",
-        post.coverImagePublicId
-      );
+      console.log("Deleting old image with pulic ID:", post.coverImagePublicId);
       await deleteFromCloudinary(post.coverImagePublicId);
     }
-
 
     await post.deleteOne();
     res.status(200).json({ success: true, message: "Post deleted" });
@@ -236,7 +229,7 @@ const featuredPost = async (req, res) => {
       message: `${
         updatedPost.featuredBlog === true ? "Set as" : "Remove from"
       } featured post`,
-      posts: updatedPost,
+      posts: {_id : updatedPost._id, title: updatedPost.title, featuredBlog : updatedPost.featuredBlog},
     });
   } catch (error) {
     console.log("Failed to update featured post", error);
@@ -263,7 +256,7 @@ const likePost = async (req, res) => {
     if (post.likes.includes(userId)) {
       // If user already liked the post, remove the like (dislike)
       post.likes = post.likes.filter(
-        (likeId) => likeId.toString() !== user.toString()
+        (likeId) => likeId.toString() !== userId.toString()
       );
       await post.save();
 
