@@ -3,13 +3,35 @@ import "./App.css";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
-import { Home, Blogs, Contact, About, Community, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
+import {
+  Home,
+  Blogs,
+  Contact,
+  About,
+  Community,
+  BlogDetailsPage,
+  Login,
+  Signup,
+} from "./pages/client_pages/index";
 
 // <------------- Dashboard pages imports --------------->
-import { AddBlogs, Dashboard, DashboardBlogsPage, DashboardPage, PendingBlogs, Settings, Users } from "./pages/dashboard/index";
+import {
+  AddBlogs,
+  Category,
+  Dashboard,
+  DashboardBlogsPage,
+  DashboardPage,
+  PendingBlogs,
+  Settings,
+  Users,
+} from "./pages/dashboard/index";
 
 // <============= Components imports start here =============>
-  import { UpdateBlogs, BlogsContainer, DraftBlogsContainer } from "./components/index";
+import {
+  UpdateBlogs,
+  BlogsContainer,
+  DraftBlogsContainer,
+} from "./components/index";
 
 // <============= Additional Components import =============>
 import Layout from "./components/Layout";
@@ -25,26 +47,69 @@ function App() {
 
           {/* <------------- Home Page --------------> */}
 
-          <Route path="/" element={<Layout> <Home /> </Layout>}/>
+          <Route
+            path="/"
+            element={
+              <Layout>
+                {" "}
+                <Home />{" "}
+              </Layout>
+            }
+          />
 
           {/* <-------------- Blogs Page ---------------> */}
-          <Route path="/blogs"element={<Layout><Blogs /></Layout>}/>
+          <Route
+            path="/blogs"
+            element={
+              <Layout>
+                <Blogs />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Blogs Details Page ---------------> */}
-          <Route path="/blogs/details"element={<Layout><BlogDetailsPage /></Layout>}/>
+          <Route
+            path="/blogs/details"
+            element={
+              <Layout>
+                <BlogDetailsPage />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route path="/contact"element={<Layout><Contact /></Layout>}/>
+          <Route
+            path="/contact"
+            element={
+              <Layout>
+                <Contact />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route path="/about"element={<Layout><About /></Layout>}/>
+          <Route
+            path="/about"
+            element={
+              <Layout>
+                <About />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route path="/community"element={<Layout><Community /></Layout>}/>
+          <Route
+            path="/community"
+            element={
+              <Layout>
+                <Community />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Login & Signup Page ---------------> */}
-          <Route path="/login" element={<Login/>} />
-          <Route path="/signup" element={<Signup/>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
           {/* <============ User Routes End here ============> */}
 
@@ -52,19 +117,18 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="" element={<DashboardPage />} />
-            <Route path="blogs" element={<DashboardBlogsPage />} >
-              <Route path="" element={<BlogsContainer/>} />
-              <Route path="update/:id" element={<UpdateBlogs/>} />
-
+            <Route path="category" element={<Category />} />
+            <Route path="blogs" element={<DashboardBlogsPage />}>
+              <Route path="" element={<BlogsContainer />} />
+              <Route path="update/:id" element={<UpdateBlogs />} />
             </Route>
             <Route path="blogs/add" element={<AddBlogs />} />
-            <Route path="blogs/pending" element={<PendingBlogs />} >
-              <Route path="" element={<DraftBlogsContainer/>} />
-              <Route path="update/:id" element={<UpdateBlogs/>} />
+            <Route path="blogs/pending" element={<PendingBlogs />}>
+              <Route path="" element={<DraftBlogsContainer />} />
+              <Route path="update/:id" element={<UpdateBlogs />} />
             </Route>
             <Route path="settings" element={<Settings />} />
-            <Route path="users" element={<Users/>} />
-
+            <Route path="users" element={<Users />} />
           </Route>
           {/* <============ Dashboard Routes End here ============> */}
         </Routes>
