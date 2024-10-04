@@ -1,4 +1,3 @@
-import a from "../../assets/images/consultant.png";
 import join from "../../assets/images/join_us.jpg";
 
 const CommunityHeroSection = () => {
@@ -7,7 +6,7 @@ const CommunityHeroSection = () => {
       <section className="w-full px-5 sm:px-14 py-16 lg:py-12 text-center lg:text-left bg-white flex items-center justify-around lg:px-5 gap-x-5">
         <div>
           <h1 className="head_text">
-            Our <span className="orange_gradient">Community</span>
+            Our <span className="orange_gradient">Team</span>
           </h1>
           <p className="desc">
             This is our community page, you can explore about our community and

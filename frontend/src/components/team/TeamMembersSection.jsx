@@ -2,7 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const CommunityMembersSection = () => {
+const TeamMembersSection = () => {
   const data = ["Hello", "Hi", "Sai", "Bye", "Weep", "Sleep", "Dark", "Light"];
 
   const settings = {
@@ -47,10 +47,17 @@ const CommunityMembersSection = () => {
               {data != null
                 ? data.map((index, value) => (
                     <div
-                      className="!w-80 h-72 bg-red-200 !mx-auto flex-center text-3xl drop-shadow-md text-gray-300"
+                      className="!w-80 text-center h-72 border !mx-auto drop-shadow-md px-4 py-6 !flex items-center justify-center flex-col rounded"
                       key={index}
                     >
-                      {value}
+                      <div className="w-24 h-24 rounded-full bg-blue-600 "></div>
+                      <h1 className="py-2 font-bold text-xl text-slate-700">User Name</h1>
+                      <p className="text-gray-600 pb-5">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Deserunt, facere.
+                      {data[value]}
+                      </p>
+
                     </div>
                   ))
                 : ""}
@@ -62,4 +69,4 @@ const CommunityMembersSection = () => {
   );
 };
 
-export default CommunityMembersSection;
+export default TeamMembersSection;

@@ -3,7 +3,7 @@ import "./App.css";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
-import { Home, Blogs, Contact, About, Community, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
+import { Home, Blogs, Contact, About, Team, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
 
 // <------------- Dashboard pages imports --------------->
 import { AddBlogs, Dashboard, DashboardBlogsPage, DashboardPage, PendingBlogs, Settings } from "./pages/dashboard/index";
@@ -40,7 +40,7 @@ function App() {
           <Route path="/about"element={<Layout><About /></Layout>}/>
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route path="/community"element={<Layout><Community /></Layout>}/>
+          <Route path="/team"element={<Layout><Team /></Layout>}/>
 
           {/* <-------------- Login & Signup Page ---------------> */}
           <Route path="/login" element={<Login/>} />

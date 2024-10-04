@@ -60,9 +60,9 @@ const Navbar = () => {
                     Blogs
                   </li>
                 </Link>
-                <Link to="/community">
+                <Link to="/team">
                   <li className="my-1 py-2 pl-2 cursor-pointer transition-all hover:bg-white">
-                    Community
+                    Team
                   </li>
                 </Link>
                 <Link to="/about">
@@ -108,13 +108,13 @@ const Navbar = () => {
               Blogs
             </li>
           </Link>
-          <Link to="/community">
+          <Link to="/team">
             <li
               className={`desktop-li ${
-                location.pathname === "/community" ? "active-nav" : ""
+                location.pathname === "/team" ? "active-nav" : ""
               }`}
             >
-              Community
+              Team
             </li>
           </Link>
           <Link to="/about">

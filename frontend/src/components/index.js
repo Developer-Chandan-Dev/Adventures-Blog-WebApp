@@ -11,8 +11,8 @@ import BlogPageSidebar from "./blogs/BlogPageSidebar";
 import BlogsContainer from "./dashboard/BlogsContainer";
 import BlogTags from "./blogs/BlogTags";
 import RelatedTopics from "./blogs/RelatedTopics";
-import CommunityHeroSection from "./community/CommunityHeroSection";
-import CommunityMembersSection from "./community/CommunityMembersSection";
+import TeamHeroSection from "./team/TeamHeroSection";
+import TeamMembersSection from "./team/TeamMembersSection";
 import ContactUsForm from "./contact/ContactUsForm";
 import MapBox from "./contact/MapBox";
 import DashboardCards from "./dashboard/DashboardCards";
@@ -29,5 +29,35 @@ import PopularCategories from "./home/PopularCategories";
 import AboutUs from "./about/AboutUs";
 import AboutDev from "./about/AboutDev";
 
-
-export {AboutDev, Footer, Layout, HomePageBlogs, Navbar, ScrollToTop, BlogCard, BlogCardInfo, BlogContent, BlogForm, BlogPageSidebar, BlogsContainer, BlogTags, RelatedTopics, CommunityHeroSection, CommunityMembersSection, ContactUsForm, MapBox, DashboardCards, DashboardNavbar, Form, Sidebar, UpdateBlogs, FeaturedBlog, FeaturedBlogInfo, FeaturedBlogs, HeroSection, Container, PopularCategories, AboutUs}
+export {
+  AboutDev,
+  Footer,
+  Layout,
+  HomePageBlogs,
+  Navbar,
+  ScrollToTop,
+  BlogCard,
+  BlogCardInfo,
+  BlogContent,
+  BlogForm,
+  BlogPageSidebar,
+  BlogsContainer,
+  BlogTags,
+  RelatedTopics,
+  TeamHeroSection,
+  TeamMembersSection,
+  ContactUsForm,
+  MapBox,
+  DashboardCards,
+  DashboardNavbar,
+  Form,
+  Sidebar,
+  UpdateBlogs,
+  FeaturedBlog,
+  FeaturedBlogInfo,
+  FeaturedBlogs,
+  HeroSection,
+  Container,
+  PopularCategories,
+  AboutUs,
+};
