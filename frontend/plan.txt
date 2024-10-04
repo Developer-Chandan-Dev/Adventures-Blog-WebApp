@@ -11,4 +11,3 @@ Admin special
 
 Categories [CRUD - R, setOnHome, active/unactive ] - Admin 
 Users Page [CRUD , Block/Unblock, Team Member, Role ] - Admin
-

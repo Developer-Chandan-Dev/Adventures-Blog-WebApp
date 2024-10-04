@@ -8,9 +8,12 @@ const AvailableCategory = () => {
           <h1 className="font-semibold ml-1">All Category</h1>
 
           <div className="w-11/12 h-40 mt-4 pt-1 text-sm">
-          <UpdateCategory/>
+            <UpdateCategory />
             <div className="w-92 h-10 border drop-shadow bg-white rounded-md px-3 flex items-center justify-between cursor-default mb-3">
-              <span>Web Development</span>
+              <div className="flex items-center gap-x-2">
+                <input type="checkbox" className="cursor-pointer w-4 h-4" />
+                <span>Web Development</span>
+              </div>
               <div className="flex items-center gap-x-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +38,10 @@ const AvailableCategory = () => {
               </div>
             </div>
             <div className="w-92 h-10 border drop-shadow bg-white rounded-md px-3 flex items-center justify-between cursor-default mb-3">
-              <span>Cyber Security</span>
+              <div className="flex items-center gap-x-2">
+                <input type="checkbox" className="cursor-pointer w-4 h-4" />
+                <span>Cyber Security</span>
+              </div>
               <div className="flex items-center gap-x-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
