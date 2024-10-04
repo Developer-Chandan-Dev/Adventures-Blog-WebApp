@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 
-const BlogsContainer = () => {
+const DraftBlogsContainer = () => {
   return (
     <>
       <div className="w-full relative h-auto ">
         <div className="flex items-center gap-x-3">
           <label htmlFor="searchbox" className="font-semibold">
-            Search Blogs:{" "}
+            Search Blogs:
           </label>
           <div className="">
             <input
@@ -23,7 +23,6 @@ const BlogsContainer = () => {
                 <th className="px-4 text-left">#</th>
                 <th className="px-4 text-left">Title</th>
                 <th className="px-5 text-left">Slug</th>
-                <th className="px-5 text-left">Featured Post</th>
                 <th className="px-5 text-left flex pt-4">
                   <span className="mr-3">Edit/Delete</span>
                   <svg
@@ -37,6 +36,7 @@ const BlogsContainer = () => {
                     <path d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z" />
                   </svg>
                 </th>
+                <th className="px-5 text-left">Status</th>
               </tr>
             </thead>
             <tbody className="">
@@ -44,18 +44,10 @@ const BlogsContainer = () => {
                 <td className="px-4 font-medium">Hello</td>
                 <td className="px-4">Everyone</td>
                 <td className="pl-5">Everyone</td>
-                <td className="px-4 pl-5">
-                <input
-                  type="checkbox"
-                  id="teamMember"
-                  className="ml-5 mr-3 w-4 h-4 cursor-pointer"
-                />
-                <span>No</span>
-              </td>
                 <td className="pl-">
                   <div className="flex items-center ml-8 gap-x-3">
                     <div title="Edit Blog">
-                      <Link to="/dashboard/blogs/update/asdkfj39d9d">
+                      <Link to="/dashboard/blogs/pending/update/asdkfj39d9d">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 512 512"
@@ -82,6 +74,9 @@ const BlogsContainer = () => {
                       </svg>
                     </div>
                   </div>
+                </td>
+                <td className="pl-5">
+                  <button className="btn">Publish</button>
                 </td>
               </tr>
               {/* <tr className="w-full h-12 cursor-pointer hover:shadow border-b  bg-white hover:bg-gray-50 text-gray-500">
@@ -219,4 +214,4 @@ const BlogsContainer = () => {
   );
 };
 
-export default BlogsContainer;
+export default DraftBlogsContainer;

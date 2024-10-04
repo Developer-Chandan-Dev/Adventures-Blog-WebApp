@@ -7,6 +7,8 @@ import AddBlogs from "./AddBlogs";
 import Settings from "./Settings";
 import PendingBlogs from "./PendingBlogs";
 import { useSelector } from "react-redux";
+import Users from "./Users";
+import Category from "./Category";
 
 const Dashboard = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
@@ -28,6 +30,8 @@ const Dashboard = () => {
             <AddBlogs />
             <Settings />
             <PendingBlogs />
+            <Users />
+            <Category />
           </Outlet>
         </section>
       </div>

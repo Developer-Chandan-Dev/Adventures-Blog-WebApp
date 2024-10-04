@@ -1,0 +1,13 @@
+<=== Dashboard ====>
+
+Dashboard Page - Author/Team Member/Admin
+Blogs Page [Read, Delete, Edit, Featured Blog, Manage comments, Manage Likes] - Admin
+Add Blog Page [Create] - Author/Admin 
+Update Blog Page [Update] - Author/Admin
+Draft Blogs [Publish , Update] - Author/Admin
+Settings [LoggedIn User Details, Change Password, CRUD ] - Author/Team Member/Admin
+
+Admin special
+
+Categories [CRUD - R, setOnHome, active/unactive ] - Admin 
+Users Page [CRUD , Block/Unblock, Team Member, Role ] - Admin

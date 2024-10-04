@@ -28,6 +28,7 @@ import Container from "./utlity/Container";
 import PopularCategories from "./home/PopularCategories";
 import AboutUs from "./about/AboutUs";
 import AboutDev from "./about/AboutDev";
+import DraftBlogsContainer from "./dashboard/DraftBlogsContainer";
 
 export {
   AboutDev,
@@ -60,4 +61,5 @@ export {
   Container,
   PopularCategories,
   AboutUs,
+  DraftBlogsContainer,
 };
