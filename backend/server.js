@@ -8,6 +8,7 @@ const app = express();
 // <============= PORT ==============>
 const PORT = process.env.PORT || 5000;
 
+<<<<<<< HEAD
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +31,14 @@ app.use("/api/v1/blogs", blogsRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/users", usersRoutes);
+=======
+// <============= Route Imports ============>
+
+// <============= Routes ============>
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome on home page" });
+});
+>>>>>>> frontend
 
 // <============= Server is listning here ============>
 app.listen(PORT, () => {

@@ -3,25 +3,16 @@ import "./App.css";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
-import Home from "./pages/client_pages/Home";
-import Blogs from "./pages/client_pages/Blogs";
-import Contact from "./pages/client_pages/Contact";
-import About from "./pages/client_pages/About";
-import Community from "./pages/client_pages/Community";
-import BlogDetailsPage from "./pages/client_pages/BlogDetailsPage";
+import { Home, Blogs, Contact, About, Community, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
 
 // <------------- Dashboard pages imports --------------->
-import Dashboard from "./pages/dashboard/Dashboard";
+import { AddBlogs, Dashboard, DashboardBlogsPage, DashboardPage, PendingBlogs, Settings } from "./pages/dashboard/index";
 
 // <============= Components imports start here =============>
-import Layout from "./components/Layout";
-import DashboardPage from "./pages/dashboard/DashboardPage";
-import DashboardBlogsPage from "./pages/dashboard/DashboardBlogsPage";
-import AddBlogs from "./pages/dashboard/AddBlogs";
-import PendingBlogs from "./pages/dashboard/PendingBlogs";
-import Settings from "./pages/dashboard/Settings";
+  import { UpdateBlogs, BlogsContainer } from "./components/index";
 
 // <============= Additional Components import =============>
+import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
@@ -34,69 +25,26 @@ function App() {
 
           {/* <------------- Home Page --------------> */}
 
-          <Route
-            path="/"
-            element={
-              <Layout>
-                {" "}
-                <Home />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/" element={<Layout> <Home /> </Layout>}/>
 
           {/* <-------------- Blogs Page ---------------> */}
-          <Route
-            path="/blogs"
-            element={
-              <Layout>
-                {" "}
-                <Blogs />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/blogs"element={<Layout><Blogs /></Layout>}/>
 
           {/* <-------------- Blogs Details Page ---------------> */}
-          <Route
-            path="/blogs/details"
-            element={
-              <Layout>
-                {" "}
-                <BlogDetailsPage />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/blogs/details"element={<Layout><BlogDetailsPage /></Layout>}/>
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route
-            path="/contact"
-            element={
-              <Layout>
-                {" "}
-                <Contact />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/contact"element={<Layout><Contact /></Layout>}/>
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route
-            path="/about"
-            element={
-              <Layout>
-                {" "}
-                <About />{" "}
-              </Layout>
-            }
-          />
+          <Route path="/about"element={<Layout><About /></Layout>}/>
 
           {/* <-------------- Contact Page ---------------> */}
-          <Route
-            path="/community"
-            element={
-              <Layout>
-                <Community />
-              </Layout>
-            }
-          />
+          <Route path="/community"element={<Layout><Community /></Layout>}/>
+
+          {/* <-------------- Login & Signup Page ---------------> */}
+          <Route path="/login" element={<Login/>} />
+          <Route path="/signup" element={<Signup/>} />
 
           {/* <============ User Routes End here ============> */}
 
@@ -104,7 +52,11 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="" element={<DashboardPage />} />
-            <Route path="blogs" element={<DashboardBlogsPage />} />
+            <Route path="blogs" element={<DashboardBlogsPage />} >
+              <Route path="" element={<BlogsContainer/>} />
+              <Route path="update/:id" element={<UpdateBlogs/>} />
+
+            </Route>
             <Route path="blogs/add" element={<AddBlogs />} />
             <Route path="blogs/pending" element={<PendingBlogs />} />
             <Route path="settings" element={<Settings />} />
