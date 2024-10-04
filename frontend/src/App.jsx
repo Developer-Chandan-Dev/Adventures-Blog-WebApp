@@ -6,10 +6,10 @@ import "./App.css";
 import { Home, Blogs, Contact, About, Community, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
 
 // <------------- Dashboard pages imports --------------->
-import { AddBlogs, Dashboard, DashboardBlogsPage, DashboardPage, PendingBlogs, Settings } from "./pages/dashboard/index";
+import { AddBlogs, Dashboard, DashboardBlogsPage, DashboardPage, PendingBlogs, Settings, Users } from "./pages/dashboard/index";
 
 // <============= Components imports start here =============>
-  import { UpdateBlogs, BlogsContainer } from "./components/index";
+  import { UpdateBlogs, BlogsContainer, DraftBlogsContainer } from "./components/index";
 
 // <============= Additional Components import =============>
 import Layout from "./components/Layout";
@@ -58,11 +58,13 @@ function App() {
 
             </Route>
             <Route path="blogs/add" element={<AddBlogs />} />
-            <Route path="blogs/pending" element={<PendingBlogs />} />
+            <Route path="blogs/pending" element={<PendingBlogs />} >
+              <Route path="" element={<DraftBlogsContainer/>} />
+              <Route path="update/:id" element={<UpdateBlogs/>} />
+            </Route>
             <Route path="settings" element={<Settings />} />
+            <Route path="users" element={<Users/>} />
 
-            <Route path="blogs" element={<DashboardBlogsPage />} />
-            <Route path="blogs" element={<DashboardBlogsPage />} />
           </Route>
           {/* <============ Dashboard Routes End here ============> */}
         </Routes>

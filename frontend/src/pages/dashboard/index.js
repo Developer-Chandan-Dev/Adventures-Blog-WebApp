@@ -4,6 +4,7 @@ import DashboardBlogsPage from "./DashboardBlogsPage";
 import DashboardPage from "./DashboardPage";
 import PendingBlogs from "./PendingBlogs";
 import Settings from "./Settings";
+import Users from "./Users";
 
 export {
   AddBlogs,
@@ -12,4 +13,5 @@ export {
   DashboardPage,
   PendingBlogs,
   Settings,
+  Users
 };
