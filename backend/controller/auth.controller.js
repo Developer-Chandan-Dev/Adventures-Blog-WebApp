@@ -10,14 +10,15 @@ const signup = async (req, res) => {
     if (!username || !email || !password) {
       return res
         .status(404)
-        .json({ status: false, error: "Please fill all fields" });
+        .json({ success: false, error: "Please fill all fields" });
     }
 
     const user = await User.findOne({ email: email });
+    console.log(user, "17");
     if (user) {
       return res
         .status(400)
-        .json({ status: false, error: "Email already registered" });
+        .json({ success: false, error: "Email already registered" });
     }
 
     // Hash Password
@@ -35,18 +36,19 @@ const signup = async (req, res) => {
     if (newUser) {
       const response = await newUser.save();
       res.status(201).json({
-        status: true,
+        success: true,
         _id: response._id,
         username: response.username,
         email: response.email,
         role: response.role,
+        message: "Signup Successfully",
       });
     } else {
-      return res.status(400).json({ status: false, error: "Invalid User" });
+      return res.status(400).json({ success: false, error: "Invalid User" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ status: false, error: "Internal Server Error" });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
@@ -57,19 +59,19 @@ const login = async (req, res) => {
     if (!email || !password) {
       return res
         .status(404)
-        .json({ status: false, error: "Please fill all fields" });
+        .json({ success: false, error: "Please fill all fields" });
     }
 
     const user = await User.findOne({ email: email });
-    console.log(user);
+    console.log(user, "64");
 
     if (!user) {
-      return res.status(404).json({ status: false, error: "User not found" });
+      return res.status(404).json({ success: false, error: "User not found" });
     }
 
     if (user.blocked === true) {
       return res.status(400).json({
-        status: false,
+        success: false,
         error: "User blocked, you cannot access this account.",
       });
     }
@@ -82,32 +84,33 @@ const login = async (req, res) => {
     if (!user || !comparePassword) {
       return res
         .status(400)
-        .json({ status: false, error: "Incorrect email or password" });
+        .json({ success: false, error: "Incorrect email or password" });
     }
 
     // Generate Token and set cookie
     generateTokenAndSetCookie(user._id, res);
     res.status(200).json({
-      status: true,
+      success: true,
       _id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
       profilePic: user?.profilePic || "",
+      message: "Logged In Successfully",
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ status: false, error: "Internal Server Error" });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
 const logout = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 0 });
-    res.status(200).json({ status: true, message: "Logged out Successfully" });
+    res.cookie("adventuresBlogs_jwtToken", "", { maxAge: 0 });
+    res.status(200).json({ success: true, message: "Logged out Successfully" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ status: false, error: "Internal Server Error" });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
 
