@@ -1,6 +1,11 @@
 import BlogCard from "./BlogCard";
+import useFetchData from "../../hooks/useFetchData";
+import { Link } from "react-router-dom";
 
 const BlogsContainer = () => {
+  const { data, error, loading } = useFetchData("/api/v1/blogs");
+
+  console.log(data);
   return (
     <>
       <section className="w-full sm:w-11/12 lg:w-[85%] px-2 p-5 h-auto mx-auto">
@@ -12,24 +17,21 @@ const BlogsContainer = () => {
             <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li border-b-2 border-slate-400">
               Recents
             </li>
-            <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li border-b-2 border-transparent">
-              Design
-            </li>
-            <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li border-b-2 border-transparent">
-              Sports
-            </li>
-            <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li border-b-2 border-transparent">
-              Technology
-            </li>
-            <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li border-b-2 border-transparent">
-              Gaming
-            </li>
+            {data && data.categories != null
+              ? data.categories.map(({ name, _id }) => (
+                  <Link key={_id} to={`/blogs/categories/${_id}`}>
+                    <li className="py-2 px-3 cursor-pointer transition-all hover:border-slate-400 category_li  border-slate-400">
+                      {name}
+                    </li>
+                  </Link>
+                ))
+              : ""}
           </ul>
         </div>
         <section className="px-1 py-5 gap-x-4 gap-y-7 flex items-center h-auto flex-wrap blogContainer">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
+          {error && <p className="text-red-500">{error}</p>}
+          {loading && "Loading..."}
+          <BlogCard data={data} />
         </section>
       </section>
     </>

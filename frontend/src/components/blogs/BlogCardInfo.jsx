@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import "./style.css";
 import { Link } from "react-router-dom";
+import img from '../../assets/images/img.jpg'
 
 const BlogCardInfo = ({
   title,
-  desc,
+  desc = "App Development is a process of createing building and maintaining Android and iOS apps.",
   url,
   imageUrl,
   category,
@@ -12,10 +14,9 @@ const BlogCardInfo = ({
   author,
   createdAt,
 }) => {
-
   return (
     <>
-      <Link to="/blogs/details">
+      <Link to={`/blogs/details/${url}`}>
         <div className="w-[260px] h-[370px] drop-shadow border border-slate-200 shadow-slate-50 rounded-md overflow-hidden cursor-pointer transition-all hover:-translate-y-2 relative bg-white blog_box hover:shadow-lg hover:shadow-slate-300">
           <div
             className={` text-white px-3 py-1 rounded-full absolute right-2 top-2 text-xs`}
@@ -26,7 +27,7 @@ const BlogCardInfo = ({
             {category}
           </div>
           <div className="w-full h-40 bg-orange-100 blogImg">
-            <img src={imageUrl} className="w-full h-full" alt="" />
+            <img src={imageUrl ? imageUrl : img} className="w-full h-full" alt="" />
           </div>
           <div className="px-3 py-2 ">
             <h2 className="font-semibold text-lg py-1">{title}</h2>

@@ -14,7 +14,8 @@ const homeData = async (req, res) => {
     // Get current month's date range
     const { start, end } = getCurrentMonthRange();
 
-    const featuredPosts = await Post.find({ featuredBlog: true });
+    const featuredPosts = await Post.find({ featuredBlog: true }).select("author");
+    console.log(featuredPosts,'18');
 
     // Aggregation pipelines
     const latestPosts = await Post.aggregate([
