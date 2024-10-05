@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import authService from "../../features/auth";
+import { login } from "../../store/features/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,11 +24,21 @@ const Login = () => {
       return setError("Password must be atleast 6 characters");
     }
 
-    const a = await authService.login(email, password);
-    console.log(a);
+    const res = await authService.login(email, password);
+    if (res.data.success === true) {
+      // Dispatch the login action
+      dispatch(login(res.data.user));
+      setEmail("");
+      setPassword("");
+      navigate("/");
+    } else if (res.data.success === false) {
+      setError(res.data.error);
+    } else {
+      console.log(res);
+      setError("Something went wrong");
+    }
   };
 
-  // console.log(error);
   return (
     <section className="w-full h-screen flex-center">
       <div className=" lg:w-1/2  py-3 h-screen flex-center">
@@ -38,6 +53,9 @@ const Login = () => {
             <h3 className="text-lg text-center sm:text-xl font-semibold text-gray-400">
               Discover the power of adventures blogs
             </h3>
+            <div className={`h-8 flex-center ${error && "bg-red-50"} px-3`}>
+              {error && <p className="py-3 text-red-500">{error}</p>}
+            </div>
           </div>
           <form
             className="my-4 flex-center flex-col gap-y-5"

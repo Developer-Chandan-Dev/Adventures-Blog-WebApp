@@ -12,13 +12,13 @@ export class AuthService {
       if (res.data.status === true) {
         // call another method
 
-        return this.login(email, password);
+        return res;
       } else {
         return res;
       }
     } catch (error) {
-      console.log(error.response.data.error);
-      return error;
+      // console.log(error.response.data.error);
+      return error.response;
     }
   }
 
@@ -28,15 +28,22 @@ export class AuthService {
         email,
         password,
       });
-
+      console.log(res);
       if (res) {
         console.log(res.data.message);
         return res;
       }
     } catch (error) {
-      console.log(error);
-      console.log(error.response.data.error);
-      return error;
+      return error.response;
+    }
+  }
+
+  async logout() {
+    try {
+      const res = await axios.post("/api/v1/auth/logout");
+      return res;
+    } catch (error) {
+      return error.response;
     }
   }
 }

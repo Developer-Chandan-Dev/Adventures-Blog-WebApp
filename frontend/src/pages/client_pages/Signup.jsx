@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../pages/style.css";
 import { useState } from "react";
 import authService from "../../features/auth";
@@ -8,6 +8,8 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,10 +23,15 @@ const Signup = () => {
       return setError("Password must be atleast 6 characters");
     }
 
-    const a = await authService.createAccount( username, email, password );
-    console.log(a);
+    const res = await authService.createAccount(username, email, password);
+
+    if (res.data.success === true) {
+      navigate("/login");
+    } else if (res.data.success === false) {
+      // console.log(res.data.error);
+      setError(res.data.error);
+    }
   };
-  console.log(error);
   return (
     <section className="w-full h-screen flex-center">
       <div className=" md:w-1/2  py-3 h-screen flex-center">
@@ -39,9 +46,12 @@ const Signup = () => {
             <h3 className="text-xl font-semibold text-gray-400 text-center px-2">
               Discover the power of adventures blogs
             </h3>
+            <div className={`h-8 flex-center ${error && "bg-red-50"} px-3`}>
+              {error && <p className="py-3 text-red-500">{error}</p>}
+            </div>
           </div>
           <form
-            className="my-4 flex-center flex-col gap-y-5"
+            className="my-3 flex-center flex-col gap-y-5"
             onSubmit={handleSubmit}
           >
             <div>

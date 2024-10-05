@@ -91,11 +91,13 @@ const login = async (req, res) => {
     generateTokenAndSetCookie(user._id, res);
     res.status(200).json({
       success: true,
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      profilePic: user?.profilePic || "",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        profilePic: user?.profilePic || "",
+      },
       message: "Logged In Successfully",
     });
   } catch (error) {
