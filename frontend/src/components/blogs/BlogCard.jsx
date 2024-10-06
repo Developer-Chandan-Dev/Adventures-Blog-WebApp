@@ -2,6 +2,7 @@
 import BlogCardInfo from "./BlogCardInfo";
 
 const BlogCard = ({ data }) => {
+  console.log(data);
 
   return (
     <>
@@ -14,9 +15,11 @@ const BlogCard = ({ data }) => {
               slug,
               coverImage,
               category,
-              category_bg,
-              author,
+              // category_bg,
+              excerpt,
               createdAt,
+              views,
+              comments,
             }) => (
               <BlogCardInfo
                 key={_id}
@@ -24,10 +27,12 @@ const BlogCard = ({ data }) => {
                 desc={desc}
                 url={slug}
                 category={category}
-                category_bg={category_bg}
+                // category_bg={category_bg}
+                excerpt={excerpt}
                 imageUrl={coverImage}
-                author={author}
                 createdAt={createdAt}
+                views={views}
+                comments={comments}
               />
             )
           )

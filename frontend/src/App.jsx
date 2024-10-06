@@ -60,7 +60,7 @@ function App() {
 
           {/* <-------------- Blogs Details Page ---------------> */}
           <Route
-            path="/blogs/details"
+            path="/blogs/details/:id"
             element={
               <Layout>
                 <BlogDetailsPage />

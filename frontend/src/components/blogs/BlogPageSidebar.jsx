@@ -1,6 +1,6 @@
 import user from "../../assets/images/consultant.png";
 
-const BlogPageSidebar = () => {
+const BlogPageSidebar = ({authorData}) => {
   return (
     <>
       {/* sticky top-20  */}
@@ -19,7 +19,7 @@ const BlogPageSidebar = () => {
             />
           </div>
           <div className="py-3 text-center">
-            <h2 className="font-semibold py-1">Jitesh Kumar</h2>
+            <h2 className="font-semibold py-1">{authorData.username}</h2>
             <p className="text-sm font-medium">Work</p>
             <div className="flex items-center gap-x-2 mt-4">
               <div className="w-9 h-9 rounded-full bg-[#ffffffa3] flex-center">

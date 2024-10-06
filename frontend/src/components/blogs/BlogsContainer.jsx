@@ -35,6 +35,7 @@ const BlogsContainer = () => {
             <div className="flex flex-wrap -m-4">
               {error && <p className="text-red-500">{error}</p>}
               {loading && "Loading..."}
+              
               <BlogCard data={data} />
             </div>
           </div>

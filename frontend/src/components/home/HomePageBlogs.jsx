@@ -11,7 +11,7 @@ const HomePageBlogs = ({ latestPosts }) => {
         Latest <span className="orange_gradient">Blogs</span>
       </h1>
       {/* <section className="w-full sm:w-11/12 lg:w-[85%] px-2 p-5 h-auto mx-auto gap-x-4 gap-y-7 flex items-center flex-wrap blogContainer"> */}
-        <section className="text-gray-600 body-font w-full sm:w-11/12 lg:w-[85%] mx-auto mt-10">
+        <section className="text-gray-600 body-font w-full sm:w-11/12 lg:w-[85%] mx-auto">
           <div className="container px-5 pt-0 pb-14 mx-auto">
             <div className="flex flex-wrap -m-4">
               {latestPosts !== null

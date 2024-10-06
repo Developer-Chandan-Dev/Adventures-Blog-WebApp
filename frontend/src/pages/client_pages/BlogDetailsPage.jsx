@@ -4,8 +4,15 @@ import BlogForm from "../../components/blogs/BlogForm";
 import BlogTags from "../../components/blogs/BlogTags";
 import RelatedTopics from "../../components/blogs/RelatedTopics";
 import BlogContent from "../../components/blogs/BlogContent";
+import { useParams } from "react-router-dom";
+import useFetchData from "../../hooks/useFetchData";
 
 const BlogDetailsPage = () => {
+  const { id } = useParams();
+
+  const { data, error, loading } = useFetchData(`/api/v1/blogs/${id}`);
+  console.log(id, data, error, loading);
+
   return (
     <section className="w-full relative ">
       {/* <Navbar /> */}
@@ -13,7 +20,7 @@ const BlogDetailsPage = () => {
         <div className=" sm:w-[95%] md:w-[90%] lg:w-[85%] mx-auto">
           <div>
             <h1 className="head_text !text-3xl py-5 !text-gray-900 drop-shadow">
-              There will title of your blog post
+              {data && data.post ? data.post.title : "Title not found"}
             </h1>
             <ul>
               <li className="text-gray-500 pb-4 text-sm">
@@ -25,10 +32,15 @@ const BlogDetailsPage = () => {
           <div className="mx-auto w-full flex gap-x-4 justify-between">
             <div className="w-[70%] h-auto px-5 py-5 bg-white rounded-md drop-shadow">
               <div className="w-full h-auto bg-gradient-to-r mx-auto rounded-md overflow-hidden">
-                <img src={img1} alt="banner image" className="w-full h-auto" />
+                <img src={data && data.post ? data.post.coverImage : img1} alt="banner image" className="w-full h-auto" />
               </div>
 
-              <BlogContent />
+              <BlogContent
+                title={data && data.post ? data.post.title : "Title not found"}
+                content={
+                  data && data.post ? data.post.content : "Content not found"
+                }
+              />
               <BlogTags />
               <RelatedTopics />
               <div className="py-5 px-2 flex items-center justify-between ">
@@ -65,7 +77,11 @@ const BlogDetailsPage = () => {
                 </h2>
               </div>
             </div>
-            <BlogPageSidebar />
+            <BlogPageSidebar
+              authorData={
+                data && data.post ? data.post.author : "Author data not found"
+              }
+            />
           </div>
         </div>
       </section>
