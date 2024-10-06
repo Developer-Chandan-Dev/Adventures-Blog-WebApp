@@ -8,6 +8,7 @@ const storage = multer.diskStorage({
     cb(null, "public/temp/"); // Store files temporarily in a local directory
   },
   filename: function (req, file, cb) {
+    console.log(req,file, '11');
     cb(null, file.originalname);
   },
 });

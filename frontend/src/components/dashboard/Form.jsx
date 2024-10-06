@@ -5,11 +5,17 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import useHandleBlogForm from "../../hooks/useHandleBlogForm";
+import authService from "../../features/auth";
+import { useSelector } from "react-redux";
+import useFetchData from "../../hooks/useFetchData";
 
 const Form = ({ method = "POST", heading, api }) => {
   const [content, setContent] = useState("");
   const editor = useRef(null);
 
+  const authUser = useSelector((state) => state.user.user);
+  const { data } = useFetchData("/api/v1/category");
+  console.log(data, "18");
   const {
     handleInputChange,
     handleFileChange,
@@ -26,14 +32,15 @@ const Form = ({ method = "POST", heading, api }) => {
       title: "",
       slug: "",
       author: "",
-      banner: null,
+      excerpt: "",
+      coverImage: null,
       category: "",
-      richContent: "",
+      richTextContent: "",
     },
     method
   );
 
-  //   convert title in slug
+  // convert title in slug
   useEffect(() => {
     setFormData({
       ...formData,
@@ -45,15 +52,27 @@ const Form = ({ method = "POST", heading, api }) => {
     setContent(newContent);
   };
 
-  //   feed jodit editor content in formData richContent
+  //   feed jodit editor content in formData content
   useEffect(() => {
     setFormData({
       ...formData,
-      richContent: content,
+      richTextContent: content,
     });
   }, [content]);
 
+  useEffect(() => {
+    console.log(authUser._id);
+    setFormData({
+      ...formData,
+      author: authUser._id,
+    });
+  }, []);
   console.log(formData);
+
+  // User details
+
+  // GEt all categories
+  useEffect(() => {}, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -108,40 +127,45 @@ const Form = ({ method = "POST", heading, api }) => {
         </div>
 
         <div className="w-full pb-5">
-          <label htmlFor="author" className="font-semibold ml-1 text-base">
-            Author
+          <label htmlFor="excerpt" className="font-semibold ml-1 text-base">
+            Short Description
           </label>
-          <input
+          <textarea
             type="text"
-            name="author"
-            id="author"
-            value={formData.author}
+            name="excerpt"
+            id="excerpt"
+            value={formData.excerpt}
             onChange={handleInputChange}
-            className="w-full h-10 mt-2 px-3 py-2 outline-blue-300 border-2 rounded"
+            className="w-full h-24 mt-2 px-3 py-2 outline-blue-300 border-2 rounded resize-none"
             placeholder="Enter Author name"
           />
         </div>
         <div className="w-full pb-5">
           <label className="font-semibold ml-1 text-base">Category</label>
           <div className="flex items-center mt-3 gap-x-4 flex-wrap gap-y-3 text-[14px]">
-            <div className="flex items-center gap-x-2">
-              <label
-                htmlFor="web-development"
-                className="font-normal ml-1 text-base"
-              >
-                Web Development
-              </label>
-              <input
-                type="checkbox"
-                id="web-development"
-                name="category"
-                value="Web Development"
-                className="w-4 cursor-pointer h-4"
-                checked={formData.category === "Web Development"}
-                onChange={handleCategoryChange}
-              />
-            </div>
-            <div className="flex items-center gap-x-2">
+            {data && data.categories != null
+              ? data.categories.map(({ name, _id }) => (
+                  <div key={_id} className="flex items-center gap-x-2">
+                    <label
+                      htmlFor={_id}
+                      className="font-normal ml-1 text-base"
+                    >
+                      {name}
+                    </label>
+                    <input
+                      type="checkbox"
+                      id={_id}
+                      name="category"
+                      value={_id}
+                      className="w-4 cursor-pointer h-4"
+                      checked={formData.category === _id}
+                      onChange={handleCategoryChange}
+                    />
+                  </div>
+                ))
+              : ""}
+
+            {/* <div className="flex items-center gap-x-2">
               <label
                 htmlFor="cyber-security"
                 className="font-normal ml-1 text-base"
@@ -157,11 +181,11 @@ const Form = ({ method = "POST", heading, api }) => {
                 checked={formData.category === "Cyber Security"}
                 onChange={handleCategoryChange}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="w-full pb-8">
-          <label htmlFor="banner" className="font-semibold ml-1 text-base">
+          <label htmlFor="coverImage" className="font-semibold ml-1 text-base">
             Post Banner
           </label>
           <input
@@ -169,8 +193,8 @@ const Form = ({ method = "POST", heading, api }) => {
             accept="image/*"
             onChange={handleFileChange}
             className="w-full h-10 mt-4 px-3 py-1 outline-green-300 border-2 rounded"
-            id="banner"
-            name="banner"
+            id="coverImage"
+            name="coverImage"
           />
         </div>
         <div className="w-full pb-5">

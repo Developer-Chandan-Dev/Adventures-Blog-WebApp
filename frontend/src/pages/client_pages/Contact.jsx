@@ -1,5 +1,6 @@
 import ContactUsForm from "../../components/contact/ContactUsForm";
 import MapBox from "../../components/contact/MapBox";
+import OurConnections from "../../components/contact/OurConnections";
 import HeroSection from "../../components/home/HeroSection";
 
 const Contact = () => {
@@ -14,8 +15,9 @@ const Contact = () => {
           present in the market when why we come in your platform, then my
           answer is that there you can add your own blog."
         />
-        <MapBox/>
-        <ContactUsForm/>
+        <MapBox />
+        <OurConnections />
+        <ContactUsForm />
       </section>
     </>
   );

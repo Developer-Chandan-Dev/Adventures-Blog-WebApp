@@ -12,20 +12,21 @@ const createError = (message, statusCode) => {
 // check authentication
 const isAuthenticated = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
+    const token = req.cookies.adventuresBlogs_jwtToken;
     // cookie/token === null || not found
     if (!token && token !== "undefined") {
       throw createError("Unauthorized - No token provided", 401);
     }
+    console.log(token, "20");
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
+    console.log(decoded);
     if (!decoded) {
       throw createError("Invalid token, Unauthorized", 401);
     }
 
     const user = await User.findById(decoded.userId).select("-password");
-
+    console.log(user);
     if (!user) {
       throw createError("User not found", 404);
     }
@@ -81,15 +82,27 @@ const checkBlockedAfterAuth = async (req, res, next) => {
 };
 
 // Prevent CUD operations
-const protectCRUD = async (req, res, next) => {
-  if ((req.user && req.user.role === "admin") || req.user.role === "author") {
-    console.log(req.user);
-    next();
-  } else {
-    return res.status(401).json({
+// Prevent Create, Update, and Delete operations for unauthorized users
+const protectCRUD = (req, res, next) => {
+  try {
+    // Ensure req.user exists and check for roles
+    if (req.user && (req.user.role === "admin" || req.user.role === "author")) {
+      // If the user is authorized, proceed to the next middleware or route handler
+      next();
+    } else {
+      // User is not authorized
+      return res.status(401).json({
+        success: false,
+        error: `Unauthorized - You do not have access to create, update, or delete posts. Your role: ${
+          req.user?.role || "unknown"
+        }`,
+      });
+    }
+  } catch (error) {
+    // Handle any unexpected errors
+    return res.status(500).json({
       success: false,
-      error:
-        "Unauthorized - You have not access for create update and delete posts",
+      error: "Internal Server Error",
     });
   }
 };

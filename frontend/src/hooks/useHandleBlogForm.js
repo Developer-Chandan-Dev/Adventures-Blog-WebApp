@@ -19,7 +19,7 @@ const useHandleBlogForm = (initialState, method) => {
   const handleFileChange = (e) => {
     setFormData((prev) => ({
       ...prev,
-      banner: e.target.files[0],
+      coverImage: e.target.files[0],
     }));
   };
 

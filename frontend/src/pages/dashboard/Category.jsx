@@ -32,7 +32,7 @@ const Category = () => {
           </span>
         </div>
       </div>
-      <div className="w-full h-auto px-8 py-6 flex gap-x-3 text-slate-700">
+      <div className="w-full h-auto px-8 py-6 flex justify-between gap-x-8 text-slate-700">
         <NewCategory />
         <AvailableCategory />
       </div>

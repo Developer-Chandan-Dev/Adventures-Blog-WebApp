@@ -1,5 +1,6 @@
 const Post = require("../models/post.models");
 const Category = require("../models/category.models");
+const User = require("../models/user.models");
 
 function getCurrentMonthRange() {
   const now = new Date();
@@ -14,8 +15,10 @@ const homeData = async (req, res) => {
     // Get current month's date range
     const { start, end } = getCurrentMonthRange();
 
-    const featuredPosts = await Post.find({ featuredBlog: true }).select("author");
-    console.log(featuredPosts,'18');
+    const featuredPosts = await Post.find({ featuredBlog: true }).populate(
+      "author",
+      "username profilePic _id"
+    );
 
     // Aggregation pipelines
     const latestPosts = await Post.aggregate([
@@ -28,9 +31,59 @@ const homeData = async (req, res) => {
           },
         },
       },
+      {
+        $sort: { createdAt: -1 }, // Sort by date in descending order
+      },
+      {
+        $lookup: {
+          from: User.collection.name, // The collection naem for User
+          localField: "author", // The field from Post
+          foreignField: "_id", // The field from User
+          as: "authorDetails", // The name of teh array to add author details
+        },
+      },
+      {
+        $unwind: {
+          path: "$authorDetails", // Flatten the array
+          // preserveNullAndEmptyArrays: true, // Optiona: if you want to keep posts without an author
+        },
+      },
+      {
+        $lookup: {
+          from: Category.collection.name,
+          localField: "categories",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$categoryDetails", // Flatten the array
+          // preserveNullAndEmptyArrays: true, // Optiona: if you want to keep posts without an author
+        },
+      },
+      {
+        $project: {
+          _id: 1, // Include the post
+          title: 1, //  Include the post title
+          content: 1, // Include the post content
+          coverImage: 1, // Include the post coverImage
+          createdAt: 1, // Include the post creatation date
+          categories: 1, // Include the post categories
+          slug: 1, // Include the post slug
+          "authorDetails._id": 1, // Include author id
+          "authorDetails.username": 1, // Include author name
+          "authorDetails.profilePic": 1, // Include author profile picture
+          "categoryDetails.name": 1, // Include category name
+          "categoryDetails._id": 1, // Include category id
+          // Include other fields you need
+        },
+      },
     ]);
 
-    const categories = await Category.find({ setOnHome: true }).select("_id name");
+    const categories = await Category.find({ setOnHome: true }).select(
+      "_id name"
+    );
 
     res
       .status(200)

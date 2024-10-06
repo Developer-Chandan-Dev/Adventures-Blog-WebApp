@@ -6,7 +6,7 @@ import FeaturedBlog from "./FeaturedBlog";
 
 // eslint-disable-next-line react/prop-types
 const FeaturedBlogs = ({ featuredPosts = "Featured Posts available" }) => {
-  console.log(featuredPosts);
+  // console.log(featuredPosts);
 
   const [data, setData] = useState([]);
 
@@ -75,29 +75,22 @@ const FeaturedBlogs = ({ featuredPosts = "Featured Posts available" }) => {
       </h1>
       <section className="w-[90%] mx-auto sm:w-[88%] md:w-[85%] px-2 mt-10 p-5 gap-x-2 h-auto blogContainer">
         <Slider {...settings}>
-          {data != null
-            ? data.map(({ _id, title, author, createdAt, coverImage }) => (
-                <FeaturedBlog
-                  key={_id}
-                  id={_id}
-                  title={title}
-                  author={author}
-                  // authorPic={authorPic}
-                  createdAt={createdAt}
-                  imageUrl={coverImage}
-                />
-              ))
+          {featuredPosts != null
+            ? featuredPosts.map(
+                ({ _id, title, author, createdAt, coverImage, slug }) => (
+                  <FeaturedBlog
+                    key={_id}
+                    id={_id}
+                    title={title}
+                    author={author}
+                    slug={slug}
+                    createdAt={createdAt}
+                    imageUrl={coverImage}
+                  />
+                )
+              )
             : ""}
         </Slider>
-        {/* <FeaturedBlog
-          title={featuredPosts.title}
-          coverImage={featuredPosts.coverImage}
-          createdAt={featuredPosts.createdAt}
-          id={featuredPosts._id}
-          slug={featuredPosts.slug}
-          // authorName={}
-          // authorPic={}
-        /> */}
       </section>
     </>
   );

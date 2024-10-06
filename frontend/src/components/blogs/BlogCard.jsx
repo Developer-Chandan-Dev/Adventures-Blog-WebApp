@@ -12,7 +12,7 @@ const BlogCard = ({ data }) => {
               title,
               desc,
               slug,
-              imageUrl,
+              coverImage,
               category,
               category_bg,
               author,
@@ -25,7 +25,7 @@ const BlogCard = ({ data }) => {
                 url={slug}
                 category={category}
                 category_bg={category_bg}
-                imageUrl={imageUrl}
+                imageUrl={coverImage}
                 author={author}
                 createdAt={createdAt}
               />

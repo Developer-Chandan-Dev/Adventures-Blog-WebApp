@@ -108,8 +108,15 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.cookie("adventuresBlogs_jwtToken", "", { maxAge: 0 });
-    res.status(200).json({ success: true, message: "Logged out Successfully" });
+    res.cookie("adventuresBlogs_jwtToken", "", {
+      maxAge: 0, // Expires immediately
+      httpOnly: true, // Same as when setting the cookie
+      secure: process.env.NODE_ENV !== "development", // Same as when setting the cookie
+      sameSite: "strict", // Same as when setting the cookie
+      path: "/", // Ensure this matches the path used when the cookie was set
+    });
+
+    res.status(200).json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });

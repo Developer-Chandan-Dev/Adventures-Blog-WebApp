@@ -1,20 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
-const FeaturedBlog = ({
-  id,
-  title,
-  author = "Admin",
-  // authorPic,
-  createdAt,
-  imageUrl,
-}) => {
-  // console.log(id, title, author, createdAt, imageUrl);
+import img from "../../assets/images/img.jpg";
+
+const FeaturedBlog = ({ id, title, author, slug, createdAt, imageUrl }) => {
+  console.log(id, title, author, slug, createdAt, imageUrl);
   return (
     <>
-      <Link to="/blogs/details">
+      <Link to={`/blogs/details/${slug}`}>
         <div className="w-52 mx-auto h-60 rounded-xl shadow-md shadow-slate-200 overflow-hidden relative cursor-pointer">
           <img
-            src={imageUrl}
+            src={imageUrl ? imageUrl : img}
             className="w-full h-full absolute -z-[1] opacity-75"
             alt="banner url"
           />
@@ -26,9 +21,15 @@ const FeaturedBlog = ({
           </div>
           <div className="h-14 w-full absolute bottom-0 flex items-center justify-start px-5 text-white">
             <div className="w-8 h-8 rounded-full bg-slate-50 overflow-hidden drop-shadow-md">
-              <img src={imageUrl} alt="" className="w-full h-full" />
+              <img
+                src={author.profilePic ? author.profilePic : null}
+                alt=""
+                className="w-full h-full"
+              />
             </div>
-            <span className="text-xs ml-2 drop-shadow-md">{author}</span>
+            <span className="text-xs ml-2 drop-shadow-md">
+              {author.username}
+            </span>
           </div>
         </div>
       </Link>

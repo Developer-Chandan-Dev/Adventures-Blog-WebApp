@@ -5,16 +5,17 @@ const {
   uploadToCloudinary,
   deleteFromCloudinary,
 } = require("../utils/uploadToCloudinary.js");
+const sanitizeHtml = require('sanitize-html');
 
 // add a new post
 const addPost = async (req, res) => {
   try {
     const data = req.body;
     const coverImage = req.file ? req.file.path : null; // Get local file path
-    console.log(data, coverImage);
+    console.log(data, coverImage,'14');
 
     // Required fields for the post
-    const requiredFields = ["title", "slug", "content", "author", "coverImage"];
+    const requiredFields = ["title", "slug", "richTextContent", "author", "coverImage"];
 
     // Validate the incoming data
     const { isValid, errors } = validateFields(
@@ -45,8 +46,19 @@ const addPost = async (req, res) => {
       `posts-coverImage/postImage_${Date.now()}`
     );
 
+     // Sanitize the rich text content
+     const sanitizedContent = sanitizeHtml(data.richTextContent, {
+      allowedTags: [ 'b', 'i', 'em', 'strong', 'a', 'ul', 'li', 'ol', 'p', 'h1', 'h2', 'h3','img' ], // Allow certain tags
+      allowedAttributes: {
+        'a': [ 'href', 'target' ], // Allow only href and target attributes in <a> tags
+        'img': [ 'src', 'alt', 'width', 'height' ], // Allow only href and target attributes in <a> tags
+      }
+    });
+
+
     const newPost = new Post({
       ...data,
+      content: sanitizedContent,
       coverImage: result.secure_url,
       coverImagePublicId: result.public_id,
     });
@@ -70,7 +82,7 @@ const addPost = async (req, res) => {
 // Get all posts
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate('author', "username profilePic _id").populate("categories", "name _id");
     const categories = await Category.find().select("_id name");
 
     if (!posts || !categories) {
@@ -79,6 +91,7 @@ const getAllPosts = async (req, res) => {
         .json({ success: false, error: "Blogs or categories not found" });
     }
 
+    console.log(posts, categories);
     res.status(200).json({ success: true, posts, categories });
   } catch (error) {
     console.log("Error :", error);
@@ -91,7 +104,8 @@ const getSinglePost = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate('author', "username profilePic _id");
+    console.log(post);
 
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });

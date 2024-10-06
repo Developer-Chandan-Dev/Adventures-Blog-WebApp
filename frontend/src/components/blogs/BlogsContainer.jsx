@@ -28,10 +28,16 @@ const BlogsContainer = () => {
               : ""}
           </ul>
         </div>
-        <section className="px-1 py-5 gap-x-4 gap-y-7 flex items-center h-auto flex-wrap blogContainer">
-          {error && <p className="text-red-500">{error}</p>}
-          {loading && "Loading..."}
-          <BlogCard data={data} />
+        <section className="px-1 py-5 gap-x-4 gap-y-7 flex items-center h-auto flex-wrap blogContainer"></section>
+
+        <section className="text-gray-600 body-font">
+          <div className="container px-5 pt-0 pb-14 mx-auto">
+            <div className="flex flex-wrap -m-4">
+              {error && <p className="text-red-500">{error}</p>}
+              {loading && "Loading..."}
+              <BlogCard data={data} />
+            </div>
+          </div>
         </section>
       </section>
     </>

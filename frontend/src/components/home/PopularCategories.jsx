@@ -5,68 +5,66 @@ import { Container } from "../index";
 const PopularCategories = ({ categories }) => {
   return (
     <Container className="!py-20">
-      <div className="flex-center gap-x-4 gap-y-4 flex-wrap">
-        {categories != null
-          ? categories.map(({ name, _id }) => (
-              <div
-                key={_id}
-                className="w-80 h-20 rounded-md border flex items-center justify-start gap-x-2 shadow bg-white"
-              >
-                <div className="w-16 h-16 border mx-2 rounded"></div>
-                <div className="w-64 ">
-                  <h2 className="text-xl font-semibold text-gray-700">
-                    {name}
-                  </h2>
-                  <Link to={`/categories/${_id}`}>
-                    <button className="text-sm py-1 text-orange-400 underline">
-                      Expore...
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            ))
-          : ""}
-
-        <div className="w-80 h-20 rounded-md border flex items-center justify-start gap-x-2 shadow bg-white">
-          <div className="w-16 h-16 border mx-2 rounded"></div>
-          <div className="w-64 ">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Web Development
+      <section className="text-gray-600 body-font">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="flex flex-col text-center w-full mb-20">
+            <h2 className="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+              ROOF PARTY POLAROID
             </h2>
-            <Link>
-              <button className="text-sm py-1 text-orange-400 underline">
-                Expore...
-              </button>
-            </Link>
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
+              Master Cleanse Reliac Heirloom
+            </h1>
+            <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
+              Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
+              gentrify, subway tile poke farm-to-table. Franzen you probably
+              haven't heard of them man bun deep jianbing selfies heirloom prism
+              food truck ugh squid celiac humblebrag.
+            </p>
           </div>
-        </div>
-        <div className="w-80 h-20 rounded-md border flex items-center justify-start gap-x-2 shadow bg-white">
-          <div className="w-16 h-16 border mx-2 rounded"></div>
-          <div className="w-64 ">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Cyber Security
-            </h2>
-            <Link>
-              <button className="text-sm py-1 text-orange-400 underline">
-                Expore...
-              </button>
-            </Link>
+          <div className="flex flex-wrap">
+            {categories != null
+              ? categories.map(({ name, desc, _id }) => (
+                  <div
+                    key={_id}
+                    className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60"
+                  >
+                    <h2 className="text-lg sm:text-xl text-gray-900 font-medium title-font mb-2">
+                      {name}
+                    </h2>
+                    <p className="leading-relaxed text-base mb-4">
+                      {desc
+                        ? desc
+                        : `Fingerstache flexitarian street art 8-bit waistcoat.
+                      Distillery hexagon disrupt edison bulbche.`}
+                    </p>
+                    <a
+                      href={`blogs/categories/${_id}`}
+                      className="text-indigo-500 inline-flex items-center"
+                    >
+                      Learn More
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        className="w-4 h-4 ml-2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                      </svg>
+                    </a>
+                  </div>
+                ))
+              : ""}
           </div>
+          <Link to="/blogs/categories">
+            <button className="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+              Explore...
+            </button>
+          </Link>
         </div>
-        <div className="w-80 h-20 rounded-md border flex items-center justify-start gap-x-2 shadow bg-white">
-          <div className="w-16 h-16 border mx-2 rounded"></div>
-          <div className="w-64 ">
-            <h2 className="text-xl font-semibold text-gray-700">
-              App Development
-            </h2>
-            <Link>
-              <button className="text-sm py-1 text-orange-400 underline">
-                Expore...
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+      </section>
     </Container>
   );
 };

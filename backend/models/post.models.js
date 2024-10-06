@@ -11,6 +11,10 @@ const postSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    excerpt: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       required: true,
@@ -24,12 +28,11 @@ const postSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    categories: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-      },
-    ], // Array of categories
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    // Array of categories
     tags: [{ type: String }], // Array of tags for blog post
     coverImage: { type: String, required: true }, // URL for the cover image of the blog post
     coverImagePublicId: { type: String, required: true },

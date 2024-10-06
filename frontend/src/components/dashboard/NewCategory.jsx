@@ -1,43 +1,40 @@
 const NewCategory = () => {
   return (
     <>
-      <div className="w-[450px] h-auto py-1 px-1 rounded-md ">
-        <div className="pl-5 py-5">
-          <h1 className="font-semibold">Add New Category</h1>
-
-          <form className="text-sm mt-2">
-            <div>
-              <div className="py-2 text-slate-500">
-                <label htmlFor="name" className="ml-1">
-                  Name
-                </label>
-              </div>
-              <input
-                type="text"
-                className="w-96 h-8 px-3 py-2 b outline-red-100 rounded-md border"
-                placeholder="Category name"
-                id="name"
-                required
-              />
-            </div>
-            <div className="py-1 text-slate-500">
-              <div className="py-2">
-                <label htmlFor="desc" className="ml-1">
-                  Description
-                </label>
-              </div>
-              <textarea
-                name=""
-                id=""
-                rows="7"
-                className="resize-none rounded-md px-3 py-2 border w-96 outline-red-100"
-                placeholder="Enter your description"
-              ></textarea>
-            </div>
-            <input type="submit" value="Add" className="btn cursor-pointer" />
-          </form>
+      <form className="md:w-1/2 bg-white rounded-lg p-8 flex flex-col w-full mt-10 md:mt-0 relative z-10 shadow-md">
+        <h2 className="text-gray-900 text-lg mb-1 font-medium title-font">
+          Add New Category
+        </h2>
+        <div className="relative mb-4">
+          <label htmlFor="name" className="leading-7 text-sm text-gray-600">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          />
         </div>
-      </div>
+        <div className="relative mb-4">
+          <label htmlFor="desc" className="leading-7 text-sm text-gray-600">
+            Description
+          </label>
+          <textarea
+            id="desc"
+            name="desc"
+            className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+          ></textarea>
+        </div>
+        <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+          Add
+        </button>
+        {/* <p className="text-xs text-gray-500 mt-3">
+            Chicharrones blog helvetica normcore iceland tousled brook viral
+            artisan.
+          </p> */}
+      </form>
     </>
   );
 };
