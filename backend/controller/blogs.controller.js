@@ -5,17 +5,23 @@ const {
   uploadToCloudinary,
   deleteFromCloudinary,
 } = require("../utils/uploadToCloudinary.js");
-const sanitizeHtml = require('sanitize-html');
+const sanitizeHtml = require("sanitize-html");
 
 // add a new post
 const addPost = async (req, res) => {
   try {
     const data = req.body;
     const coverImage = req.file ? req.file.path : null; // Get local file path
-    console.log(data, coverImage,'14');
+    console.log(data, coverImage, "14");
 
     // Required fields for the post
-    const requiredFields = ["title", "slug", "richTextContent", "author", "coverImage"];
+    const requiredFields = [
+      "title",
+      "slug",
+      "richTextContent",
+      "author",
+      "coverImage",
+    ];
 
     // Validate the incoming data
     const { isValid, errors } = validateFields(
@@ -46,15 +52,28 @@ const addPost = async (req, res) => {
       `posts-coverImage/postImage_${Date.now()}`
     );
 
-     // Sanitize the rich text content
-     const sanitizedContent = sanitizeHtml(data.richTextContent, {
-      allowedTags: [ 'b', 'i', 'em', 'strong', 'a', 'ul', 'li', 'ol', 'p', 'h1', 'h2', 'h3','img' ], // Allow certain tags
+    // Sanitize the rich text content
+    const sanitizedContent = sanitizeHtml(data.richTextContent, {
+      allowedTags: [
+        "b",
+        "i",
+        "em",
+        "strong",
+        "a",
+        "ul",
+        "li",
+        "ol",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "img",
+      ], // Allow certain tags
       allowedAttributes: {
-        'a': [ 'href', 'target' ], // Allow only href and target attributes in <a> tags
-        'img': [ 'src', 'alt', 'width', 'height' ], // Allow only href and target attributes in <a> tags
-      }
+        a: ["href", "target"], // Allow only href and target attributes in <a> tags
+        img: ["src", "alt", "width", "height"], // Allow only href and target attributes in <a> tags
+      },
     });
-
 
     const newPost = new Post({
       ...data,
@@ -79,10 +98,14 @@ const addPost = async (req, res) => {
   }
 };
 
+// title, excerpt, slug, comments.length, views.length, coverImage, category
 // Get all posts
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', "username profilePic _id").populate("categories", "name _id");
+    const posts = await Post.find()
+      .select("_id title excerpt slug comments views coverImage createdAt")
+      .populate("author", "username profilePic _id")
+      .populate("category", "name _id");
     const categories = await Category.find().select("_id name");
 
     if (!posts || !categories) {
@@ -102,9 +125,12 @@ const getAllPosts = async (req, res) => {
 // Get a single posts
 const getSinglePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { slug } = req.params;
 
-    const post = await Post.findById(id).populate('author', "username profilePic _id");
+    const post = await Post.findOne({ slug: slug }).populate(
+      "author",
+      "username profilePic _id"
+    );
     console.log(post);
 
     if (!post) {
@@ -243,7 +269,11 @@ const featuredPost = async (req, res) => {
       message: `${
         updatedPost.featuredBlog === true ? "Set as" : "Remove from"
       } featured post`,
-      posts: {_id : updatedPost._id, title: updatedPost.title, featuredBlog : updatedPost.featuredBlog},
+      posts: {
+        _id: updatedPost._id,
+        title: updatedPost.title,
+        featuredBlog: updatedPost.featuredBlog,
+      },
     });
   } catch (error) {
     console.log("Failed to update featured post", error);

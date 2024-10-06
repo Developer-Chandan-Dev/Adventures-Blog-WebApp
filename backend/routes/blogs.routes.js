@@ -31,7 +31,7 @@ router.post(
 router.get("/", getAllPosts);
 
 // Get single post
-router.get("/:id", getSinglePost);
+router.get("/:slug", getSinglePost);
 
 // Update a post
 router.put(
