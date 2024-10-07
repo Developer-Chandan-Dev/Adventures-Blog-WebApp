@@ -51,7 +51,7 @@ const homeData = async (req, res) => {
       {
         $lookup: {
           from: Category.collection.name,
-          localField: "categories",
+          localField: "category",
           foreignField: "_id",
           as: "categoryDetails",
         },
@@ -66,21 +66,19 @@ const homeData = async (req, res) => {
         $project: {
           _id: 1, // Include the post
           title: 1, //  Include the post title
-          content: 1, // Include the post content
+          excerpt: 1, // Include the post content
           coverImage: 1, // Include the post coverImage
           createdAt: 1, // Include the post creatation date
-          categories: 1, // Include the post categories
           slug: 1, // Include the post slug
-          "authorDetails._id": 1, // Include author id
-          "authorDetails.username": 1, // Include author name
-          "authorDetails.profilePic": 1, // Include author profile picture
+          views: 1, // Include the post views
+          comments: 1, // Include the post comments
           "categoryDetails.name": 1, // Include category name
           "categoryDetails._id": 1, // Include category id
           // Include other fields you need
         },
       },
     ]);
-
+    console.log(latestPosts, "83");
     const categories = await Category.find({ setOnHome: true }).select(
       "_id name"
     );

@@ -25,7 +25,6 @@ const Home = () => {
       setLatestPosts(data.latestPosts);
     }
   }, [data]);
-  console.log(categories, featuredPosts, latestPosts);
 
   return (
     <section className="w-full">

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const BlogsContainer = () => {
   const { data, error, loading } = useFetchData("/api/v1/blogs");
 
-  console.log(data);
   return (
     <>
       <section className="w-full sm:w-11/12 lg:w-[85%] px-2 p-5 h-auto mx-auto">

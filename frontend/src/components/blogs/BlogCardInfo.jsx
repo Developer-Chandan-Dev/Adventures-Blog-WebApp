@@ -2,61 +2,20 @@
 import PropTypes from "prop-types";
 import "./style.css";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utlity/dateUtils";
 
 const BlogCardInfo = ({
-  title,
+  title="Title will show here",
   url,
   imageUrl,
   category,
-  excerpt = "App Development is a process of createing building and maintaining Android and iOS apps.",
+  excerpt = "Short description will show here...",
   createdAt,
   views,
   comments,
 }) => {
   return (
     <>
-      {/* <Link to={`/blogs/details/${url}`}>
-        <div className="w-[260px] h-[370px] drop-shadow border border-slate-200 shadow-slate-50 rounded-md overflow-hidden cursor-pointer transition-all hover:-translate-y-2 relative bg-white blog_box hover:shadow-lg hover:shadow-slate-300">
-          <div
-            className={` text-white px-3 py-1 rounded-full absolute right-2 top-2 text-xs border`}
-            style={{
-              background: `linear-gradient(45deg, ${category_bg}, #000 100px)`,
-            }}
-          >
-            {"Hello"}
-          </div>
-          <div className="w-full h-40 bg-orange-100 blogImg">
-            <img
-              src={imageUrl ? imageUrl : img}
-              className="w-full h-full"
-              alt=""
-            />
-          </div>
-          <div className="px-3 py-2 ">
-            <h2 className="font-semibold text-lg py-1">{title}</h2>
-            <p className="text-sm py-1">{desc}</p>
-          </div>
-          <div className="px-3 pb-3 pt-1 flex items-center absolute bottom-0 w-full blogContent">
-            <div className="w-10 h-10 rounded-full bg-red-100 overflow-hidden">
-              <img
-                src={
-                  authorDetails && authorDetails.profilePic
-                    ? authorDetails.profilePic
-                    : ""
-                }
-                alt=""
-                className="w-full h-full "
-              />
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium ">{authorDetails.username}</h3>
-              <h3 className="text-sm font-medium ">Chandan</h3>
-              <small className="text-xs">{createdAt}</small>
-            </div>
-          </div>
-        </div>
-      </Link> */}
-
       <div className="p-4 md:w-1/2 lg:w-1/3 text-sm">
         <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden relative bg-white drop-shadow-sm">
           <Link to={`/blogs/details/${url}`}>
@@ -70,10 +29,12 @@ const BlogCardInfo = ({
               alt="blog"
             />
           </Link>
-          <span className="px-[10px] py-1 rounded-md drop-shadow text-xs absolute top-1 right-1">2 min ago</span>
+          <span className="px-[10px] py-1 rounded-md drop-shadow text-xs absolute top-1 right-1">
+            {formatDate(createdAt)}
+          </span>
           <div className="px-4 py-3">
             <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-              {category && category.name ? category.name : "No found"} 
+              {category && category.name ? category.name : "No found"}
             </h2>
             <Link to={`/blogs/details/${url}`}>
               <h1 className="title-font text-base font-semibold text-gray-900 mb-2">
@@ -127,7 +88,7 @@ const BlogCardInfo = ({
                 >
                   <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
                 </svg>
-                {comments.length}
+                {comments && comments.length}
               </span>
             </div>
           </div>

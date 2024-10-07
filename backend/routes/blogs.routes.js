@@ -7,7 +7,10 @@ const {
   updatePost,
   deletePost,
   likePost,
+  getDashboardBlogs,
   featuredPost,
+  getDraftBlogs,
+  publishUnPublishPost,
 } = require("../controller/blogs.controller");
 const {
   isAuthenticated,
@@ -27,8 +30,24 @@ router.post(
   addPost
 );
 
-// Aet all posts
+// Get all posts
 router.get("/", getAllPosts);
+
+// Get all posts in dashboard
+router.get(
+  "/dashboard-blogs",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  getDashboardBlogs
+);
+
+// Get all draft posts in dashboard
+router.get(
+  "/dashboard-blogs/draft",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  getDraftBlogs
+);
 
 // Get single post
 router.get("/:slug", getSinglePost);
@@ -52,12 +71,20 @@ router.delete(
   deletePost
 );
 
+// Publish posts
+router.patch(
+  "/publish/:postId",
+  isAuthenticated,
+  checkBlockedAfterAuth,
+  publishUnPublishPost
+);
+
 // Like or dislike a post
 router.patch("/:postId/like", isAuthenticated, checkBlockedAfterAuth, likePost);
 
 // Featured post
 router.patch(
-  "/:postId",
+  "/featuredPost/:postId",
   isAuthenticated,
   checkBlockedAfterAuth,
   isAdmin,

@@ -98,11 +98,10 @@ const addPost = async (req, res) => {
   }
 };
 
-// title, excerpt, slug, comments.length, views.length, coverImage, category
 // Get all posts
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find()
+    const posts = await Post.find({ status: "published" })
       .select("_id title excerpt slug comments views coverImage createdAt")
       .populate("author", "username profilePic _id")
       .populate("category", "name _id");
@@ -116,6 +115,44 @@ const getAllPosts = async (req, res) => {
 
     console.log(posts, categories);
     res.status(200).json({ success: true, posts, categories });
+  } catch (error) {
+    console.log("Error :", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+const getDashboardBlogs = async (req, res) => {
+  try {
+    const posts = await Post.find({ status: "published" })
+      .select("_id title slug createdAt status featuredBlog")
+      .populate("author", "username _id")
+      .populate("category", "name _id");
+
+    if (!posts) {
+      return res.status(400).json({ success: false, error: "Blogs not found" });
+    }
+
+    console.log(posts);
+    res.status(200).json({ success: true, posts });
+  } catch (error) {
+    console.log("Error :", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+const getDraftBlogs = async (req, res) => {
+  try {
+    const posts = await Post.find({ status: "draft" })
+      .select("_id title slug createdAt status featuredBlog")
+      .populate("author", "username _id")
+      .populate("category", "name _id");
+
+    if (!posts) {
+      return res.status(400).json({ success: false, error: "Blogs not found" });
+    }
+
+    console.log(posts);
+    res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -242,6 +279,36 @@ const deletePost = async (req, res) => {
   }
 };
 
+const publishUnPublishPost = async (req, res) => {
+  const { postId } = req.params;
+
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ success: false, error: "Post not found" });
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    {
+      status: post.status === "draft" ? "published" : "draft",
+    },
+    { new: true }
+  );
+
+  if (!updatedPost) {
+    return res.status(404).json({ status: false, error: "Post not found" });
+  }
+
+  res.status(200).json({
+    status: true,
+    message: `${
+      updatedPost.status === "published"
+        ? "Post published successfully"
+        : "Remove from published post"
+    } `,
+  });
+};
+
 // Featured post true/false
 const featuredPost = async (req, res) => {
   try {
@@ -269,11 +336,6 @@ const featuredPost = async (req, res) => {
       message: `${
         updatedPost.featuredBlog === true ? "Set as" : "Remove from"
       } featured post`,
-      posts: {
-        _id: updatedPost._id,
-        title: updatedPost.title,
-        featuredBlog: updatedPost.featuredBlog,
-      },
     });
   } catch (error) {
     console.log("Failed to update featured post", error);
@@ -288,7 +350,6 @@ const likePost = async (req, res) => {
   try {
     const { postId } = req.params;
     const userId = req.user._id;
-    console.log(postId, "242", userId);
 
     const post = await Post.findById(postId);
     // console.log(post);
@@ -335,5 +396,8 @@ module.exports = {
   updatePost,
   deletePost,
   likePost,
+  getDashboardBlogs,
   featuredPost,
+  getDraftBlogs,
+  publishUnPublishPost
 };

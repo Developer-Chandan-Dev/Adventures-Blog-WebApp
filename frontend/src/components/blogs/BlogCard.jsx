@@ -2,8 +2,6 @@
 import BlogCardInfo from "./BlogCardInfo";
 
 const BlogCard = ({ data }) => {
-  console.log(data);
-
   return (
     <>
       {data && data.posts != null
