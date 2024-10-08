@@ -7,13 +7,15 @@ const {
 // Get all users by Admin
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find().select(
+      "-password -bio -profilePicPublicId -updatedAt"
+    );
     console.log(users);
     if (!users) {
       return res.status(404).json({ success: false, error: "Users not found" });
     }
 
-    res.status(200).json({success:true, users});
+    res.status(200).json({ success: true, users });
   } catch (error) {
     console.log("Failed to get all user", error);
     res
@@ -172,6 +174,7 @@ const updateRole = async (req, res) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
+    console.log(role);
 
     if (!role) {
       return res
@@ -189,7 +192,9 @@ const updateRole = async (req, res) => {
     user.role = role;
     await user.save();
 
-    res.status(200).json({ success: true, message: "User role updated" });
+    res
+      .status(200)
+      .json({ success: true, message: `User role updated to ${user.role}` });
   } catch (error) {
     console.log("Failed to update user details", error);
     res
@@ -202,6 +207,7 @@ const updateRole = async (req, res) => {
 const promoteToTeamMember = async (req, res) => {
   try {
     const userId = req.params.userId;
+    console.log(userId, "207");
 
     const user = await User.findById(userId).select("_id teamMember");
 
@@ -221,7 +227,11 @@ const promoteToTeamMember = async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: "User promoted to team member",
+      message: `${
+        updatedUser.teamMember === true
+          ? "User promoted to team member"
+          : "Remove from team Member"
+      }`,
     });
   } catch (error) {
     console.log("Error promoting user", error);
@@ -254,5 +264,5 @@ module.exports = {
   updateRole,
   promoteToTeamMember,
   getTeamMembers,
-  blockUnblockUser
+  blockUnblockUser,
 };

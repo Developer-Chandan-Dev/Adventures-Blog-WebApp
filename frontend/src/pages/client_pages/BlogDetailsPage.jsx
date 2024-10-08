@@ -6,6 +6,7 @@ import RelatedTopics from "../../components/blogs/RelatedTopics";
 import BlogContent from "../../components/blogs/BlogContent";
 import { useParams } from "react-router-dom";
 import useFetchData from "../../hooks/useFetchData";
+import Spinner from "../../components/utlity/Spinner";
 
 const BlogDetailsPage = () => {
   const { id } = useParams();
@@ -32,8 +33,17 @@ const BlogDetailsPage = () => {
           <div className="mx-auto w-full flex gap-x-4 justify-between">
             <div className="w-[70%] h-auto px-5 py-5 bg-white rounded-md drop-shadow">
               <div className="w-full h-auto bg-gradient-to-r mx-auto rounded-md overflow-hidden">
-                <img src={data && data.post ? data.post.coverImage : img1} alt="banner image" className="w-full h-auto" />
+                <img
+                  src={data && data.post ? data.post.coverImage : img1}
+                  alt="banner image"
+                  className="w-full h-auto"
+                />
               </div>
+              {loading && (
+                <div className="w-full h-[400px] flex-center">
+                  <Spinner />
+                </div>
+              )}
 
               <BlogContent
                 title={data && data.post ? data.post.title : "Title not found"}

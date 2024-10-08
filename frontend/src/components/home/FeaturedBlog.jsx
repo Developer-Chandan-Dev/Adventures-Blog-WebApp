@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import { formatDate} from '../utlity/dateUtils';
 import img from "../../assets/images/img.jpg";
 
 const FeaturedBlog = ({ id, title, author, slug, createdAt, imageUrl }) => {
@@ -7,7 +8,7 @@ const FeaturedBlog = ({ id, title, author, slug, createdAt, imageUrl }) => {
   return (
     <>
       <Link to={`/blogs/details/${slug}`}>
-        <div className="w-52 mx-auto h-60 rounded-xl shadow-md shadow-slate-200 overflow-hidden relative cursor-pointer">
+        <div className="w-52 mx-auto h-60 rounded-xl shadow-md shadow-slate-200 overflow-hidden relative cursor-pointer backdrop-blur-lg bg-slate-700">
           <img
             src={imageUrl ? imageUrl : img}
             className="w-full h-full absolute -z-[1] opacity-75"
@@ -15,7 +16,7 @@ const FeaturedBlog = ({ id, title, author, slug, createdAt, imageUrl }) => {
           />
           <div className="flex-center h-44 px-3 flex-col text-white z-10">
             <div className="w-44 p-2 text-center mx-auto drop-shadow-md ">
-              <span className="w-full text-xs drop-shadow-lg">{createdAt}</span>
+              <span className="w-full text-xs drop-shadow-lg">{formatDate(createdAt)}</span>
               <h1 className="text-center pt-3 drop-shadow-lg">{title}</h1>
             </div>
           </div>

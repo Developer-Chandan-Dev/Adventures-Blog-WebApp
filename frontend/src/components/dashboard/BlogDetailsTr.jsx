@@ -19,7 +19,7 @@ const BlogDetailsTr = ({
   const [newStatus, setNewStatus] = useState("");
   const [newFeaturedBlog, setNewFeaturedBlog] = useState(false);
 
-  const { handleSubmit } = useUpdateFeaturedPostAndStatus();
+  const { handleChangeTrueFalse } = useUpdateFeaturedPostAndStatus();
 
   useEffect(() => {
     setNewStatus(status);
@@ -30,13 +30,12 @@ const BlogDetailsTr = ({
 
   const handleStatusChange = (e) => {
     setNewStatus(e.target.value);
-    handleSubmit(`/api/v1/blogs/publish/${_id}`);
+    handleChangeTrueFalse(`/api/v1/blogs/publish/${_id}`);
   };
   const handleFeaturedBlogChange = (e) => {
     setNewFeaturedBlog(e.target.value);
-    handleSubmit(`/api/v1/blogs/featuredPost/${_id}`);
+    handleChangeTrueFalse(`/api/v1/blogs/featuredPost/${_id}`);
   };
-
 
   return (
     <>
