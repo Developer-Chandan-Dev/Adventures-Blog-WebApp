@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../utlity/dateUtils";
 
 const BlogCardInfo = ({
-  title="Title will show here",
+  title = "Title will show here",
   url,
   imageUrl,
   category,
@@ -41,7 +41,9 @@ const BlogCardInfo = ({
                 {title}
               </h1>
             </Link>
-            <p className="leading-relaxed mb-3 text-sm">{excerpt}</p>
+            <p className="leading-relaxed mb-3 text-sm">
+              {excerpt.length > 120 ? excerpt.slice(0, 120) + "..." : excerpt}
+            </p>
             <div className="flex items-center flex-wrap justify-between">
               <Link
                 to={`/blogs/details/${url}`}

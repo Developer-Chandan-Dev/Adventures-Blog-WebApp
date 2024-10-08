@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
     const users = await User.find().select(
       "-password -bio -profilePicPublicId -updatedAt"
     );
-    console.log(users);
+    console.log(users,'13');
     if (!users) {
       return res.status(404).json({ success: false, error: "Users not found" });
     }

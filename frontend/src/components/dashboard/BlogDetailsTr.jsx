@@ -41,8 +41,12 @@ const BlogDetailsTr = ({
     <>
       <tr className="w-full h-12 cursor-pointer hover:shadow border-b  hover:bg-gray-50 text-gray-500">
         <td className="px-4 font-medium">{index + 1}</td>
-        <td className="px-4">{title || "N/A"}</td>
-        <td className="pl-5">{slug || "N/A"}</td>
+        <td className="px-4">
+          {title.length > 30 ? title.slice(0, 30) + ".." : title || "N/A"}
+        </td>
+        <td className="pl-5">
+          {slug.length > 30 ? slug.slice(0, 30) + ".." : slug || "N/A"}
+        </td>
         <td className="pl-5">
           <select
             name="status"

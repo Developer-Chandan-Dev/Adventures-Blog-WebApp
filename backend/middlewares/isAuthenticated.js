@@ -73,7 +73,6 @@ const checkBlocked = async (req, res, next) => {
 };
 const checkBlockedAfterAuth = async (req, res, next) => {
   if (req.user && req.user.isBlocked) {
-    console.log(req.user, req.user.isBlocked);
     return res
       .status(403)
       .json({ success: false, error: "Your account has been blocked" });

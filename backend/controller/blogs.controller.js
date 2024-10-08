@@ -122,18 +122,71 @@ const getAllPosts = async (req, res) => {
 };
 
 const getDashboardBlogs = async (req, res) => {
+  console.log(req.user.role, req.user.username, req.user, "125");
   try {
-    const posts = await Post.find({ status: "published" })
-      .select("_id title slug createdAt status featuredBlog")
-      .populate("author", "username _id")
-      .populate("category", "name _id");
+    if (req.user.role === "admin") {
+      console.log(req.user.role);
+      const posts = await Post.find({ status: "published" })
+        .select("_id title slug createdAt status featuredBlog")
+        .populate("author", "username _id")
+        .populate("category", "name _id");
 
-    if (!posts) {
-      return res.status(400).json({ success: false, error: "Blogs not found" });
+      if (!posts) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Blogs not found" });
+      }
+
+      // console.log(posts);
+      return res.status(200).json({ success: true, posts });
+
+      // Check for role author
+    } else if (req.user.role === "author") {
+      console.log(
+        "Author",
+        req.user.username,
+        req.user.role,
+        "145",
+        req.user._id
+      );
+      const posts = await Post.find({ status: "published", author: req.user._id })
+        .select("_id title slug createdAt status featuredBlog")
+        .populate("author", "username _id")
+        .populate("category", "name _id");
+
+      console.log(posts,'157');
+      if (!posts) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Blogs not found" });
+      }
+
+      console.log(posts);
+      return res.status(200).json({ success: true, posts });
+
+      // Check for team Member
+    } else if (req.user.teamMember === true) {
+      console.log(
+        "Team Member",
+        req.user.username,
+        req.user.role,
+        req.user.teamMember,
+        "165"
+      );
+      const posts = await Post.find({ status: "published" })
+        .select("_id title slug createdAt status featuredBlog")
+        .populate("author", "username _id")
+        .populate("category", "name _id");
+
+      if (!posts) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Blogs not found" });
+      }
+
+      // console.log(posts);
+      return res.status(200).json({ success: true, posts });
     }
-
-    console.log(posts);
-    res.status(200).json({ success: true, posts });
   } catch (error) {
     console.log("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -399,5 +452,5 @@ module.exports = {
   getDashboardBlogs,
   featuredPost,
   getDraftBlogs,
-  publishUnPublishPost
+  publishUnPublishPost,
 };

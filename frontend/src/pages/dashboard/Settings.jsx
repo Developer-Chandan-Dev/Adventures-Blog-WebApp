@@ -1,3 +1,6 @@
+import ChangePassword from "../../components/dashboard/settings/ChangePassword";
+import LoggedInUserProfile from "../../components/dashboard/settings/LoggedInUserProfile";
+
 const Settings = () => {
   return (
     <section>
@@ -36,71 +39,7 @@ const Settings = () => {
             "repeating-linear-gradient(45deg, #ffffff, transparent 200px)",
         }}
       >
-        <div className="rounded-2xl flex h-auto py-2 flex-wrap gap-x-2 px-2 gap-y-3 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg shadow accountDetailsForm">
-          <div className="w-[235px] h-56 mx-auto flex-center mx">
-            <div className="w-40 h-40 rounded-md overflow-hidden shadow drop-shadow flex-center">
-              {/* {formData.profilePic ? (
-                <img
-                  src={formData.profilePic}
-                  alt="img"
-                  className="w-full h-full object-fill"
-                />
-              ) : (
-                <h1 className="text-7xl font-bold text-slate-500">
-                  {authDashboardUser.username[0]}
-                </h1>
-              )} */}
-            </div>
-          </div>
-          <form
-            className="w-[350px] h-56 mx-auto px-4 py-3 text-sm"
-            // onSubmit={handleUpdate}
-          >
-            <div className="flex items-center justify-between gap-x-3 gap-y-2">
-              <h2 className="font-semibold text-lg">My Profile:</h2>
-              <h4 className="font-semibold text-slate-600 ">
-                {/* {formData.username !== undefined &&
-                formData.username.includes("-")
-                  ? formData.username.split("-")[0]
-                  : formData.username}{" "}
-                | {formData.role} */}
-              </h4>
-            </div>
-            <div className="flex items-center justify-between gap-x-3 gap-y-2 my-5 flex-wrap">
-              <h5>Name:</h5>
-              <input
-                type="text"
-                placeholder="Name"
-                name="name"
-                required
-                // value={formData.fullname}
-                // onChange={handleChange}
-                className="rounded-md outline-neutral-300 px-3 py-1 drop-shadow h-8 border"
-              />
-            </div>
-            <div className="my-4 ">
-              <input
-                type="email"
-                placeholder="Your email"
-                name="email"
-                required
-                // value={formData.email}
-                // onChange={handleChange}
-                className="w-full rounded-md outline-neutral-300 px-3 py-1 drop-shadow h-8 border"
-              />
-            </div>
-            <div className="flex-center mt-8">
-              <button
-                className="px-6 rounded-full py-[6px] text-white font-semibold transition-all hover:drop-shadow"
-                style={{
-                  background: "linear-gradient(45deg, #edb855, #ff5959)",
-                }}
-              >
-                Save
-              </button>
-            </div>
-          </form>
-        </div>
+        <LoggedInUserProfile/>
         <div className="rounded-2xl shadow w-80 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg h-32 px-6 py-5 text-sm accountActiveBox">
           <div className="flex items-center justify-between border-b py-2">
             <h2 className="font-semibold text-lg">My Account</h2>
@@ -127,48 +66,8 @@ const Settings = () => {
             </button>
           </div>
         </div>
-        <div className="rounded-2xl shadow w-80 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg h-auto px-6 py-5 text-sm accountActiveBox">
-          <div className="flex items-center justify-between border-b py-2">
-            <h2 className="font-semibold text-lg">Change Password</h2>
-            <div className="rounded-full w-7 h-7 flex-center border-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-                width="13"
-                height="13"
-                className=" fill-slate-600"
-              >
-                <path d="M384 223.1L368 224V144c0-79.41-64.59-144-144-144S80 64.59 80 144V224L64 223.1c-35.35 0-64 28.65-64 64v160c0 35.34 28.65 64 64 64h320c35.35 0 64-28.66 64-64v-160C448 252.7 419.3 223.1 384 223.1zM144 144C144 99.88 179.9 64 224 64s80 35.88 80 80V224h-160V144z" />
-              </svg>
-            </div>
-          </div>
-          <form className="flex items-center justify-between py-4 flex-col">
-            <input
-              type="text"
-              className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
-              placeholder="Email"
-              required
-            />
-            <input
-              type="password"
-              className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
-              placeholder="Current Password"
-              required
-            />
-            <input
-              type="password"
-              className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
-              placeholder="New Password"
-              required
-            />
-            <input
-              type="submit"
-              value="Update"
-              className="px-6 mt-3 rounded-full py-[6px] cursor-pointer text-white font-semibold transition-all hover:drop-shadow "
-              style={{ background: "linear-gradient(45deg, #edb855, #ff5959)" }}
-            />
-          </form>
-        </div>
+        <ChangePassword/>
+        
       </div>
     </section>
   );

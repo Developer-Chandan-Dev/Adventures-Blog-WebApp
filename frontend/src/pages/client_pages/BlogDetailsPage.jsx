@@ -39,6 +39,8 @@ const BlogDetailsPage = () => {
                   className="w-full h-auto"
                 />
               </div>
+
+              
               {loading && (
                 <div className="w-full h-[400px] flex-center">
                   <Spinner />

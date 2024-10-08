@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
 import useFetchData from "../../hooks/useFetchData";
 import BlogDetailsTr from "./BlogDetailsTr";
+import Empty from "../utlity/Empty";
+import Spinner from "../utlity/Spinner";
 
 const DraftBlogsContainer = () => {
   const { data, error, loading } = useFetchData(
@@ -50,12 +51,19 @@ const DraftBlogsContainer = () => {
               </tr>
             </thead>
             <tbody className="">
-              {error && <p>{error}</p>}
-              {loading && (
-                <h1 className="text-red-300 text-lg font-semibold">
-                  Loading...
-                </h1>
-              )}
+              <tr>
+                <td colSpan={9}>{error && <p>{error}</p>}</td>
+              </tr>
+
+              <tr>
+                <td colSpan={9}>
+                  {loading && (
+                    <div className="w-full h-[300px] flex-center">
+                      <Spinner />
+                    </div>
+                  )}
+                </td>
+              </tr>
               {data && data.posts != null && data.posts.length > 0 ? (
                 data.posts.map((post, index) => (
                   <BlogDetailsTr
@@ -73,11 +81,8 @@ const DraftBlogsContainer = () => {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan={9}
-                    className="py-3 px-2 text-lg font-semibold text-slate-500"
-                  >
-                    Empty List
+                  <td colSpan={9}>
+                    <Empty boxHeight={"300px"} />
                   </td>
                 </tr>
               )}

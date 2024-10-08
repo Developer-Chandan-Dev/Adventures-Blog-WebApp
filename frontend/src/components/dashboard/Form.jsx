@@ -90,11 +90,12 @@ const Form = ({ method = "POST", heading, api }) => {
         onSubmit={onSubmit}
       >
         <div className="flex items-center justify-center flex-col mb-10">
-          <h1 className="text-xl font-semibold text-slate-700 pb-3 relative text-center drop-shadow">
+          <h1 className="text-2xl font-semibold text-slate-700 pb-3 relative text-center drop-shadow">
             {heading} Blogs
           </h1>
-          <div className="w-48 rounded-full h-1 bg-red-100"></div>
-          <div className="w-48 mt-1 rounded-full h-1 bg-blue-100"></div>
+          <div className="w-52 rounded-full h-1 bg-[#dc143cad]"></div>
+          <div className="w-52 rounded-full h-1 bg-[#dc143cad] mt-1"></div>
+          {/* <div className="w-48 mt-1 rounded-full h-1 bg-blue-100"></div> */}
         </div>
         <div className="w-full pb-5">
           <label htmlFor="title" className="font-semibold ml-1 text-base">
