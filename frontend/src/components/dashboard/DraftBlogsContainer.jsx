@@ -23,7 +23,7 @@ const DraftBlogsContainer = () => {
             />
           </div>
         </div>
-        <div className="w-full pb-2 mt-5 overflow-x-auto relative h-[400px] bg-[#ffffff94]">
+        <div className="w-full pb-2 mt-5 overflow-x-auto relative h-[550px] bg-[#ffffff94]">
           <table className="mx-auto h-auto text-sm relative w-[1300px]">
             <thead className="relative">
               <tr className="w-full h-12 bg-[#e55370] text-white rounded-sm overflow-hidden border-b sticky top-0">
@@ -82,7 +82,7 @@ const DraftBlogsContainer = () => {
               ) : (
                 <tr>
                   <td colSpan={9}>
-                    <Empty boxHeight={"300px"} />
+                    <Empty boxHeight={"400px"} />
                   </td>
                 </tr>
               )}

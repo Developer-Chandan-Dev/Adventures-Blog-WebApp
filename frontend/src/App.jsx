@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
@@ -38,8 +38,12 @@ import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CategoryPage from "./pages/client_pages/CategoryPage";
 import PrivateRoute from "./components/utlity/PrivateRoute";
+import { useSelector } from "react-redux";
 
 function App() {
+  const authUser = useSelector((state) => state.user.user);
+  // const navigate = useNavigate();
+
   return (
     <>
       <ScrollToTop />
@@ -120,27 +124,123 @@ function App() {
           />
 
           {/* <-------------- Login & Signup Page ---------------> */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={authUser ? <Navigate to="/"/> : <Login />} />
+          <Route path="/signup" element={authUser ? <Navigate to="/"/> : <Signup />} />
 
           {/* <============ User Routes End here ============> */}
 
           {/* <============ Dashboard Routes Start here ============> */}
 
-          <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>}>
-            <Route path="" element={<PrivateRoute> <DashboardPage /></PrivateRoute>} />
-            <Route path="category" element={<PrivateRoute> <Category /></PrivateRoute>} />
-            <Route path="blogs" element={<PrivateRoute> <DashboardBlogsPage /></PrivateRoute>}>
-              <Route path="" element={<PrivateRoute> <BlogsContainer /></PrivateRoute>} />
-              <Route path="update/:id" element={<PrivateRoute>  <UpdateBlogs /></PrivateRoute>} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                {" "}
+                <Dashboard />{" "}
+              </PrivateRoute>
+            }
+          >
+            <Route
+              path=""
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <DashboardPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="category"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <Category />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="blogs"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <DashboardBlogsPage />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                path=""
+                element={
+                  <PrivateRoute>
+                    {" "}
+                    <BlogsContainer />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="update/:id"
+                element={
+                  <PrivateRoute>
+                    {" "}
+                    <UpdateBlogs />
+                  </PrivateRoute>
+                }
+              />
             </Route>
-            <Route path="blogs/add" element={<PrivateRoute> <AddBlogs /></PrivateRoute>} />
-            <Route path="blogs/pending" element={<PrivateRoute> <PendingBlogs /></PrivateRoute>}>
-              <Route path="" element={<PrivateRoute> <DraftBlogsContainer /></PrivateRoute>} />
-              <Route path="update/:id" element={<PrivateRoute> <UpdateBlogs /></PrivateRoute>} />
+            <Route
+              path="blogs/add"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <AddBlogs />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="blogs/pending"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <PendingBlogs />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                path=""
+                element={
+                  <PrivateRoute>
+                    {" "}
+                    <DraftBlogsContainer />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="update/:id"
+                element={
+                  <PrivateRoute>
+                    {" "}
+                    <UpdateBlogs />
+                  </PrivateRoute>
+                }
+              />
             </Route>
-            <Route path="settings" element={<PrivateRoute> <Settings /></PrivateRoute>} />
-            <Route path="users" element={<PrivateRoute> <Users /></PrivateRoute>} />
+            <Route
+              path="settings"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <Settings />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <PrivateRoute>
+                  {" "}
+                  <Users />
+                </PrivateRoute>
+              }
+            />
           </Route>
           {/* <============ Dashboard Routes End here ============> */}
         </Routes>

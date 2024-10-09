@@ -1,12 +1,28 @@
-import useFetchData from "../../hooks/useFetchData";
 import BlogDetailsTr from "./BlogDetailsTr";
 import Empty from "../utlity/Empty";
 import Spinner from "../utlity/Spinner";
+import { useState } from "react";
+import useFetchDataWithPagination from "../../hooks/useFetchDataWithPagination";
 
 const BlogsContainer = () => {
-  const { data, error, loading } = useFetchData(
-    "/api/v1/blogs/dashboard-blogs"
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(7); // Define items per page
+
+  const { data, error, loading } = useFetchDataWithPagination(
+    "/api/v1/blogs/dashboard-blogs",
+    currentPage,
+    itemsPerPage,
+    searchTerm
   );
+
+  console.log(data, error);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -20,10 +36,12 @@ const BlogsContainer = () => {
               type="text"
               className="w-80 h-9 px-3 py-1 text-[15px] rounded-md border-2 outline-gray-300"
               placeholder="Search by title"
+              value={searchTerm}
+              onChange={handleSearch}
             />
           </div>
         </div>
-        <div className="w-full pb-2 mt-5 overflow-x-auto relative h-[400px] bg-[#ffffff94]">
+        <div className="w-full pb-2 mt-5 overflow-x-auto relative h-[550px] bg-[#ffffff94]">
           <table className="mx-auto h-auto text-sm relative w-[1300px] ">
             <thead className="relative">
               <tr className="w-full h-12 bg-[#e55370] text-white rounded-sm overflow-hidden border-b sticky top-0">
@@ -80,7 +98,7 @@ const BlogsContainer = () => {
               ) : (
                 <tr>
                   <td colSpan={9}>
-                    <Empty boxHeight={"300px"} />
+                    <Empty boxHeight={"400px"} />
                   </td>
                 </tr>
               )}

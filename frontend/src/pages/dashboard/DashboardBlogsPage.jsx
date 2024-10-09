@@ -32,7 +32,7 @@ const DashboardBlogsPage = () => {
           </span>
         </div>
       </div>
-      <section className="w-full h-96 px-8 py-1">
+      <section className="w-full h-auto px-8 py-1">
         <Outlet>
           <BlogsContainer />
           <UpdateBlogs />

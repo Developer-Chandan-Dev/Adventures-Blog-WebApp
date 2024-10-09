@@ -123,72 +123,98 @@ const getAllPosts = async (req, res) => {
 
 const getDashboardBlogs = async (req, res) => {
   try {
-    if (req.user.role === "admin") {
-      console.log(req.user.role);
-      const posts = await Post.find({ status: "published" })
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const searchQuery = req.query.search || "";
+
+    // <------------ Search Filter -------------->
+    // Build search condition
+    // const searchCondition = {
+    //   published: true, // Only published posts
+    //   $or: [
+    //     { title: { $regex: searchQuery, $options: "i" } },
+    //     { content: { $regex: searchQuery, $options: "i" } },
+    //   ],
+    // };
+
+    if (req.user.role === "admin" || req.user.teamMember === true) {
+      const searchCondition = {
+        status: "published", // Only published posts
+        title: { $regex: searchQuery, $options: "i" },
+      };
+      // Count total items that match the search query
+      const totalItems = await Post.countDocuments(searchCondition);
+      const totalPages = Math.ceil(totalItems / limit);
+
+      // Filter posts
+      const posts = await Post.find(searchCondition)
         .select("_id title slug createdAt status featuredBlog")
         .populate("author", "username _id")
-        .populate("category", "name _id");
+        .populate("category", "name _id")
+        .skip((page - 1) * limit)
+        .limit(limit);
 
-      if (!posts) {
+      if (!posts || !totalPages || !totalItems) {
         return res
           .status(400)
           .json({ success: false, error: "Blogs not found" });
       }
 
       // console.log(posts);
-      return res.status(200).json({ success: true, posts });
+      return res
+        .status(200)
+        .json({ success: true, posts, totalItems, totalPages });
 
       // Check for role author
     } else if (req.user.role === "author") {
-      console.log(
-        "Author",
-        req.user.username,
-        req.user.role,
-        "145",
-        req.user._id
-      );
-      const posts = await Post.find({
-        status: "published",
-        author: req.user._id,
-      })
+      // Step 1: Filter posts by the logged-in user (author)
+      const userId = req.user._id;
+
+      // Step 2: Build search condition to filter user's posts
+      const searchCondition = {
+        author: userId, // Ensure only the logged-in user's posts are returned
+        status: "published", // Only published posts
+        title: { $regex: searchQuery, $options: "i" }, // Match the title, case-insensitive
+      };
+
+      // Step 3: Count total items that match the search query
+      const totalItems = await Post.countDocuments(searchCondition);
+      const totalPages = Math.ceil(totalItems / limit);
+
+      // Fetch posts based on the search condition
+      const posts = await Post.find(searchCondition)
         .select("_id title slug createdAt status featuredBlog")
         .populate("author", "username _id")
-        .populate("category", "name _id");
+        .populate("category", "name _id")
+        .skip((page - 1) * limit)
+        .limit(limit);
 
-      console.log(posts, "157");
-      if (!posts) {
+      if (!posts || !totalPages || !totalItems) {
         return res
           .status(400)
           .json({ success: false, error: "Blogs not found" });
       }
 
-      console.log(posts);
-      return res.status(200).json({ success: true, posts });
-
-      // Check for team Member
-    } else if (req.user.teamMember === true) {
-      console.log(
-        "Team Member",
-        req.user.username,
-        req.user.role,
-        req.user.teamMember,
-        "165"
-      );
-      const posts = await Post.find({ status: "published" })
-        .select("_id title slug createdAt status featuredBlog")
-        .populate("author", "username _id")
-        .populate("category", "name _id");
-
-      if (!posts) {
-        return res
-          .status(400)
-          .json({ success: false, error: "Blogs not found" });
-      }
-
-      // console.log(posts);
-      return res.status(200).json({ success: true, posts });
+      return res
+        .status(200)
+        .json({ success: true, posts, totalItems, totalPages });
     }
+    //   // Check for team Member
+    // else if (req.user.teamMember === true) {
+    //   const posts = await Post.find({ status: "published" })
+    //     .select("_id title slug createdAt status featuredBlog")
+    //     .populate("author", "username _id")
+    //     .populate("category", "name _id");
+
+    //   if (!posts) {
+    //     return res
+    //       .status(400)
+    //       .json({ success: false, error: "Blogs not found" });
+    //   }
+
+    //   // console.log(posts);
+    //   return res.status(200).json({ success: true, posts });
+    // }
   } catch (error) {
     console.log("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -239,12 +265,13 @@ const getSinglePost = async (req, res) => {
 const getSinglePostById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id,'242');
+    console.log(id, "242");
 
-    const post = await Post.findById({ _id: id }).select("-createdAt -coverImagePublicId -coverImage -comments -featuredBlog -views -status").populate(
-      "author",
-      "username profilePic _id"
-    );
+    const post = await Post.findById({ _id: id })
+      .select(
+        "-createdAt -coverImagePublicId -coverImage -comments -featuredBlog -views -status"
+      )
+      .populate("author", "username profilePic _id");
     console.log(post, "245");
 
     if (!post) {
