@@ -17,10 +17,9 @@ const isAuthenticated = async (req, res, next) => {
     if (!token && token !== "undefined") {
       throw createError("Unauthorized - No token provided", 401);
     }
-    console.log(token, "20");
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decoded);
+    console.log(decoded, "22");
     if (!decoded) {
       throw createError("Invalid token, Unauthorized", 401);
     }

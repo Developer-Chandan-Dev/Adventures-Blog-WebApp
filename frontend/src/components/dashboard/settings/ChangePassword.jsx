@@ -1,9 +1,10 @@
 const ChangePassword = () => {
   return (
     <>
-      <div className="rounded-2xl shadow w-80 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg h-auto px-6 py-5 text-sm accountActiveBox">
+     {/* backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white */}
+      <div className="rounded-2xl shadow w-80 drop-shadow-lg h-auto bg-white px-6 py-5 text-sm accountActiveBox">
         <div className="flex items-center justify-between border-b py-2">
-          <h2 className="font-semibold text-lg">Change Password</h2>
+          <h2 className="font-semibold text-lg text-gray-600">Change Password</h2>
           <div className="rounded-full w-7 h-7 flex-center border-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -19,19 +20,19 @@ const ChangePassword = () => {
         <form className="flex items-center justify-between py-4 flex-col">
           <input
             type="text"
-            className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
+            className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="Email"
             required
           />
           <input
             type="password"
-            className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
+            className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="Current Password"
             required
           />
           <input
             type="password"
-            className="w-full px-3 py-2 rounded-md outline-slate-300 border mb-5 h-9"
+            className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="New Password"
             required
           />

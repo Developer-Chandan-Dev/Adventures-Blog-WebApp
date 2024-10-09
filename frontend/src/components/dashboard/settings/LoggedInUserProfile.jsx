@@ -6,9 +6,9 @@ const LoggedInUserProfile = () => {
 
   return (
     <>
-      <div className="rounded-2xl flex h-auto py-2 flex-wrap gap-x-2 px-2 gap-y-3 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg shadow accountDetailsForm">
+      <div className="rounded-2xl flex h-auto py-2 flex-wrap gap-x-2 px-2 gap-y-3 bg-white drop-shadow-lg shadow accountDetailsForm">
         <div className="w-[235px] h-56 mx-auto flex-center mx">
-          <div className="w-40 h-40 rounded-md overflow-hidden shadow drop-shadow flex-center">
+          <div className="w-40 h-40 rounded-md overflow-hidden shadow drop-shadow shadow flex-center">
             {authUser.profilePic ? (
                 <img
                   src={authUser.profilePic}

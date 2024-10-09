@@ -40,7 +40,8 @@ const Settings = () => {
         }}
       >
         <LoggedInUserProfile/>
-        <div className="rounded-2xl shadow w-80 backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white drop-shadow-lg h-32 px-6 py-5 text-sm accountActiveBox">
+        {/* backdrop-filter backdrop-blur-sm bg-opacity-20 */}
+        <div className="rounded-2xl shadow w-80  bg-white drop-shadow-lg h-32 px-6 py-5 text-sm accountActiveBox">
           <div className="flex items-center justify-between border-b py-2">
             <h2 className="font-semibold text-lg">My Account</h2>
             <div className="rounded-full w-7 h-7 flex-center border-2">

@@ -3,7 +3,16 @@ import { Route, Routes } from "react-router-dom";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
-import { Home, Blogs, Contact, About, Team, BlogDetailsPage, Login, Signup } from "./pages/client_pages/index";
+import {
+  Home,
+  Blogs,
+  Contact,
+  About,
+  Team,
+  BlogDetailsPage,
+  Login,
+  Signup,
+} from "./pages/client_pages/index";
 
 // <------------- Dashboard pages imports --------------->
 import {
@@ -27,6 +36,8 @@ import {
 // <============= Additional Components import =============>
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
+import CategoryPage from "./pages/client_pages/CategoryPage";
+import PrivateRoute from "./components/utlity/PrivateRoute";
 
 function App() {
   return (
@@ -88,8 +99,25 @@ function App() {
             }
           />
 
+          {/* Category Page */}
+          <Route
+            path="/category"
+            element={
+              <Layout>
+                <CategoryPage />
+              </Layout>
+            }
+          />
+
           {/* <-------------- Contact Page ---------------> */}
-          <Route path="/team"element={<Layout><Team /></Layout>}/>
+          <Route
+            path="/team"
+            element={
+              <Layout>
+                <Team />
+              </Layout>
+            }
+          />
 
           {/* <-------------- Login & Signup Page ---------------> */}
           <Route path="/login" element={<Login />} />
@@ -99,20 +127,20 @@ function App() {
 
           {/* <============ Dashboard Routes Start here ============> */}
 
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="" element={<DashboardPage />} />
-            <Route path="category" element={<Category />} />
-            <Route path="blogs" element={<DashboardBlogsPage />}>
-              <Route path="" element={<BlogsContainer />} />
-              <Route path="update/:id" element={<UpdateBlogs />} />
+          <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>}>
+            <Route path="" element={<PrivateRoute> <DashboardPage /></PrivateRoute>} />
+            <Route path="category" element={<PrivateRoute> <Category /></PrivateRoute>} />
+            <Route path="blogs" element={<PrivateRoute> <DashboardBlogsPage /></PrivateRoute>}>
+              <Route path="" element={<PrivateRoute> <BlogsContainer /></PrivateRoute>} />
+              <Route path="update/:id" element={<PrivateRoute>  <UpdateBlogs /></PrivateRoute>} />
             </Route>
-            <Route path="blogs/add" element={<AddBlogs />} />
-            <Route path="blogs/pending" element={<PendingBlogs />}>
-              <Route path="" element={<DraftBlogsContainer />} />
-              <Route path="update/:id" element={<UpdateBlogs />} />
+            <Route path="blogs/add" element={<PrivateRoute> <AddBlogs /></PrivateRoute>} />
+            <Route path="blogs/pending" element={<PrivateRoute> <PendingBlogs /></PrivateRoute>}>
+              <Route path="" element={<PrivateRoute> <DraftBlogsContainer /></PrivateRoute>} />
+              <Route path="update/:id" element={<PrivateRoute> <UpdateBlogs /></PrivateRoute>} />
             </Route>
-            <Route path="settings" element={<Settings />} />
-            <Route path="users" element={<Users />} />
+            <Route path="settings" element={<PrivateRoute> <Settings /></PrivateRoute>} />
+            <Route path="users" element={<PrivateRoute> <Users /></PrivateRoute>} />
           </Route>
           {/* <============ Dashboard Routes End here ============> */}
         </Routes>

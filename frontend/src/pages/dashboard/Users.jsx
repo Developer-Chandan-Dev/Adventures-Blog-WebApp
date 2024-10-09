@@ -69,7 +69,9 @@ const Users = () => {
           </thead>
           <tbody>
             <tr>
-              <td colSpan={9}>{error && <p>{error}</p>}</td>
+              <td colSpan={9}>
+                {error && <p className="text-red-400">{error}</p>}
+              </td>
             </tr>
 
             <tr>

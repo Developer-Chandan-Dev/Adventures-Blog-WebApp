@@ -9,13 +9,13 @@ import authService from "../../features/auth";
 import { useSelector } from "react-redux";
 import useFetchData from "../../hooks/useFetchData";
 
-const Form = ({ method = "POST", heading, api }) => {
+const Form = ({ method = "POST", heading, api, returnData = null }) => {
   const [content, setContent] = useState("");
   const editor = useRef(null);
 
   const authUser = useSelector((state) => state.user.user);
   const { data } = useFetchData("/api/v1/category");
-  console.log(data, "18");
+
   const {
     handleInputChange,
     handleFileChange,
@@ -67,12 +67,21 @@ const Form = ({ method = "POST", heading, api }) => {
       author: authUser._id,
     });
   }, []);
-  console.log(formData);
 
-  // User details
-
-  // GEt all categories
-  useEffect(() => {}, []);
+  // Logic for Fill fields automatic if user trying to updated post not a new post
+  useEffect(() => {
+    if (returnData !== null && method === "PUT") {
+      setFormData({
+        ...formData,
+        author: returnData?.author?._id,
+        title: returnData?.title,
+        slug: returnData?.slug,
+        category: returnData?.category,
+        excerpt: returnData?.excerpt,
+      });
+      setContent(returnData.content);
+    }
+  }, [returnData]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -147,10 +156,7 @@ const Form = ({ method = "POST", heading, api }) => {
             {data && data.categories != null
               ? data.categories.map(({ name, _id }) => (
                   <div key={_id} className="flex items-center gap-x-2">
-                    <label
-                      htmlFor={_id}
-                      className="font-normal ml-1 text-base"
-                    >
+                    <label htmlFor={_id} className="font-normal ml-1 text-base">
                       {name}
                     </label>
                     <input

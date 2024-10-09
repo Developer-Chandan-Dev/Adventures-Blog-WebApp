@@ -8,6 +8,7 @@ const Blogs = () => {
         <HeroSection
           title1="Explore"
           title2="Our Blogs with Categories"
+          searchBox={true}
           desc="It is a Blog platform where you can read blogs with different
           categories, I know you say that there are number of blog website are
           present in the market when why we come in your platform, then my

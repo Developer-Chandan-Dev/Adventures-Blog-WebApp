@@ -13,7 +13,6 @@ const useHandleBlogForm = (initialState, method) => {
       ...prev,
       [name]: value,
     }));
-    ``;
   };
 
   const handleFileChange = (e) => {

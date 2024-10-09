@@ -122,7 +122,6 @@ const getAllPosts = async (req, res) => {
 };
 
 const getDashboardBlogs = async (req, res) => {
-  console.log(req.user.role, req.user.username, req.user, "125");
   try {
     if (req.user.role === "admin") {
       console.log(req.user.role);
@@ -149,12 +148,15 @@ const getDashboardBlogs = async (req, res) => {
         "145",
         req.user._id
       );
-      const posts = await Post.find({ status: "published", author: req.user._id })
+      const posts = await Post.find({
+        status: "published",
+        author: req.user._id,
+      })
         .select("_id title slug createdAt status featuredBlog")
         .populate("author", "username _id")
         .populate("category", "name _id");
 
-      console.log(posts,'157');
+      console.log(posts, "157");
       if (!posts) {
         return res
           .status(400)
@@ -222,6 +224,28 @@ const getSinglePost = async (req, res) => {
       "username profilePic _id"
     );
     console.log(post);
+
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Blog not found" });
+    }
+    res.status(200).json({ success: true, post });
+  } catch (error) {
+    console.log("Error in getting single blog", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+// Get a single posts
+const getSinglePostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id,'242');
+
+    const post = await Post.findById({ _id: id }).select("-createdAt -coverImagePublicId -coverImage -comments -featuredBlog -views -status").populate(
+      "author",
+      "username profilePic _id"
+    );
+    console.log(post, "245");
 
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });
@@ -453,4 +477,5 @@ module.exports = {
   featuredPost,
   getDraftBlogs,
   publishUnPublishPost,
+  getSinglePostById,
 };

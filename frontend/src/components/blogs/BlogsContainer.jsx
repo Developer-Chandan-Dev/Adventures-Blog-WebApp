@@ -9,6 +9,13 @@ const BlogsContainer = () => {
     <>
       <section className="w-full sm:w-11/12 lg:w-[85%] px-2 p-5 h-auto mx-auto">
         <div className=" bg-white drop-shadow-sm rounded-t-full px-10 pt-2">
+          {/* <div>
+            <input
+              type="text"
+              className="w-[600px] h-12 rounded-md px-3 py-2 border-2 border-gray-200 outline-gray-400 text-lg"
+              placeholder="Search blogs..."
+            />
+          </div> */}
           <h1 className="text-3xl pb-2 pt-2 border-b-4 border-orange-300 font-semibold text-center px-3 w-48 mx-auto relative">
             Our <span className="orange_gradient">Blogs</span>
           </h1>
@@ -34,7 +41,7 @@ const BlogsContainer = () => {
             <div className="flex flex-wrap -m-4">
               {error && <p className="text-red-500">{error}</p>}
               {loading && "Loading..."}
-              
+
               <BlogCard data={data} />
             </div>
           </div>

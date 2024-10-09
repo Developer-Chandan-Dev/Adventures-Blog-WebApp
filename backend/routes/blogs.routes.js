@@ -11,6 +11,7 @@ const {
   featuredPost,
   getDraftBlogs,
   publishUnPublishPost,
+  getSinglePostById
 } = require("../controller/blogs.controller");
 const {
   isAuthenticated,
@@ -51,6 +52,9 @@ router.get(
 
 // Get single post
 router.get("/:slug", getSinglePost);
+
+// Get single post
+router.get("/byId/:id", getSinglePostById);
 
 // Update a post
 router.put(
