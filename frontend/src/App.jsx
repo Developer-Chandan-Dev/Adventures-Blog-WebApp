@@ -37,28 +37,36 @@ import {
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CategoryPage from "./pages/client_pages/CategoryPage";
-import PrivateRoute from "./components/utlity/PrivateRoute";
+import RoleProtectedRole from "./components/utlity/RoleProtectedRoute";
 import { useSelector } from "react-redux";
 
+/**
+ * App component serves as the main entry point for routing in the application.
+ * It handles both user-facing and admin dashboard routes, 
+ * utilizing role-based access control for secure navigation.
+ */
+
 function App() {
+  // Retrieve authenticated user information from Redux state
   const authUser = useSelector((state) => state.user.user);
-  // const navigate = useNavigate();
+
+  console.log(authUser);
 
   return (
     <>
+      {/* Ensure page scrolls to top on navigation */}
       <ScrollToTop />
       <main className="flex items-center justify-center flex-col bg-white">
+        {/* Define routes for the application */}
         <Routes>
           {/* <============ User Routes Start here ============> */}
 
           {/* <------------- Home Page --------------> */}
-
           <Route
             path="/"
             element={
               <Layout>
-                {" "}
-                <Home />{" "}
+                <Home />
               </Layout>
             }
           />
@@ -93,7 +101,7 @@ function App() {
             }
           />
 
-          {/* <-------------- Contact Page ---------------> */}
+          {/* <-------------- About Page ---------------> */}
           <Route
             path="/about"
             element={
@@ -103,7 +111,7 @@ function App() {
             }
           />
 
-          {/* Category Page */}
+          {/* <-------------- Category Page ---------------> */}
           <Route
             path="/category"
             element={
@@ -113,7 +121,7 @@ function App() {
             }
           />
 
-          {/* <-------------- Contact Page ---------------> */}
+          {/* <-------------- Team Page ---------------> */}
           <Route
             path="/team"
             element={
@@ -123,122 +131,45 @@ function App() {
             }
           />
 
-          {/* <-------------- Login & Signup Page ---------------> */}
-          <Route path="/login" element={authUser ? <Navigate to="/"/> : <Login />} />
-          <Route path="/signup" element={authUser ? <Navigate to="/"/> : <Signup />} />
-
-          {/* <============ User Routes End here ============> */}
+          {/* <-------------- Login & Signup Pages ---------------> */}
+          <Route
+            path="/login"
+            element={authUser ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={authUser ? <Navigate to="/" /> : <Signup />}
+          />
 
           {/* <============ Dashboard Routes Start here ============> */}
 
+          {/* <-------------- Dashboard ---------------> */}
           <Route
             path="/dashboard"
             element={
-              <PrivateRoute>
-                {" "}
-                <Dashboard />{" "}
-              </PrivateRoute>
+              <RoleProtectedRole allowedRoles={["admin", "author"]}>
+                <Dashboard />
+              </RoleProtectedRole>
             }
           >
-            <Route
-              path=""
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <DashboardPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="category"
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <Category />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="blogs"
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <DashboardBlogsPage />
-                </PrivateRoute>
-              }
-            >
-              <Route
-                path=""
-                element={
-                  <PrivateRoute>
-                    {" "}
-                    <BlogsContainer />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="update/:id"
-                element={
-                  <PrivateRoute>
-                    {" "}
-                    <UpdateBlogs />
-                  </PrivateRoute>
-                }
-              />
+            <Route path="" element={<DashboardPage />} />
+            <Route path="category" element={<Category />} />
+            <Route path="blogs" element={<DashboardBlogsPage />}>
+              <Route path="" element={<BlogsContainer />} />
+              <Route path="update/:id" element={<UpdateBlogs />} />
             </Route>
-            <Route
-              path="blogs/add"
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <AddBlogs />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="blogs/pending"
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <PendingBlogs />
-                </PrivateRoute>
-              }
-            >
-              <Route
-                path=""
-                element={
-                  <PrivateRoute>
-                    {" "}
-                    <DraftBlogsContainer />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="update/:id"
-                element={
-                  <PrivateRoute>
-                    {" "}
-                    <UpdateBlogs />
-                  </PrivateRoute>
-                }
-              />
+            <Route path="blogs/add" element={<AddBlogs />} />
+            <Route path="blogs/pending" element={<PendingBlogs />}>
+              <Route path="" element={<DraftBlogsContainer />} />
+              <Route path="update/:id" element={<UpdateBlogs />} />
             </Route>
-            <Route
-              path="settings"
-              element={
-                <PrivateRoute>
-                  {" "}
-                  <Settings />
-                </PrivateRoute>
-              }
-            />
+            <Route path="settings" element={<Settings />} />
             <Route
               path="users"
               element={
-                <PrivateRoute>
-                  {" "}
+                <RoleProtectedRole allowedRoles={["admin"]}>
                   <Users />
-                </PrivateRoute>
+                </RoleProtectedRole>
               }
             />
           </Route>

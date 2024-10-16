@@ -38,7 +38,7 @@ const Users = () => {
       </div>
       <div
         className=" px-4 py-2 w-full md:w-11/12 mx-auto overflow-auto relative bg-white rounded-xl drop-shadow"
-        style={{ height: "500px" }}
+        style={{ height: "540px" }}
       >
         <table
           className=" w-full mx-auto h-auto text-sm relative text-left text-gray-500"
@@ -108,6 +108,30 @@ const Users = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="w-full text-sm px-5 py-2 h-14 flex-center pb-2">
+        <div className="flex items-center gap-x-2">
+          <button
+            className="px-4 py-2 rounded-md drop-shadow shadow"
+            disabled={true}
+          >
+            Previous
+          </button>
+          <>
+            <button className="px-4 py-2  drop-shadow shadow-md bg-white rounded-md">
+              1
+            </button>
+            <button className="px-4 py-2 drop-shadow shadow rounded-md">
+              2
+            </button>
+            <button className="px-4 py-2 drop-shadow shadow rounded-md">
+              3
+            </button>
+          </>
+          <button className="px-4 py-2 bg-white shadow drop-shadow rounded-md">
+            Next
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import { Container } from "../index";
 
 // eslint-disable-next-line react/prop-types
 const PopularCategories = ({ categories }) => {
+  console.log(categories);
   return (
     <Container className="!py-20">
       <section className="text-gray-600 body-font">
@@ -22,8 +23,8 @@ const PopularCategories = ({ categories }) => {
             </p>
           </div>
           <div className="flex flex-wrap">
-            {categories != null
-              ? categories.map(({ name, desc, _id }) => (
+            {Array.isArray(categories) && categories?.length > 0
+              ? categories?.map(({ name, desc, _id }) => (
                   <div
                     key={_id}
                     className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60"
@@ -56,7 +57,7 @@ const PopularCategories = ({ categories }) => {
                     </a>
                   </div>
                 ))
-              : ""}
+              : "Categories not found"}
           </div>
           <Link to="/blogs/categories">
             <button className="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">

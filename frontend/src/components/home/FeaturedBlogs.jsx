@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import FeaturedBlog from "./FeaturedBlog";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import FeaturedBlog from "./FeaturedBlog";
 
-// eslint-disable-next-line react/prop-types
-const FeaturedBlogs = ({ featuredPosts = "Featured Posts available" }) => {
-  // console.log(featuredPosts);
+const FeaturedBlogs = ({ featuredPosts = [] }) => {
 
-  const [data, setData] = useState([]);
+  console.log(featuredPosts);
 
   const settings = {
     dots: true,
@@ -54,28 +51,14 @@ const FeaturedBlogs = ({ featuredPosts = "Featured Posts available" }) => {
       },
     ],
   };
-
-  useEffect(() => {
-    const data = [];
-    if (featuredPosts !== null) {
-      featuredPosts.forEach((element) => {
-        if (element != null) {
-          data.push(element);
-        }
-      });
-    }
-
-    setData(data);
-  }, [featuredPosts]);
-
   return (
     <>
       <h1 className="text-2xl pb-8 pt-2 border-b-4 border-orange-300 font-semibold text-center px-3 w-64 mt-5 mx-auto h_2 relative">
         Featured <span className="orange_gradient">Blogs</span>
       </h1>
       <section className="w-[90%] mx-auto sm:w-[88%] md:w-[85%] px-2 mt-10 p-5 gap-x-2 h-auto blogContainer">
-        <Slider {...settings}>
-          {featuredPosts != null
+        {/* <Slider {...settings}>
+          {Array.isArray(featuredPosts) && featuredPosts.length > 0
             ? featuredPosts.map(
                 ({ _id, title, author, createdAt, coverImage, slug }) => (
                   <FeaturedBlog
@@ -89,7 +72,25 @@ const FeaturedBlogs = ({ featuredPosts = "Featured Posts available" }) => {
                   />
                 )
               )
-            : ""}
+            : "Featured Posts not found"}
+        </Slider> */}
+
+        <Slider {...settings}>
+        {Array.isArray(featuredPosts) && featuredPosts.length > 0
+          ? featuredPosts.map(
+              ({ _id, title, author, createdAt, coverImage, slug }) => (
+                <FeaturedBlog
+                  key={_id}
+                  id={_id}
+                  title={title}
+                  author={author}
+                  slug={slug}
+                  createdAt={createdAt}
+                  imageUrl={coverImage}
+                />
+              )
+            )
+          : "Featured Posts not found"}
         </Slider>
       </section>
     </>

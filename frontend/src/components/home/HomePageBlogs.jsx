@@ -13,9 +13,8 @@ const HomePageBlogs = ({ latestPosts }) => {
       <section className="text-gray-600 body-font w-full sm:w-11/12 lg:w-[85%] mx-auto mt-10">
         <div className="container px-5 pt-0 pb-14 mx-auto">
           <div className="flex flex-wrap -m-4">
-            {latestPosts !== null && latestPosts.length > 0
-              ? // eslint-disable-next-line react/prop-types
-                latestPosts.map(
+            {Array.isArray(latestPosts) && latestPosts.length > 0
+              ? latestPosts.map(
                   ({
                     _id,
                     title,

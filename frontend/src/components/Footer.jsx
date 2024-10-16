@@ -180,6 +180,7 @@ const Footer = () => {
             <li className="mr-4 mb-2">Terms</li>
             <li className="mr-4 mb-2">Policy</li>
           </ul>
+          <Link to="/dashboard"><span>Admin Panel</span></Link>
         </div>
       </div>
     </section>
