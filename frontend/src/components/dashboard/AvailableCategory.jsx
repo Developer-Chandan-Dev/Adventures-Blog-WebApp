@@ -7,30 +7,33 @@ import {
   setCategories,
   setLoading,
   setError,
+  deleteCategory,
 } from "../../store/features/categorySlice";
+import axios from "axios";
 
 const AvailableCategory = () => {
   const dispatch = useDispatch();
   const { data = [], error, loading } = useFetchData("/api/v1/category/");
 
   useEffect(() => {
-    if (loading) {
-      dispatch(setLoading(true)); // Set loading to true in Redux
-    } else {
-      dispatch(setLoading(false)); // Set loading to false in Redux
-    }
-
-    if (data) {
-      dispatch(setCategories(data && data.categories)); // Dispatch the fetched data to Redux
-    }
-
-    if (error) {
-      dispatch(setError(error)); // Dispatch error to Redux if any
-    }
+    loading ? dispatch(setLoading(true)) : dispatch(setLoading(false)); // Toggle loading true or false
+    data && dispatch(setCategories(data && data.categories)); // Dispatch the fetched data to Redux
+    error && dispatch(setError(error)); // Dispatch error to Redux if any
   }, [data, dispatch, error, loading]);
 
   const { categories } = useSelector((state) => state.categories);
-  console.log(categories);
+
+  const handleDeleteCategory = async (id) => {
+    try {
+      await axios.delete(`/api/v1/category/${id}`);
+      dispatch(deleteCategory(id));
+      console.log("Category deleted successfully");
+    } catch (error) {
+      console.error("Errror deleting category", error);
+    }
+  };
+
+
 
   return (
     <>
@@ -57,6 +60,7 @@ const AvailableCategory = () => {
                   status={element?.active}
                   setOnHome={element?.setOnHome}
                   description={element?.description}
+                  onDelete={handleDeleteCategory}
                 />
               ))
             : "Categories not found"}

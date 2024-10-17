@@ -57,6 +57,7 @@ const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedData = req.body;
+    console.log(id, updatedData, '60');
 
     const name = await Category.findById(id);
     if (!name) {
