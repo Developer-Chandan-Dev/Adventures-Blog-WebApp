@@ -21,7 +21,7 @@ const addComment = async (req, res) => {
 
     res.status(201).json({ success: true, comment: newComment });
   } catch (error) {
-    console.log("Error in adding comment", error);
+    console.error("Error in adding comment", error);
     res
       .status(500)
       .json({ success: false, error: "Internal server error", error });
@@ -40,7 +40,7 @@ const getComments = async (req, res) => {
 
     res.status(200).json({ success: true, comments });
   } catch (error) {
-    console.log("Failed to fetch comments", error);
+    console.error("Failed to fetch comments", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to fetch comments", error });
@@ -72,7 +72,7 @@ const updateComment = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Comment updated", comment });
   } catch (error) {
-    console.log("Error in adding comment", error);
+    console.error("Error in adding comment", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to update comment", error });
@@ -102,7 +102,7 @@ const deleteComment = async (req, res) => {
     await comment.deleteOne();
     res.status(200).json({ success: true, message: "Comment deleted" });
   } catch (error) {
-    console.log("Error in adding comment", error);
+    console.error("Error in adding comment", error);
     res.status(500).json({ success: false, error: "Failed to delete" });
   }
 };
@@ -133,7 +133,7 @@ const likeComment = async (req, res) => {
       likes: comment.likes,
     });
   } catch (error) {
-    console.log("Failed to like/unlike comment", error);
+    console.error("Failed to like/unlike comment", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to link/unlike comment" });

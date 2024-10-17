@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const authUser = useSelector((state) => state.user.user);
+  console.log(authUser);
   return (
     <section className="flex items-center justify-center flex-col w-full pb-24 sm:pb-5 text-gray-600 drop-shadow mt-10 text-sm footer bg-white">
       <div className="flex justify-between flex-wrap w-4/5 mt-10 mb-5 py-5 ">
@@ -180,7 +183,15 @@ const Footer = () => {
             <li className="mr-4 mb-2">Terms</li>
             <li className="mr-4 mb-2">Policy</li>
           </ul>
-          <Link to="/dashboard"><span>Admin Panel</span></Link>
+          {(authUser && authUser.role === "admin") ||
+          (authUser && authUser.role === "author") ||
+          (authUser && authUser.teamMember === true) ? (
+            <Link to="/dashboard">
+              <span>Admin Panel</span>
+            </Link>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </section>

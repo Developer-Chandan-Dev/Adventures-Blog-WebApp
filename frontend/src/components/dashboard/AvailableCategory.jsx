@@ -24,10 +24,13 @@ const AvailableCategory = () => {
       dispatch(setCategories(data && data.categories)); // Dispatch the fetched data to Redux
     }
 
-    if (error) { 
+    if (error) {
       dispatch(setError(error)); // Dispatch error to Redux if any
     }
   }, [data, dispatch, error, loading]);
+
+  const { categories } = useSelector((state) => state.categories);
+  console.log(categories);
 
   return (
     <>
@@ -39,20 +42,20 @@ const AvailableCategory = () => {
           {error && <p>{error}</p>}
           {loading && (
             <div className="w-full h-52 flex-center">
-              <Spinner />{" "}
+              <Spinner />
             </div>
           )}
           {data &&
-          Array.isArray(data.categories) &&
-          data.categories.length > 0 &&
-          data.categories !== null
-            ? data.categories.map((element, index) => (
+          Array.isArray(categories) &&
+          categories.length > 0 &&
+          categories !== null
+            ? categories.map((element, index) => (
                 <CategoryBox
                   key={index}
-                  name={element.name}
-                  _id={element._id}
-                  status={element.active}
-                  showOnHome={element?.setOnHome}
+                  _id={element?._id}
+                  name={element?.name}
+                  status={element?.active}
+                  setOnHome={element?.setOnHome}
                   description={element?.description}
                 />
               ))

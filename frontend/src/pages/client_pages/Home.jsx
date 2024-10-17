@@ -59,7 +59,7 @@ const Home = () => {
           answer is that there you can add your own blog."
       />
       {/* Featured Blogs component */}
-      <FeaturedBlogs featuredPosts={featuredPosts} />
+      {/* <FeaturedBlogs featuredPosts={featuredPosts} /> */}
       {/* Home Page Blogs component */}
       <HomePageBlogs latestPosts={latestPosts} />
       {/* Popular Categories component */}

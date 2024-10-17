@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { Container } from "../index";
 
@@ -13,18 +14,17 @@ const PopularCategories = ({ categories }) => {
               ROOF PARTY POLAROID
             </h2>
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
-              Master Cleanse Reliac Heirloom
+              Our Popular Categories
             </h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-              Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-              gentrify, subway tile poke farm-to-table. Franzen you probably
-              haven't heard of them man bun deep jianbing selfies heirloom prism
-              food truck ugh squid celiac humblebrag.
+              These are popular categories available on our website. You can
+              explore our other categories and category related posts by
+              clicking on Explore. Please check out one time.
             </p>
           </div>
           <div className="flex flex-wrap">
             {Array.isArray(categories) && categories?.length > 0
-              ? categories?.map(({ name, desc, _id }) => (
+              ? categories?.map(({ name, description, _id }) => (
                   <div
                     key={_id}
                     className="xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60"
@@ -33,8 +33,8 @@ const PopularCategories = ({ categories }) => {
                       {name}
                     </h2>
                     <p className="leading-relaxed text-base mb-4">
-                      {desc
-                        ? desc
+                      {description
+                        ? description
                         : `Fingerstache flexitarian street art 8-bit waistcoat.
                       Distillery hexagon disrupt edison bulbche.`}
                     </p>

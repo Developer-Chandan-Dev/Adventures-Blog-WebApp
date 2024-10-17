@@ -5,7 +5,6 @@ const generateTokenAndSetCookie = require("../utils/generateToken");
 const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(username, email, password);
 
     if (!username || !email || !password) {
       return res
@@ -14,7 +13,6 @@ const signup = async (req, res) => {
     }
 
     const user = await User.findOne({ email: email });
-    console.log(user, "17");
     if (user) {
       return res
         .status(400)
@@ -47,7 +45,7 @@ const signup = async (req, res) => {
       return res.status(400).json({ success: false, error: "Invalid User" });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -55,7 +53,6 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
     if (!email || !password) {
       return res
         .status(404)
@@ -63,7 +60,6 @@ const login = async (req, res) => {
     }
 
     const user = await User.findOne({ email: email });
-    console.log(user, "64");
 
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });

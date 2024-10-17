@@ -3,24 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import authService from "../../features/auth";
 import { login } from "../../store/features/userSlice";
+import SmallSpinner from "../../components/utlity/SmallSpinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-
     // handle Inputs
     if (!email || !password) {
+      setLoading(false);
       return setError("Please fill all the fields");
     }
 
     if (password.length < 6) {
+      setLoading(false);
       return setError("Password must be atleast 6 characters");
     }
 
@@ -30,12 +34,16 @@ const Login = () => {
       dispatch(login(res.data.user));
       setEmail("");
       setPassword("");
+      setLoading(false);
+      setError(null);
       navigate("/");
     } else if (res.data.success === false) {
       setError(res.data.error);
+      setLoading(false);
     } else {
       console.log(res);
       setError("Something went wrong");
+      setLoading(false);
     }
   };
 
@@ -99,7 +107,7 @@ const Login = () => {
                 className="w-[400px] h-[44px] rounded-lg bg-[#7795f8] text-white font-semibold py-1 inputBox"
                 type="submit"
               >
-                Sign in
+                {loading ? <SmallSpinner /> : "Sign in"}
               </button>
             </div>
             <div>

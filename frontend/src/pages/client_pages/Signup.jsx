@@ -2,34 +2,41 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../pages/style.css";
 import { useState } from "react";
 import authService from "../../features/auth";
+import SmallSpinner from "../../components/utlity/SmallSpinner";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     // handle Inputs
     if (!username || !email || !password) {
+      setLoading(false);
       return setError("Please fill all the fields");
     }
 
     if (password.length < 6) {
+      setLoading(false);
       return setError("Password must be atleast 6 characters");
     }
 
     const res = await authService.createAccount(username, email, password);
 
     if (res.data.success === true) {
+      setLoading(false);
       navigate("/login");
     } else if (res.data.success === false) {
       // console.log(res.data.error);
       setError(res.data.error);
+      setLoading(false);
     }
   };
   return (
@@ -109,7 +116,7 @@ const Signup = () => {
                 className="w-[400px] h-[44px] rounded-lg bg-[#7795f8] text-white font-semibold py-1 inputBox"
                 type="submit"
               >
-                Sign up
+                {loading ? <SmallSpinner /> : "Sign up"}
               </button>
             </div>
             <div>

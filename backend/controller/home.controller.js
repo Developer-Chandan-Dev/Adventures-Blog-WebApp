@@ -78,16 +78,15 @@ const homeData = async (req, res) => {
         },
       },
     ]);
-    console.log(latestPosts, "83");
     const categories = await Category.find({ setOnHome: true }).select(
-      "_id name"
+      "_id name description"
     );
 
     res
       .status(200)
       .json({ success: true, featuredPosts, latestPosts, categories });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

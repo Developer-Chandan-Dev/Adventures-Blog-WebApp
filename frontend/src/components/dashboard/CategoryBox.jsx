@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const CategoryBox = ({ name, _id, status, showOnHome, description }) => {
+const CategoryBox = ({ name, _id, status, setOnHome, description }) => {
   const [active, setActive] = useState(false);
   const [editActive, setEditActive] = useState(false);
 
@@ -32,7 +32,7 @@ const CategoryBox = ({ name, _id, status, showOnHome, description }) => {
               onClick={handleActiveChange}
             >
               <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
-              {active === true && <path d="M22 4L12 14.01l-3-3"></path>}
+              {setOnHome === true && <path d="M22 4L12 14.01l-3-3"></path>}
             </svg>
             <span className="title-font font-medium">{name}</span>
           </div>

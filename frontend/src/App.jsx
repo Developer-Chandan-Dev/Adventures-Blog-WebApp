@@ -1,5 +1,5 @@
 import "./App.css";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 // <============= Page imports start here =============>
 // <------------- User pages imports --------------->
@@ -113,7 +113,7 @@ function App() {
 
           {/* <-------------- Category Page ---------------> */}
           <Route
-            path="/category"
+            path="/blogs/categories"
             element={
               <Layout>
                 <CategoryPage />

@@ -24,14 +24,14 @@ const addCategory = async (req, res) => {
       await newCategory.save();
       res
         .status(201)
-        .json({ success: true, message: "Category added successfully" });
+        .json({ success: true, message: "Category added successfully", newCategory });
     } else {
       res
         .status(400)
         .json({ success: false, error: "Failed to creating category" });
     }
   } catch (error) {
-    console.log("Error in signup controller", error);
+    console.error("Error in signup controller", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -48,7 +48,7 @@ const getAllCategory = async (req, res) => {
 
     res.status(200).json({ success: true, categories });
   } catch (error) {
-    console.log("Error in signup controller", error);
+    console.error("Error in signup controller", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -77,7 +77,7 @@ const updateCategory = async (req, res) => {
 
     res.status(200).json(updatedCategory);
   } catch (error) {
-    console.log("Error in adding tag", error);
+    console.error("Error in adding tag", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -96,7 +96,7 @@ const deleteCategory = async (req, res) => {
     await Category.findByIdAndDelete(id);
     res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
-    console.log("Error in signup controller", error);
+    console.error("Error in signup controller", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -132,7 +132,7 @@ const setOnHome = async (req, res) => {
       categories: updatedCategory,
     });
   } catch (error) {
-    console.log("Failed to update home categories", error);
+    console.error("Failed to update home categories", error);
     res.status(500).json({ error: "Failed to update home categories" });
   }
 };

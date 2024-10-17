@@ -12,7 +12,6 @@ const addPost = async (req, res) => {
   try {
     const data = req.body;
     const coverImage = req.file ? req.file.path : null; // Get local file path
-    console.log(data, coverImage, "14");
 
     // Required fields for the post
     const requiredFields = [
@@ -93,7 +92,7 @@ const addPost = async (req, res) => {
         .json({ success: false, error: "Something went wrong saving time" });
     }
   } catch (error) {
-    console.log("Error :", error);
+    console.error("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -113,10 +112,9 @@ const getAllPosts = async (req, res) => {
         .json({ success: false, error: "Blogs or categories not found" });
     }
 
-    console.log(posts, categories);
     res.status(200).json({ success: true, posts, categories });
   } catch (error) {
-    console.log("Error :", error);
+    console.error("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -160,7 +158,6 @@ const getDashboardBlogs = async (req, res) => {
           .json({ success: false, error: "Blogs not found" });
       }
 
-      // console.log(posts);
       return res
         .status(200)
         .json({ success: true, posts, totalItems, totalPages });
@@ -216,7 +213,7 @@ const getDashboardBlogs = async (req, res) => {
     //   return res.status(200).json({ success: true, posts });
     // }
   } catch (error) {
-    console.log("Error :", error);
+    console.error("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -232,10 +229,9 @@ const getDraftBlogs = async (req, res) => {
       return res.status(400).json({ success: false, error: "Blogs not found" });
     }
 
-    console.log(posts);
     res.status(200).json({ success: true, posts });
   } catch (error) {
-    console.log("Error :", error);
+    console.error("Error :", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
@@ -249,14 +245,13 @@ const getSinglePost = async (req, res) => {
       "author",
       "username profilePic _id"
     );
-    console.log(post);
 
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });
     }
     res.status(200).json({ success: true, post });
   } catch (error) {
-    console.log("Error in getting single blog", error);
+    console.error("Error in getting single blog", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -265,21 +260,19 @@ const getSinglePost = async (req, res) => {
 const getSinglePostById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id, "242");
 
     const post = await Post.findById({ _id: id })
       .select(
         "-createdAt -coverImagePublicId -coverImage -comments -featuredBlog -views -status"
       )
       .populate("author", "username profilePic _id");
-    console.log(post, "245");
-
+    
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });
     }
     res.status(200).json({ success: true, post });
   } catch (error) {
-    console.log("Error in getting single blog", error);
+    console.error("Error in getting single blog", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -301,7 +294,6 @@ const updatePost = async (req, res) => {
 
     // Delete the old profile picture if a new one is provided
     if (post.coverImagePublicId && coverImage) {
-      console.log("Deleting old image with pulic ID:", post.coverImagePublicId);
       await deleteFromCloudinary(post.coverImagePublicId);
     }
 
@@ -343,7 +335,7 @@ const updatePost = async (req, res) => {
       updatedPost,
     });
   } catch (error) {
-    console.log("Error in adding tag", error);
+    console.error("Error in adding tag", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
@@ -371,14 +363,13 @@ const deletePost = async (req, res) => {
 
     // Delete coverImage from cloudinary
     if (post.coverImagePublicId && post.coverImage) {
-      console.log("Deleting old image with pulic ID:", post.coverImagePublicId);
       await deleteFromCloudinary(post.coverImagePublicId);
     }
 
     await post.deleteOne();
     res.status(200).json({ success: true, message: "Post deleted" });
   } catch (error) {
-    console.log("Error in deleting post", error);
+    console.error("Error in deleting post", error);
     res.status(500).json({ success: true, error: "Failed to delete post" });
   }
 };
@@ -442,7 +433,7 @@ const featuredPost = async (req, res) => {
       } featured post`,
     });
   } catch (error) {
-    console.log("Failed to update featured post", error);
+    console.error("Failed to update featured post", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to update featured post" });
@@ -456,11 +447,9 @@ const likePost = async (req, res) => {
     const userId = req.user._id;
 
     const post = await Post.findById(postId);
-    // console.log(post);
     if (!post) {
       return res.status(404).json({ success: false, error: "Post not found" });
     }
-    console.log(post.likes);
     // Check if the user already liked the post
     if (post.likes.includes(userId)) {
       // If user already liked the post, remove the like (dislike)
@@ -486,7 +475,7 @@ const likePost = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("Failed to like/unlike comment", error);
+    console.error("Failed to like/unlike comment", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to like/unlike comment" });

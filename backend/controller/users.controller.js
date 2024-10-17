@@ -10,14 +10,14 @@ const getAllUsers = async (req, res) => {
     const users = await User.find().select(
       "-password -bio -profilePicPublicId -updatedAt"
     );
-    console.log(users,'13');
+
     if (!users) {
       return res.status(404).json({ success: false, error: "Users not found" });
     }
 
     res.status(200).json({ success: true, users });
   } catch (error) {
-    console.log("Failed to get all user", error);
+    console.error("Failed to get all user", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to get all user", error });
@@ -37,7 +37,7 @@ const getUser = async (req, res) => {
 
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.log("Failed to get user details", error);
+    console.error("Failed to get user details", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to get user details", error });
@@ -58,13 +58,8 @@ const updateUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ seccess: false, error: "User not found" });
     }
-    console.log(profilePic, user.profilePicPublicId);
     // Delete the old profile picture of a new one is provided
     if (user.profilePicPublicId && profilePic) {
-      console.log(
-        "Deleting old image with public ID:",
-        user.profilePicPublicId
-      );
       await deleteFromCloudinary(user.profilePicPublicId);
     }
 
@@ -102,7 +97,7 @@ const updateUser = async (req, res) => {
 
     res.status(200).json({ success: true, message: "User details updated" });
   } catch (error) {
-    console.log("Failed to update user details", error);
+    console.error("Failed to update user details", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to update user details", error });
@@ -121,14 +116,13 @@ const deleteUser = async (req, res) => {
 
     // Delete profilePic from cloudinary
     if (user.profilePicPublicId && user.profilePic) {
-      console.log("Deleting old image with pulic ID:", user.profilePicPublicId);
       await deleteFromCloudinary(user.profilePicPublicId);
     }
 
     await User.deleteOne();
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (error) {
-    console.log("Failed to delete user", error);
+    console.error("Failed to delete user", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to delete user", error });
@@ -162,7 +156,7 @@ const blockUnblockUser = async (req, res) => {
 
     await user.save();
   } catch (error) {
-    console.log("Failed to block/unblock user", error);
+    console.error("Failed to block/unblock user", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to block/unblock user", error });
@@ -174,7 +168,6 @@ const updateRole = async (req, res) => {
   try {
     const { id } = req.params;
     const { role } = req.body;
-    console.log(role);
 
     if (!role) {
       return res
@@ -196,7 +189,7 @@ const updateRole = async (req, res) => {
       .status(200)
       .json({ success: true, message: `User role updated to ${user.role}` });
   } catch (error) {
-    console.log("Failed to update user details", error);
+    console.error("Failed to update user details", error);
     res
       .status(500)
       .json({ success: false, error: "Failed to update user details", error });
@@ -207,7 +200,6 @@ const updateRole = async (req, res) => {
 const promoteToTeamMember = async (req, res) => {
   try {
     const userId = req.params.userId;
-    console.log(userId, "207");
 
     const user = await User.findById(userId).select("_id teamMember");
 
@@ -234,7 +226,7 @@ const promoteToTeamMember = async (req, res) => {
       }`,
     });
   } catch (error) {
-    console.log("Error promoting user", error);
+    console.error("Error promoting user", error);
     res
       .status(500)
       .json({ status: false, error: "Error promoting user", error });
@@ -249,7 +241,7 @@ const getTeamMembers = async (req, res) => {
     );
     res.status(200).json({ status: true, teamMembers });
   } catch (error) {
-    console.log("Error fetching team members", error);
+    console.error("Error fetching team members", error);
     res
       .status(500)
       .json({ status: false, error: "Error fetching team members", error });
