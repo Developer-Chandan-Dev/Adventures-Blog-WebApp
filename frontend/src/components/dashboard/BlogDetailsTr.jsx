@@ -42,10 +42,10 @@ const BlogDetailsTr = ({
       <tr className="w-full h-12 cursor-pointer hover:shadow border-b  hover:bg-gray-50 text-gray-500">
         <td className="px-4 font-medium">{index + 1}</td>
         <td className="px-4">
-          {title.length > 30 ? title.slice(0, 30) + ".." : title || "N/A"}
+          {title.length > 20 ? title.slice(0, 20) + ".." : title || "N/A"}
         </td>
         <td className="pl-5">
-          {slug.length > 30 ? slug.slice(0, 30) + ".." : slug || "N/A"}
+          {slug.length > 20 ? slug.slice(0, 20) + ".." : slug || "N/A"}
         </td>
         <td className="pl-5">
           <select
@@ -87,7 +87,7 @@ const BlogDetailsTr = ({
         <td className="pl-">
           <div className="flex items-center ml-8 gap-x-3">
             <div title="Edit Blog">
-              <Link to={`/dashboard/blogs/update/${_id}`}>
+              <Link to={`/dashboard/blogs/pending/update/${_id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"

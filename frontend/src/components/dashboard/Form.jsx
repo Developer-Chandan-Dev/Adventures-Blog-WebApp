@@ -8,6 +8,8 @@ import useHandleBlogForm from "../../hooks/useHandleBlogForm";
 import authService from "../../features/auth";
 import { useSelector } from "react-redux";
 import useFetchData from "../../hooks/useFetchData";
+import SmallSpinner from "../utlity/SmallSpinner";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Form = ({ method = "POST", heading, api, returnData = null }) => {
   const [content, setContent] = useState("");
@@ -15,6 +17,8 @@ const Form = ({ method = "POST", heading, api, returnData = null }) => {
 
   const authUser = useSelector((state) => state.user.user);
   const { data } = useFetchData("/api/v1/category");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     handleInputChange,
@@ -86,8 +90,13 @@ const Form = ({ method = "POST", heading, api, returnData = null }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = await handleSubmit(api);
-    if (data) {
-      alert(data.message);
+    console.log(data);
+    if (data.success === true) {
+      console.log(data);
+      setContent("");
+      alert("Update successfully");
+      const path = location.pathname.split("/update")[0];
+      navigate(path);
       // Handle success (e.g., rest form, show success message)
     }
   };
@@ -218,7 +227,7 @@ const Form = ({ method = "POST", heading, api, returnData = null }) => {
               type="submit"
               disabled={loading}
             >
-              {loading ? "Updating Post" : "Update Post"}
+              {loading ? <SmallSpinner /> : "Update Post"}
             </button>
           )}
 
@@ -230,7 +239,7 @@ const Form = ({ method = "POST", heading, api, returnData = null }) => {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? "Creating Post" : "Create Post"}
+                {loading ? <SmallSpinner /> : "Create Post"}
               </button>
               <button
                 className="px-4 py-[6px] bg-[white] text-[crimson] drop-shadow-lg transition-all border-2 border-[crimson] hover:bg-[crimson] hover:text-white rounded"

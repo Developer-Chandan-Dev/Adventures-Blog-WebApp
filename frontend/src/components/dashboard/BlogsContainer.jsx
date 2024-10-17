@@ -7,7 +7,7 @@ import useFetchDataWithPagination from "../../hooks/useFetchDataWithPagination";
 const BlogsContainer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
   const [searchBy, setSearchBy] = useState("title");
   const [itemsPerPage] = useState(7); // Define items per page
 

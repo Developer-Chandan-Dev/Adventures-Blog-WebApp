@@ -34,8 +34,8 @@ const postSchema = new mongoose.Schema(
     },
     // Array of categories
     tags: [{ type: String }], // Array of tags for blog post
-    coverImage: { type: String, required: true }, // URL for the cover image of the blog post
-    coverImagePublicId: { type: String, required: true },
+    coverImage: { type: String }, // URL for the cover image of the blog post
+    coverImagePublicId: { type: String },
     status: { type: String, enum: ["draft", "published"], default: "draft" }, // Post status
     views: { type: Number, default: 0 }, // View count
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // List of user to liked the post

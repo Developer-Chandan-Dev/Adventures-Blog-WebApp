@@ -266,7 +266,7 @@ const getSinglePostById = async (req, res) => {
         "-createdAt -coverImagePublicId -coverImage -comments -featuredBlog -views -status"
       )
       .populate("author", "username profilePic _id");
-    
+
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });
     }
@@ -312,8 +312,8 @@ const updatePost = async (req, res) => {
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       {
-        coverImage: coverImageUrl,
-        coverImagePublicId: coverImagePublicId,
+        coverImage: coverImage !== null && coverImageUrl,
+        coverImagePublicId: coverImage !== null && coverImagePublicId,
         ...updatedData,
       },
       {

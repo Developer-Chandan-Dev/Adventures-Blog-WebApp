@@ -56,7 +56,7 @@ const useHandleBlogForm = (initialState, method) => {
 
       setLoading(false);
       setFormData(initialState);
-      //   console.log(response.data);
+      return response.data;
     } catch (error) {
       console.log(error);
       setLoading(false);
