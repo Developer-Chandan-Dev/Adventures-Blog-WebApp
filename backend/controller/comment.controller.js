@@ -6,6 +6,7 @@ const addComment = async (req, res) => {
     const { postId } = req.params;
     const { content } = req.body;
     const userId = req.user._id;
+    console.log(postId, content, userId);
 
     if (!content) {
       return res

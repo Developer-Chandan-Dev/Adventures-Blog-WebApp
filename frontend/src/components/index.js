@@ -6,7 +6,7 @@ import ScrollToTop from "./ScrollToTop";
 import BlogCard from "./blogs/BlogCard";
 import BlogCardInfo from "./blogs/BlogCardInfo";
 import BlogContent from "./blogs/BlogContent";
-import BlogForm from "./blogs/BlogForm";
+import CommentForm from "./blogs/CommentForm";
 import BlogPageSidebar from "./blogs/BlogPageSidebar";
 import BlogsContainer from "./dashboard/BlogsContainer";
 import BlogTags from "./blogs/BlogTags";
@@ -40,7 +40,7 @@ export {
   BlogCard,
   BlogCardInfo,
   BlogContent,
-  BlogForm,
+  CommentForm,
   BlogPageSidebar,
   BlogsContainer,
   BlogTags,

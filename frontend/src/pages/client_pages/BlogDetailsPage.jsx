@@ -1,6 +1,6 @@
 import img1 from "../../assets/1.jpg";
 import BlogPageSidebar from "../../components/blogs/BlogPageSidebar";
-import BlogForm from "../../components/blogs/BlogForm";
+import CommentForm from "../../components/blogs/CommentForm";
 import BlogTags from "../../components/blogs/BlogTags";
 import RelatedTopics from "../../components/blogs/RelatedTopics";
 import BlogContent from "../../components/blogs/BlogContent";
@@ -33,14 +33,21 @@ const BlogDetailsPage = () => {
           <div className="mx-auto w-full flex gap-x-4 justify-between">
             <div className="w-[70%] h-auto px-5 py-5 bg-white rounded-md drop-shadow">
               <div className="w-full h-auto bg-gradient-to-r mx-auto rounded-md overflow-hidden">
+                {/* There is some error  */}
                 <img
-                  src={data && data.post ? data.post.coverImage : img1}
+                  src={
+                    data &&
+                    data.post &&
+                    data.post.coverImage !== "null" &&
+                    data.post.coverImage !== null
+                      ? data.post.coverImage
+                      : img1
+                  }
                   alt="banner image"
                   className="w-full h-auto"
                 />
               </div>
 
-              
               {loading && (
                 <div className="w-full h-[400px] flex-center">
                   <Spinner />
@@ -82,7 +89,7 @@ const BlogDetailsPage = () => {
                   </svg>
                 </div>
               </div>
-              <BlogForm />
+              <CommentForm postId={data?.post._id} />
               <div className="py-5 px-2">
                 <h2 className="py-8 text-2xl font-semibold pl-3 relative after:absolute after:w-[6px] after:h-8 after:bg-red-200 after:left-0">
                   Added Comments
