@@ -14,7 +14,7 @@ const {
 } = require("../middlewares/isAuthenticated");
 
 // Add a comment
-router.post("/:postId", isAuthenticated, checkBlockedAfterAuth, addComment);
+router.post("/:postId/comment", isAuthenticated, checkBlockedAfterAuth, addComment);
 
 // Get comments for a specific post
 router.get("/:postId", getComments);

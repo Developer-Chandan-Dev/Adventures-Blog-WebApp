@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import sidebarReducer from "./features/sidebarSlice";
 import userReducer from "./features/userSlice.js";
 import categoryReducer from "./features/categorySlice.js";
+import commentReducer from "./features/commentSlice.js";
 
 // Create and configure the store
 export const store = configureStore({
@@ -9,5 +10,6 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     user: userReducer,
     categories: categoryReducer,
+    comments: commentReducer,
   },
 });

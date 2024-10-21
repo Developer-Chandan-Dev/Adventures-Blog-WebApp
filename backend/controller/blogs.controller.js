@@ -6,6 +6,7 @@ const {
   deleteFromCloudinary,
 } = require("../utils/uploadToCloudinary.js");
 const sanitizeHtml = require("sanitize-html");
+const Comment = require("../models/comment.models.js");
 
 // add a new post
 const addPost = async (req, res) => {
@@ -245,11 +246,14 @@ const getSinglePost = async (req, res) => {
       "author",
       "username profilePic _id"
     );
+    console.log(post._id);
+    const comments = await Comment.find({ postId: post._id });
+    console.log(comments, "250");
 
     if (!post) {
       return res.status(404).json({ success: false, error: "Blog not found" });
     }
-    res.status(200).json({ success: true, post });
+    res.status(200).json({ success: true, post, comments });
   } catch (error) {
     console.error("Error in getting single blog", error);
     res.status(500).json({ success: false, error: "Internal server error" });

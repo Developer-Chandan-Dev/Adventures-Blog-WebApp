@@ -1,4 +1,5 @@
 const Comment = require("../models/comment.models");
+const Post = require("../models/post.models");
 
 // Add a comment to a post
 const addComment = async (req, res) => {
@@ -14,12 +15,15 @@ const addComment = async (req, res) => {
         .json({ status: false, error: "Message is required" });
     }
 
+    const post = await Post.findById({ _id: postId });
+    console.log(post);
     const newComment = await Comment.create({
       postId,
       userId,
       content,
     });
-
+    console.log(newComment);
+    post.comments.push(newComment._id);
     res.status(201).json({ success: true, comment: newComment });
   } catch (error) {
     console.error("Error in adding comment", error);
