@@ -70,12 +70,6 @@ router.patch(
 );
 
 // Get all team members
-router.get(
-  "/promote/members",
-  isAuthenticated,
-  checkBlockedAfterAuth,
-  isAdmin,
-  getTeamMembers
-);
+router.get("/promote/members", getTeamMembers);
 
 module.exports = router;

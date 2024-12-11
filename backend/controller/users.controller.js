@@ -237,9 +237,13 @@ const promoteToTeamMember = async (req, res) => {
 const getTeamMembers = async (req, res) => {
   try {
     const teamMembers = await User.find({ teamMember: true }).select(
-      "-password"
+      "-password -updatedAt -role -isBlocked"
     );
-    res.status(200).json({ status: true, teamMembers });
+    const authors = await User.find({ role: { $in: ["admin", "author"] } }).select(
+      "-password -updatedAt -isBlocked"
+    );
+
+    res.status(200).json({ status: true, teamMembers, authors });
   } catch (error) {
     console.error("Error fetching team members", error);
     res

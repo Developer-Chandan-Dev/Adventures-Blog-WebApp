@@ -44,6 +44,12 @@ const userSchema = new mongoose.Schema(
     profilePicPublicId: {
       type: String, // public id for profilepic
     },
+    work:{
+      type:String,
+    },
+    bio:{
+      type:String,
+    }
   },
   { timestamps: true }
 );

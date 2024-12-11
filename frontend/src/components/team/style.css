@@ -1,0 +1,46 @@
+.author-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 40px;
+  margin-top: 50px;
+}
+
+.author-card {
+  width: 300px;
+  background: #ffffff;
+  padding: 40px 30px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 10px;
+  transition: background 0.5s, transform 0.5s;
+  color: black !important;
+  cursor: default;
+}
+
+.author-card svg {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 30px;
+}
+.author-card h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.author-card a {
+  text-decoration: none;
+  color: #000;
+  font-size: 12px;
+  margin-top: 20px;
+  display: inline-block;
+}
+.author-card:hover {
+  background: #ff004f;
+  color: white !important;
+  transform: translateY(-10px);
+  box-shadow: 0 10px 15px #ff004f;
+}
+
+.author-card:hover a{
+    color: #fff;
+}

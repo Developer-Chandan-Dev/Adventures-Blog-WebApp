@@ -1,49 +1,51 @@
 /* eslint-disable react/prop-types */
-import { useSelector } from "react-redux";
-import useHandlePostRequest from "../../hooks/useHandlePostRequest";
+import { useDispatch, useSelector } from "react-redux";
 import SmallSpinner from "../utlity/SmallSpinner";
+import { useState } from "react";
+import { addComment } from "../../store/features/commentSlice";
 
 const CommentForm = ({ postId }) => {
+  const userId = useSelector((state) => state.user.user?._id);
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const authUser = useSelector((state) => state.user.user);
-  const { loading, error, formData, handleChange, handleSubmit } =
-    useHandlePostRequest(
-      { postId: postId, userId: authUser?._id, content: "" },
-      "POST"
-    );
+  const dispatch = useDispatch();
 
-
-  const handleAddComment = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-
-    const data = await handleSubmit(`/api/v1/comments/${postId}`);
-    if(data.success === true){
-      console.log(data.comment);
-    }else{
-      console.log(data);
+    if (userId) {
+      setLoading(true);
+      const a = await dispatch(addComment({ postId, content, userId }));
+      console.log(a);
+      setContent("");
+      setLoading(false);
     }
-
   };
+
   // route /api/v1/comments/:postId
   return (
     <div className="py-5 px-2 w-[600px]">
-      <form className=" w-[500px] py-5" onSubmit={handleAddComment}>
+      <form className=" w-[500px] py-5" onSubmit={handleSubmit}>
         <h2 className="py-8 text-2xl font-semibold pl-3 relative after:absolute after:w-[6px] after:h-8 after:bg-red-200 after:left-0">
           Add Comment
         </h2>
         <div className="w-full mt-4">
           <textarea
             type="text"
-            placeholder="Comment..."
+            placeholder="Write a comment..."
             className="w-full h-40 px-3 py-2 resize-none rounded-md border border-slate-300 outline-slate-300"
             name="content"
-            value={formData.content}
-            onChange={handleChange}
+            value={content}
+            readOnly={!userId}
+            onChange={(e) => setContent(e.target.value)}
             required
           />
         </div>
-        {error && <p className="text-red-500 drop-shadow">{error}</p>}
-        <button className="px-4 py-2 border border-slate-300 transition-all hover:bg-slate-50 rounded-md flex items-center gap-x-2 mt-3">
+        {/* {error && <p className="text-red-500 drop-shadow">{error}</p>} */}
+        <button
+          className="px-4 py-2 border border-slate-300 transition-all hover:bg-slate-50 rounded-md flex items-center gap-x-2 mt-3"
+          disabled={!userId}
+        >
           {loading ? (
             <SmallSpinner />
           ) : (
@@ -58,7 +60,7 @@ const CommentForm = ({ postId }) => {
               >
                 <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
               </svg>
-              <span className="font-semibold text-slate-700">SEND</span>
+              <span className="font-semibold text-slate-700">Add Comment</span>
             </>
           )}
         </button>

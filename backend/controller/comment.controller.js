@@ -7,7 +7,7 @@ const addComment = async (req, res) => {
     const { postId } = req.params;
     const { content } = req.body;
     const userId = req.user._id;
-    console.log(postId, content, userId);
+    console.log(postId, content, userId, "10");
 
     if (!content) {
       return res
@@ -23,8 +23,16 @@ const addComment = async (req, res) => {
       content,
     });
     console.log(newComment);
-    post.comments.push(newComment._id);
-    res.status(201).json({ success: true, comment: newComment });
+
+    if (newComment) {
+      const commentRes = await Comment.findById(newComment._id).populate(
+        "userId",
+        "username profilePic"
+      );
+
+      post.comments.push(newComment._id);
+      res.status(201).json({ success: true, comment: commentRes });
+    }
   } catch (error) {
     console.error("Error in adding comment", error);
     res

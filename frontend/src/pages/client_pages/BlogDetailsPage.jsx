@@ -7,12 +7,15 @@ import BlogContent from "../../components/blogs/BlogContent";
 import { useParams } from "react-router-dom";
 import useFetchData from "../../hooks/useFetchData";
 import Spinner from "../../components/utlity/Spinner";
+import AddedComments from "../../components/blogs/AddedComments";
 
 const BlogDetailsPage = () => {
   const { id } = useParams();
 
   const { data, error, loading } = useFetchData(`/api/v1/blogs/${id}`);
   console.log(id, data, error, loading);
+
+
 
   return (
     <section className="w-full relative ">
@@ -94,6 +97,10 @@ const BlogDetailsPage = () => {
                 <h2 className="py-8 text-2xl font-semibold pl-3 relative after:absolute after:w-[6px] after:h-8 after:bg-red-200 after:left-0">
                   Added Comments
                 </h2>
+                <div className="p-2">
+
+                  <AddedComments postId={data?.post?._id} />
+                </div>
               </div>
             </div>
             <BlogPageSidebar

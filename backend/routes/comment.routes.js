@@ -17,7 +17,7 @@ const {
 router.post("/:postId/comment", isAuthenticated, checkBlockedAfterAuth, addComment);
 
 // Get comments for a specific post
-router.get("/:postId", getComments);
+router.get("/:postId/comment", getComments);
 
 // Delete a comment
 router.delete(
