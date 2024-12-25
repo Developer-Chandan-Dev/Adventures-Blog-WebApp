@@ -242,10 +242,9 @@ const getSinglePost = async (req, res) => {
   try {
     const { slug } = req.params;
 
-    const post = await Post.findOne({ slug: slug }).populate(
-      "author",
-      "username profilePic _id"
-    );
+    const post = await Post.findOne({ slug: slug })
+      .populate("author", "username profilePic _id")
+      .populate("category", "name _id");
     console.log(post._id);
     const comments = await Comment.find({ postId: post._id });
     console.log(comments, "250");

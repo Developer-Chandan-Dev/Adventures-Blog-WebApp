@@ -33,7 +33,6 @@ const useFetchDataWithPagination = (
           setLoading(false);
           setData(null);
         }
-        console.error(error.response.data.error);
         setError(error.response.data.error);
         setLoading(false);
       }

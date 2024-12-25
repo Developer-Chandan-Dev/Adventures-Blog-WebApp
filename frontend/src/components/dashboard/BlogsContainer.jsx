@@ -1,7 +1,7 @@
 import BlogDetailsTr from "./BlogDetailsTr";
 import Empty from "../utlity/Empty";
 import Spinner from "../utlity/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFetchDataWithPagination from "../../hooks/useFetchDataWithPagination";
 
 const BlogsContainer = () => {
@@ -18,11 +18,28 @@ const BlogsContainer = () => {
     searchTerm
   );
 
-  console.log(data, error);
+  const [filteredPosts, setFilteredPosts] = useState(null);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  useEffect(() => {
+    setFilteredPosts(data?.posts);
+  }, [data]);
+
+  const handleInput = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    if (term === "") {
+      setFilteredPosts(data?.users);
+    }
+  };
+
+  const handleSearch = () => {
     setCurrentPage(1);
+    const filtered = data?.posts.filter((post) =>
+      post[searchBy]?.toLowerCase().includes(searchTerm)
+    );
+
+    setFilteredPosts(filtered);
   };
 
   return (
@@ -38,7 +55,7 @@ const BlogsContainer = () => {
               className="w-80 h-9 px-3 py-1 text-[15px] rounded-md border-2 outline-gray-300"
               placeholder={`Search by ${searchBy}`}
               value={searchTerm}
-              onChange={handleSearch}
+              onChange={handleInput}
             />
             <select
               name="searchBy"
@@ -49,12 +66,18 @@ const BlogsContainer = () => {
             >
               <option value="title">Title</option>
               <option value="slug">Slug</option>
-              <option value="status">Status</option>
-              <option value="featuredBlog">Featured Blog</option>
-              <option value="author">Author</option>
-              <option value="publishedAt">Published Date</option>
+              {/* <option value="status">Status</option> */}
+              {/* <option value="featuredBlog">Featured Blog</option> */}
+              {/* <option value="author">Author</option> */}
+              {/* <option value="publishedAt">Published Date</option> */}
               <option value="category">Category</option>
             </select>
+            <button
+              className="px-3 py-1 border rounded-md ml-2 bg-white transition-all hover:drop-shadow"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
           </div>
         </div>
         <div className="w-full pb-2 mt-5 overflow-x-auto relative h-[550px] bg-[#ffffff94]">
@@ -70,7 +93,7 @@ const BlogsContainer = () => {
                 <th className="px-5 text-left">Published Date</th>
                 <th className="px-5 text-left">Category</th>
                 <th className="px-5 text-left flex pt-4">
-                  <span className="mr-3">Edit/Delete</span>
+                  <span className="mr-3">Actions </span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 384 512"
@@ -85,7 +108,7 @@ const BlogsContainer = () => {
               </tr>
             </thead>
             <tbody className="">
-              {error && <p>{error}</p>}
+              {error && <p>{error !== "Blogs not found" && error}</p>}
               <tr>
                 <td colSpan={9}>
                   {loading && (
@@ -96,28 +119,28 @@ const BlogsContainer = () => {
                 </td>
               </tr>
 
-              {data && data.posts != null && data.posts.length > 0 ? (
-                data.posts.map((post, index) => (
-                  <BlogDetailsTr
-                    key={index}
-                    index={index}
-                    _id={post._id}
-                    title={post.title}
-                    slug={post.slug}
-                    status={post.status}
-                    author={post.author}
-                    createdAt={post.createdAt}
-                    category={post.category}
-                    featuredBlog={post.featuredBlog}
-                  />
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={9}>
-                    <Empty boxHeight={"400px"} />
-                  </td>
-                </tr>
-              )}
+              {filteredPosts && filteredPosts.length > 0 && !loading
+                ? filteredPosts.map((post, index) => (
+                    <BlogDetailsTr
+                      key={index}
+                      index={index}
+                      _id={post._id}
+                      title={post.title}
+                      slug={post.slug}
+                      status={post.status}
+                      author={post.author}
+                      createdAt={post.createdAt}
+                      category={post.category}
+                      featuredBlog={post.featuredBlog}
+                    />
+                  ))
+                : !loading && (
+                    <tr>
+                      <td colSpan={9}>
+                        <Empty boxHeight={"400px"} />
+                      </td>
+                    </tr>
+                  )}
             </tbody>
           </table>
         </div>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import UserTr from "../../components/dashboard/UserTr";
 import Empty from "../../components/utlity/Empty";
 import Spinner from "../../components/utlity/Spinner";
@@ -5,7 +6,29 @@ import useFetchData from "../../hooks/useFetchData";
 
 const Users = () => {
   const { data, error, loading } = useFetchData("/api/v1/users");
-  console.log(data);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState("username");
+  const [filteredUsers, setFilteredUsers] = useState(null);
+
+  useEffect(() => {
+    setFilteredUsers(data?.users);
+  }, [data]);
+
+  const handleInput = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    if (term === "") {
+      setFilteredUsers(data?.users);
+    }
+  };
+  const handleSearch = () => {
+    const filtered = data?.users.filter((user) =>
+      user[searchBy]?.toLowerCase().includes(searchTerm)
+    );
+
+    setFilteredUsers(filtered);
+  };
 
   return (
     <section className="w-full">
@@ -36,9 +59,38 @@ const Users = () => {
           </span>
         </div>
       </div>
+      <div className="w-full relative h-auto  md:w-11/12 mx-auto mb-5">
+        <div className="flex items-center gap-x-3">
+          <div className="">
+            <input
+              type="text"
+              className="w-80 h-9 px-3 py-1 text-[15px] rounded-md border-2 outline-gray-300"
+              placeholder={`Search by ${searchBy}`}
+              value={searchTerm}
+              onChange={handleInput}
+            />
+            <select
+              name="searchBy"
+              id="searchBy"
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+              className="w-32 text-sm border ml-2 border-slate-200 outline-slate-300 px-2 cursor-pointer py-1 rounded-md pb-1"
+            >
+              <option value="username">Username</option>
+              <option value="email">Email</option>
+            </select>
+            <button
+              className="px-3 py-1 border rounded-md ml-2 bg-white transition-all hover:drop-shadow"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
       <div
         className=" px-4 py-2 w-full md:w-11/12 mx-auto overflow-auto relative bg-white rounded-xl drop-shadow"
-        style={{ height: "540px" }}
+        // style={{ height: "540px" }}
       >
         <table
           className=" w-full mx-auto h-auto text-sm relative text-left text-gray-500"
@@ -84,28 +136,28 @@ const Users = () => {
               </td>
             </tr>
 
-            {data && data.users != null && data.users.length > 0 ? (
-              data.users.map((user, index) => (
-                <UserTr
-                  key={index}
-                  index={index}
-                  _id={user._id}
-                  username={user.username}
-                  email={user.email}
-                  role={user.role}
-                  profilePic={user.profilePic}
-                  isBlocked={user.isBlocked}
-                  teamMember={user.teamMember}
-                  createdAt={user.createdAt}
-                />
-              ))
-            ) : (
-              <tr>
-                <td colSpan={9}>
-                  <Empty boxHeight={"300px"} />
-                </td>
-              </tr>
-            )}
+            {filteredUsers && filteredUsers.length > 0 && !loading
+              ? filteredUsers.map((user, index) => (
+                  <UserTr
+                    key={index}
+                    index={index}
+                    _id={user._id}
+                    username={user.username}
+                    email={user.email}
+                    role={user.role}
+                    profilePic={user.profilePic}
+                    isBlocked={user.isBlocked}
+                    teamMember={user.teamMember}
+                    createdAt={user.createdAt}
+                  />
+                ))
+              : !loading && (
+                  <tr>
+                    <td colSpan={9}>
+                      <Empty boxHeight={"300px"} />
+                    </td>
+                  </tr>
+                )}
           </tbody>
         </table>
       </div>

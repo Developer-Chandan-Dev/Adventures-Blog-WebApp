@@ -16,7 +16,6 @@ const addComment = async (req, res) => {
     }
 
     const post = await Post.findById({ _id: postId });
-    console.log(post);
     const newComment = await Comment.create({
       postId,
       userId,
@@ -29,8 +28,11 @@ const addComment = async (req, res) => {
         "userId",
         "username profilePic"
       );
+      console.log(post, "32");
 
       post.comments.push(newComment._id);
+      await post.save();
+      console.log(post, "35");
       res.status(201).json({ success: true, comment: commentRes });
     }
   } catch (error) {

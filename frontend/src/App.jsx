@@ -39,10 +39,11 @@ import ScrollToTop from "./components/ScrollToTop";
 import CategoryPage from "./pages/client_pages/CategoryPage";
 import RoleProtectedRole from "./components/utlity/RoleProtectedRoute";
 import { useSelector } from "react-redux";
+import Unauthorized from "./pages/client_pages/Unauthorized";
 
 /**
  * App component serves as the main entry point for routing in the application.
- * It handles both user-facing and admin dashboard routes, 
+ * It handles both user-facing and admin dashboard routes,
  * utilizing role-based access control for secure navigation.
  */
 
@@ -100,6 +101,9 @@ function App() {
               </Layout>
             }
           />
+
+          {/* Unauthorized */}
+          <Route path="/unauthorized" element={<Unauthorized />} />
 
           {/* <-------------- About Page ---------------> */}
           <Route

@@ -8,14 +8,13 @@ import { useParams } from "react-router-dom";
 import useFetchData from "../../hooks/useFetchData";
 import Spinner from "../../components/utlity/Spinner";
 import AddedComments from "../../components/blogs/AddedComments";
+import { formatDate } from "../../components/utlity/dateUtils";
 
 const BlogDetailsPage = () => {
   const { id } = useParams();
 
   const { data, error, loading } = useFetchData(`/api/v1/blogs/${id}`);
   console.log(id, data, error, loading);
-
-
 
   return (
     <section className="w-full relative ">
@@ -28,8 +27,9 @@ const BlogDetailsPage = () => {
             </h1>
             <ul>
               <li className="text-gray-500 pb-4 text-sm">
-                By Default User - Published in Default Category - April 7 2024 -{" "}
-                <span className="text-orange-600">2 Min Read</span>
+                By <b>{data && data?.post?.author?.username}</b> - Published in{" "}
+                <b>{data && data?.post?.category?.name}</b> Category -{" "}
+                {formatDate(data && data?.post?.createdAt)} 
               </li>
             </ul>
           </div>
@@ -98,7 +98,6 @@ const BlogDetailsPage = () => {
                   Added Comments
                 </h2>
                 <div className="p-2">
-
                   <AddedComments postId={data?.post?._id} />
                 </div>
               </div>
