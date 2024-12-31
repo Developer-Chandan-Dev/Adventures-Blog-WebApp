@@ -1,14 +1,14 @@
 import { Outlet } from "react-router-dom";
 import DashboardNavbar from "../../components/dashboard/DashboardNavbar";
 import Sidebar from "../../components/dashboard/Sidebar";
-import DashboardBlogsPage from "./DashboardBlogsPage";
 import DashboardPage from "./DashboardPage";
 import AddBlogs from "./AddBlogs";
-import Settings from "./Settings";
-import PendingBlogs from "./PendingBlogs";
 import { useSelector } from "react-redux";
-import Users from "./Users";
-import Category from "./Category";
+import UsersPage from "./UsersPage";
+import CategoryPage from "./CategoryPage";
+import PublishedBlogsPage from "./PublishedBlogsPage";
+import DraftBlogsPage from "./DraftBlogsPage";
+import SettingsPage from "./SettingsPage";
 
 const Dashboard = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
@@ -26,12 +26,12 @@ const Dashboard = () => {
         >
           <Outlet>
             <DashboardPage />
-            <DashboardBlogsPage />
+            <PublishedBlogsPage />
             <AddBlogs />
-            <Settings />
-            <PendingBlogs />
-            <Users />
-            <Category />
+            <SettingsPage />
+            <DraftBlogsPage />
+            <UsersPage />
+            <CategoryPage />
           </Outlet>
         </section>
       </div>

@@ -17,29 +17,24 @@ import {
 // <------------- Dashboard pages imports --------------->
 import {
   AddBlogs,
-  Category,
+  CategoryPage,
   Dashboard,
-  DashboardBlogsPage,
   DashboardPage,
-  PendingBlogs,
-  Settings,
-  Users,
+  PublishedBlogsPage,
+  SettingsPage,
+  UsersPage,
 } from "./pages/dashboard/index";
 
 // <============= Components imports start here =============>
-import {
-  UpdateBlogs,
-  BlogsContainer,
-  DraftBlogsContainer,
-} from "./components/index";
+import { UpdateBlogs } from "./components/index";
 
 // <============= Additional Components import =============>
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
-import CategoryPage from "./pages/client_pages/CategoryPage";
 import RoleProtectedRole from "./components/utlity/RoleProtectedRoute";
 import { useSelector } from "react-redux";
 import Unauthorized from "./pages/client_pages/Unauthorized";
+import DraftBlogsPage from "./pages/dashboard/DraftBlogsPage";
 
 /**
  * App component serves as the main entry point for routing in the application.
@@ -157,22 +152,18 @@ function App() {
             }
           >
             <Route path="" element={<DashboardPage />} />
-            <Route path="category" element={<Category />} />
-            <Route path="blogs" element={<DashboardBlogsPage />}>
-              <Route path="" element={<BlogsContainer />} />
-              <Route path="update/:id" element={<UpdateBlogs />} />
-            </Route>
+            <Route path="category" element={<CategoryPage />} />
+            <Route path="blogs" element={<PublishedBlogsPage />}></Route>
             <Route path="blogs/add" element={<AddBlogs />} />
-            <Route path="blogs/pending" element={<PendingBlogs />}>
-              <Route path="" element={<DraftBlogsContainer />} />
+            <Route path="blogs/pending" element={<DraftBlogsPage />}>
               <Route path="update/:id" element={<UpdateBlogs />} />
             </Route>
-            <Route path="settings" element={<Settings />} />
+            <Route path="settings" element={<SettingsPage />} />
             <Route
               path="users"
               element={
                 <RoleProtectedRole allowedRoles={["admin"]}>
-                  <Users />
+                  <UsersPage />
                 </RoleProtectedRole>
               }
             />

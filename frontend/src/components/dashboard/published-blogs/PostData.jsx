@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
-import { formatDate } from "../utlity/dateUtils";
+import { formatDate } from "../../utlity/dateUtils";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import useUpdateFeaturedPostAndStatus from "../../hooks/useUpdateFeaturedPostAndStatus";
+import useUpdateFeaturedPostAndStatus from "../../../hooks/useUpdateFeaturedPostAndStatus";
 
-const BlogDetailsTr = ({
+const PostData = ({
   _id,
   index,
   title,
@@ -114,7 +115,9 @@ const BlogDetailsTr = ({
             </div>
             {/* <span className="text-red-400 text-xl">|</span> */}
             <Link to={`/blogs/details/${slug}`} target="_blank">
-              <button className="px-3 py-1 border rounded-md transition-all hover:drop-shadow">Visit</button>
+              <button className="px-3 py-1 border rounded-md transition-all hover:drop-shadow">
+                Visit
+              </button>
             </Link>
           </div>
         </td>
@@ -135,14 +138,14 @@ const BlogDetailsTr = ({
   );
 };
 
-export default BlogDetailsTr;
+export default PostData;
 
-BlogDetailsTr.propTypes = {
-  _id: PropTypes.slug,
+PostData.propTypes = {
+  _id: PropTypes.string,
   title: PropTypes.string,
-  slug: PropTypes.slug,
+  slug: PropTypes.string,
   index: PropTypes.number,
-  status: PropTypes.status,
+  status: PropTypes.string,
   author: PropTypes.object,
   createdAt: PropTypes.string,
   category: PropTypes.object,

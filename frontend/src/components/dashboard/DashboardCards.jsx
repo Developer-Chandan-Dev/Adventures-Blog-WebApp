@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const DashboardCards = () => {
   return (
     <>
-      <div className="flex items-center gap-x-5 px-8 flex-wrap gap-y-5">
+      <div className="flex items-center gap-x-5 flex-wrap gap-y-5">
         <div className="w-60 xl:w-[23%] rounded-[30px] h-44 bg-[#7D4CC7] relative flex-center">
           <Link to="/dashboard/blogs">
             <h1 className="font-semibold text-xl text-white drop-shadow">

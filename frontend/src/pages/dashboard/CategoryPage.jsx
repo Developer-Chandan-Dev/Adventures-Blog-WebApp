@@ -1,7 +1,7 @@
 import AvailableCategory from "../../components/dashboard/AvailableCategory";
 import NewCategory from "../../components/dashboard/NewCategory";
 
-const Category = () => {
+const CategoryPage = () => {
   return (
     <section className="w-full">
       <div className="w-full py-6 px-8 flex items-center justify-between">
@@ -40,4 +40,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default CategoryPage;

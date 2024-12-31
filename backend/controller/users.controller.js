@@ -49,6 +49,7 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userData = req.body;
+    console.log(userData,'52');
     const profilePic = req.file ? req.file.path : null; // Get local file path
 
     let profilePicUrl = null;

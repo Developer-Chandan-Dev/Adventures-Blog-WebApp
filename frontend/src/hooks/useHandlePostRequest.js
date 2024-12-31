@@ -14,9 +14,10 @@ const useHandlePostRequest = (initialState, method) => {
     }));
   };
 
-  const handleSubmit = async (url) => {
+  const handleSubmit = async (method, url, formData) => {
     setLoading(true);
     setError(null);
+    console.log(url);
 
     console.log(formData);
     try {
@@ -36,7 +37,7 @@ const useHandlePostRequest = (initialState, method) => {
       console.log(error);
       setLoading(false);
       setError(error.response?.data?.error || "Something went wrong");
-      return null;
+      return error.response?.data?.error || "Something went wrong";
     }
   };
 

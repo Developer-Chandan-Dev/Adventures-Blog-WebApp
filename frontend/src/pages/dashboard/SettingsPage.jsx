@@ -1,7 +1,7 @@
 import ChangePassword from "../../components/dashboard/settings/ChangePassword";
 import LoggedInUserProfile from "../../components/dashboard/settings/LoggedInUserProfile";
 
-const Settings = () => {
+const SettingsPage = () => {
   return (
     <section>
       <div className="w-full py-6 px-8 flex items-center justify-between">
@@ -74,4 +74,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default SettingsPage;

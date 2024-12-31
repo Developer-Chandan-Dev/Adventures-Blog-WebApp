@@ -104,7 +104,7 @@ const Form = ({ method = "POST", heading, api, returnData = null }) => {
   return (
     <>
       <form
-        className="w-[95%] mx-auto px-3 py-8 text-[15px]"
+        className="w-full mx-auto px-5 sm:px-10 py-8 text-[15px]"
         onSubmit={onSubmit}
       >
         <div className="flex items-center justify-center flex-col mb-10">

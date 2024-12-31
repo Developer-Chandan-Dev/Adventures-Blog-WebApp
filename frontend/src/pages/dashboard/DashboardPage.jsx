@@ -1,9 +1,24 @@
-import DashboardCards from "../../components/dashboard/DashboardCards";
+import {
+  ArrowsUpFromLine,
+  ChartBarStacked,
+  GitPullRequestDraft,
+  UsersIcon,
+} from "lucide-react";
+import StatCard from "../../components/dashboard/common/StatsCard";
+import { Link } from "react-router-dom";
+import BlogsOverviewChart from "../../components/dashboard/dashboard/BlogsOverviewChart";
 
 const DashboardPage = () => {
+  const userStats = {
+    totalUsers: 152845,
+    newUsersToday: 243,
+    activeUsers: 98520,
+    churnRate: "2.4%",
+  };
+
   return (
-    <section className="w-full">
-      <div className="w-full py-6 px-8 flex items-center justify-between">
+    <section className="max-w-7xl mx-auto px-6 lg:px-8 xl:px-20">
+      <div className="w-full py-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">
             <span className="text-[crimson]">Blogs</span> Dashboard
@@ -31,19 +46,57 @@ const DashboardPage = () => {
           </span>
         </div>
       </div>
-      <DashboardCards />
-      <div className="flex items-center justify-between flex-wrap px-8 mt-10 mb-5">
-        <div className="w-[68%] h-96 bg-red-100 rounded-3xl py-2 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3 bg-green-200">
-            <span className="font-semibold">Year Overview</span>
-            <span className="font-semibold text-sky-500">Total Published</span>
-          </div>
-          <div className="h-fill-available w-full bg-blue-200 ">
-            {/* <div className="w-full h-full bg-violet-300"></div> */}
-          </div>
-        </div>
-        <div className="w-[30%] h-96 bg-green-100 rounded-3xl"></div>
+
+      {/* Stats */}
+      <div
+        className="grid grid-cols-1 gap-5 mt-8 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+        // initial={{ opacity: 0, y: 20 }}
+        // animate={{ opacity: 1, y: 1 }}
+        // transition={{ duration: 1 }}
+      >
+        <Link to="/dashboard/blogs">
+          <StatCard
+            name="Total Posts"
+            icon={ArrowsUpFromLine}
+            value={userStats.totalUsers.toLocaleString()}
+            color="#6366F1"
+          />
+        </Link>
+        <Link to="/dashboard/users">
+          <StatCard
+            name="Total Users"
+            icon={UsersIcon}
+            value={userStats.newUsersToday.toLocaleString()}
+            color="#108981"
+          />
+        </Link>
+        <Link to="/dashboard/blogs/pending">
+          <StatCard
+            name="Draft Posts"
+            icon={GitPullRequestDraft}
+            value={userStats.activeUsers.toLocaleString()}
+            color="#F59E08"
+          />
+        </Link>
+        <Link to="/dashboard/category">
+          <StatCard
+            name="Total Categories"
+            icon={ChartBarStacked}
+            value={userStats.churnRate}
+            color="#EF4444"
+          />
+        </Link>
       </div>
+
+      {/* <DashboardCards /> */}
+        <BlogsOverviewChart />
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <BlogsOverviewChart />
+        <BlogsOverviewChart />
+      </div> */}
+      {/* <div className="flex items-center justify-between flex-wrap mt-10 mb-5">
+        <div className="w-[30%] h-96 bg-green-100 rounded-3xl"></div>
+      </div> */}
     </section>
   );
 };

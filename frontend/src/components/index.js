@@ -8,7 +8,6 @@ import BlogCardInfo from "./blogs/BlogCardInfo";
 import BlogContent from "./blogs/BlogContent";
 import CommentForm from "./blogs/CommentForm";
 import BlogPageSidebar from "./blogs/BlogPageSidebar";
-import BlogsContainer from "./dashboard/BlogsContainer";
 import BlogTags from "./blogs/BlogTags";
 import RelatedTopics from "./blogs/RelatedTopics";
 import TeamHeroSection from "./team/TeamHeroSection";
@@ -28,7 +27,6 @@ import Container from "./utlity/Container";
 import PopularCategories from "./home/PopularCategories";
 import AboutUs from "./about/AboutUs";
 import AboutDev from "./about/AboutDev";
-import DraftBlogsContainer from "./dashboard/DraftBlogsContainer";
 
 export {
   AboutDev,
@@ -42,7 +40,6 @@ export {
   BlogContent,
   CommentForm,
   BlogPageSidebar,
-  BlogsContainer,
   BlogTags,
   RelatedTopics,
   TeamHeroSection,
@@ -61,5 +58,4 @@ export {
   Container,
   PopularCategories,
   AboutUs,
-  DraftBlogsContainer,
 };

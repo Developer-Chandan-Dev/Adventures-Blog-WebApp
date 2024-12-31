@@ -1,19 +1,17 @@
 import AddBlogs from "./AddBlogs";
 import Dashboard from "./Dashboard";
-import DashboardBlogsPage from "./DashboardBlogsPage";
 import DashboardPage from "./DashboardPage";
-import PendingBlogs from "./PendingBlogs";
-import Settings from "./Settings";
-import Users from "./Users";
-import Category from "./Category";
+import SettingsPage from "./SettingsPage";
+import UsersPage from "./UsersPage";
+import CategoryPage from "./CategoryPage";
+import PublishedBlogsPage from "./PublishedBlogsPage";
 
 export {
   AddBlogs,
   Dashboard,
-  DashboardBlogsPage,
   DashboardPage,
-  PendingBlogs,
-  Settings,
-  Users,
-  Category
+  SettingsPage,
+  UsersPage,
+  CategoryPage,
+  PublishedBlogsPage,
 };

@@ -1,0 +1,122 @@
+import { useState } from "react";
+import PublishedBlogsTable from "../../components/dashboard/published-blogs/PublishedBlogsTable";
+import useFetchDataWithPagination from "../../hooks/useFetchDataWithPagination";
+import BlogsOverviewChart from "../../components/dashboard/dashboard/BlogsOverviewChart";
+import { Link } from "react-router-dom";
+import StatCard from "../../components/dashboard/common/StatsCard";
+import {
+  ArrowsUpFromLine,
+  ChartBarStacked,
+  GitPullRequestDraft,
+  UsersIcon,
+} from "lucide-react";
+
+const PublishedBlogsPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(7); // Define items per page
+
+  const { data, error, loading } = useFetchDataWithPagination(
+    "/api/v1/blogs/dashboard-blogs",
+    currentPage,
+    itemsPerPage,
+    searchTerm
+  );
+
+  const userStats = {
+    totalUsers: 152845,
+    newUsersToday: 243,
+    activeUsers: 98520,
+    churnRate: "2.4%",
+  };
+
+  return (
+    <section className="max-w-7xl mx-auto pt-6 px-6 lg:px-8 xl:px-20">
+      <div className="w-full py-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">
+            <span className="text-[crimson]">All Published</span> Blogs
+          </h1>
+          <h4 className="text-[crimson] text-base font-semibold">
+            ADMIN PANEL
+          </h4>
+        </div>
+        <div className="flex items-center gap-x-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            width="16"
+            height="16"
+            fill="crimson"
+          >
+            <path d="M217.6 96.1c-12.95-.625-24.66 9.156-25.52 22.37C191.2 131.7 201.2 143.1 214.4 143.1c79.53 5.188 148.4 74.09 153.6 153.6c.8281 12.69 11.39 22.43 23.94 22.43c.5156 0 1.047-.0313 1.578-.0625c13.22-.8438 23.25-12.28 22.39-25.5C409.3 191.8 320.3 102.8 217.6 96.1zM224 0C206.3 0 192 14.31 192 32s14.33 32 32 32c123.5 0 224 100.5 224 224c0 17.69 14.33 32 32 32s32-14.31 32-32C512 129.2 382.8 0 224 0zM172.3 226.8C157.7 223.9 144 235.8 144 250.6v50.37c0 10.25 7.127 18.37 16.75 21.1c18.13 6.75 31.26 24.38 31.26 44.1c0 26.5-21.5 47.1-48.01 47.1c-26.5 0-48.01-21.5-48.01-47.1V120c0-13.25-10.75-23.1-24.01-23.1l-48.01 .0076C10.75 96.02 0 106.8 0 120v247.1c0 89.5 82.14 160.2 175 140.7c54.38-11.5 98.27-55.5 109.8-109.7C302.2 316.1 247.8 241.8 172.3 226.8z" />
+          </svg>{" "}
+          <span className="text-[crimson] text-semibold text-sm font-bold">
+            /
+          </span>{" "}
+          <span className="text-[crimson] text-semibold font-semibold">
+            Blogs
+          </span>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div
+        className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+        // initial={{ opacity: 0, y: 20 }}
+        // animate={{ opacity: 1, y: 1 }}
+        // transition={{ duration: 1 }}
+      >
+        <StatCard
+          name="Total Posts"
+          icon={ArrowsUpFromLine}
+          value={userStats.totalUsers.toLocaleString()}
+          color="#6366F1"
+        />
+
+        <Link to="/dashboard/users">
+          <StatCard
+            name="Total Users"
+            icon={UsersIcon}
+            value={userStats.newUsersToday.toLocaleString()}
+            color="#108981"
+          />
+        </Link>
+        <Link to="/dashboard/blogs/pending">
+          <StatCard
+            name="Draft Posts"
+            icon={GitPullRequestDraft}
+            value={userStats.activeUsers.toLocaleString()}
+            color="#F59E08"
+          />
+        </Link>
+        <Link to="/dashboard/category">
+          <StatCard
+            name="Total Categories"
+            icon={ChartBarStacked}
+            value={userStats.churnRate}
+            color="#EF4444"
+          />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <BlogsOverviewChart />
+        <BlogsOverviewChart />
+      </div>
+
+      <PublishedBlogsTable
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        data={data && data}
+        error={error && error}
+        loading={loading && loading}
+      />
+    </section>
+  );
+};
+
+export default PublishedBlogsPage;
