@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./style.css";
 import { useEffect, useRef, useState } from "react";
+import { RefreshCwIcon } from "lucide-react";
 import Spinner from "../../utlity/Spinner";
 import UserTr from "../users/UserTr";
 import Empty from "../../utlity/Empty";
@@ -11,13 +12,17 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
   const [filteredUsers, setFilteredUsers] = useState(null);
   const [refreshTable, setRefreshTable] = useState(false);
 
+  const [teamMemberFilter, setTeamMemberFilter] = useState(""); // For teamMember filtering
+  const [roleFilter, setRoleFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState(""); // For date filtering
+
   const tableContainerRef = useRef(null);
 
   useEffect(() => {
     setFilteredUsers(data?.users);
   }, [data, refreshTable]);
 
-  // Search Functionality logic starts here
+  // <============= Search Functionality logic starts here =============>
   const handleInput = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -26,19 +31,42 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
       setFilteredUsers(data?.users);
     }
   };
+  // Handle search
   const handleSearch = () => {
-    const filtered = data?.users.filter((user) =>
-      user[searchBy]?.toLowerCase().includes(searchTerm)
-    );
+    let filtered = data?.users;
+
+    // Apply search filters based on selected criteria
+    if (searchBy === "username" || searchBy === "email") {
+      filtered = filtered.filter((user) =>
+        user[searchBy]?.toLowerCase().includes(searchTerm)
+      );
+    } else if (searchBy === "teamMember") {
+      if (teamMemberFilter === "true") {
+        filtered = filtered.filter((user) => user.teamMember === true);
+      } else if (teamMemberFilter === "false") {
+        filtered = filtered.filter((user) => user.teamMember === false);
+      }
+    } else if (searchBy === "role") {
+      if (roleFilter) {
+        filtered = filtered.filter((user) => user.role === roleFilter);
+      }
+    } else if (searchBy === "date") {
+      const start = new Date(dateFilter.startDate);
+      const end = new Date(dateFilter.endDate);
+
+      filtered = filtered.filter((user) => {
+        const userDate = new Date(user.createdAt).toISOString().split("T")[0]; // Format to "yyyy-mm-dd"
+        const formattedUserDate = new Date(userDate);
+
+        return formattedUserDate >= start && formattedUserDate <= end;
+      });
+    }
 
     setFilteredUsers(filtered);
   };
 
-  const handleRefresh = () => {
-    setRefreshTable(!refreshTable);
-  };
+  // <============= Table Dragging functionality (Optional: Add Touch Support) =============>
 
-  // Table Dragging functionality (Optional: Add Touch Support)
   const handleMouseDown = (e) => {
     const container = tableContainerRef.current;
     container.isDragging = true;
@@ -77,6 +105,13 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
     const walk = x - container.startX;
     container.scrollLeft = container.scrollLeftStart - walk;
   };
+
+  // <============= Refresh Table Functionality =============>
+  const handleRefresh = () => {
+    setRefreshTable(!refreshTable);
+    setSearchBy("username");
+  };
+
   return (
     <div>
       <div
@@ -87,33 +122,92 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
           <h2 className="text-2xl font-medium text-gray-500"></h2>
           <div className="flex items-center flex-wrap">
             <button
-              className="px-3 py-[6px] border rounded-md mr-2 bg-white transition-all hover:drop-shadow"
+              className="px-3 py-[6px] border rounded-md mr-2 bg-white transition-all hover:drop-shadow-md flex items-center gap-x-1 text-gray-500 hover:text-gray-700"
               onClick={handleRefresh}
             >
-              Refresh
+              <RefreshCwIcon size={16} className="" />
+              <span>Refresh</span>
             </button>
+
             <div className="w-80 rounded-md border-2 outline-gray-300 flex items-center justify-between">
-              <input
-                type="text"
-                className="w-48 h-9 px-3 py-1 text-[15px] outline-none border-none"
-                placeholder={`Search by ${searchBy}`}
-                value={searchTerm}
-                onChange={handleInput}
-              />
+              {searchBy === "teamMember" ? (
+                <select
+                  value={teamMemberFilter}
+                  onChange={(e) => setTeamMemberFilter(e.target.value)}
+                  className="w-full h-9 px-3 py-1 text-[15px] outline-none border-none"
+                >
+                  <option value="">Both</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              ) : searchBy === "role" ? (
+                <select
+                  value={roleFilter}
+                  onChange={(e) => setRoleFilter(e.target.value)}
+                  className="w-full h-9 px-3 py-1 text-[15px] outline-none border-none"
+                >
+                  <option value="">All</option>
+                  <option value="admin">Admin</option>
+                  <option value="author">Author</option>
+                  <option value="reader">Reader</option>
+                </select>
+              ) : searchBy === "date" ? (
+                <div className="flex flex-col gap-y-2 px-2 py-1">
+                  <input
+                    type="date"
+                    value={dateFilter.startDate}
+                    onChange={(e) =>
+                      setDateFilter((prev) => ({
+                        ...prev,
+                        startDate: e.target.value,
+                      }))
+                    }
+                    className="w-full text-[15px] outline-none border rounded"
+                  />
+                  <input
+                    type="date"
+                    value={dateFilter.endDate}
+                    onChange={(e) =>
+                      setDateFilter((prev) => ({
+                        ...prev,
+                        endDate: e.target.value,
+                      }))
+                    }
+                    className="w-full text-[15px] outline-none border rounded"
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  className="w-48 h-9 px-3 py-1 text-[15px] outline-none border-none"
+                  placeholder={`Search by ${searchBy}`}
+                  value={searchTerm}
+                  onChange={handleInput}
+                />
+              )}
               <select
                 name="searchBy"
                 id="searchBy"
                 value={searchBy}
-                onChange={(e) => setSearchBy(e.target.value)}
-                className="w-28 text-sm border-l outline-0  mr-[2px] border-slate-200 outline-slate-300 px-2 cursor-pointer py-1 pb-1"
+                onChange={(e) => {
+                  setSearchBy(e.target.value);
+                  setSearchTerm("");
+                  setTeamMemberFilter("");
+                  setRoleFilter("");
+                  setDateFilter({ startDate: "", endDate: "" });
+                }}
+                className="w-28 text-sm border-l outline-0 mr-[2px] border-slate-200 outline-slate-300 px-2 cursor-pointer py-1 pb-1"
               >
                 <option value="username">Username</option>
                 <option value="email">Email</option>
                 <option value="role">Role</option>
+                <option value="teamMember">Team Member</option>
+                <option value="date">Date</option>
               </select>
             </div>
+
             <button
-              className="px-3 py-[6px] border rounded-md ml-2 bg-white transition-all hover:drop-shadow"
+              className="px-3 py-[6px] border rounded-md ml-2 bg-white transition-all hover:drop-shadow-md flex items-center gap-x-1 text-gray-500 hover:text-gray-700"
               onClick={handleSearch}
             >
               Search

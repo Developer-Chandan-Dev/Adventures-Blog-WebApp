@@ -9,7 +9,7 @@ const UsersPage = () => {
   const [isPopupActive, setIsPopupActive] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const { data, error, loading } = useFetchData("/api/v1/users");
+  const { data, error, loading, refreshData } = useFetchData("/api/v1/users");
 
   const userStats = {
     totalUsers: 152845,
@@ -21,6 +21,11 @@ const UsersPage = () => {
   const handleEditClick = (user) => {
     setSelectedUser(user); // Set the selected user details
     setIsPopupActive(true); // Activate the popup
+  };
+
+  const handlePopupModelClose = () => {
+    setIsPopupActive(false);
+    refreshData();
   };
   return (
     <section className="max-w-7xl mx-auto pt-6 px-6 lg:px-8 xl:px-20">
@@ -94,7 +99,7 @@ const UsersPage = () => {
       {isPopupActive && (
         <ChangeUserDetailsPopup
           user={selectedUser}
-          onClose={() => setIsPopupActive(false)}
+          onClose={handlePopupModelClose}
         />
       )}
     </section>

@@ -13,7 +13,6 @@ const ChangeUserDetailsPopup = ({ user, onClose }) => {
   const [blocked, setBlocked] = useState(user.isBlocked || "");
   const [image, setImage] = useState(user.profilePic || null);
   const [filePreview, setFilePreview] = useState(null);
-  console.log(user, blocked);
 
   const fileInputRef = useRef(null);
 
@@ -51,6 +50,8 @@ const ChangeUserDetailsPopup = ({ user, onClose }) => {
     );
     console.log(response);
   };
+
+  
 
   return (
     <div className="fixed left-0 top-0 w-full h-full z-10 drop-shadow text-slate-500 backdrop-filter backdrop-blur-sm bg-opacity-5 flex-center">
