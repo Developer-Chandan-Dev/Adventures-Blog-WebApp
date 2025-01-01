@@ -1,25 +1,30 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const LoggedInUserProfile = () => {
   const authUser = useSelector((state) => state.user.user);
   console.log(authUser);
 
+  const [username, setUsername] = useState(authUser?.username || "");
+  const [email, setEmail] = useState(authUser?.email || "");
+  const [profilePic, setProfilePic] = useState(authUser?.profilePic || null);
+
   return (
     <>
       <div className="rounded-2xl flex h-auto py-2 flex-wrap gap-x-2 px-2 gap-y-3 bg-white drop-shadow-lg shadow accountDetailsForm">
         <div className="w-[235px] h-56 mx-auto flex-center mx">
-          <div className="w-40 h-40 rounded-md overflow-hidden shadow drop-shadow shadow flex-center">
-            {authUser.profilePic ? (
-                <img
-                  src={authUser.profilePic}
-                  alt="img"
-                  className="w-full h-full object-fill"
-                />
-              ) : (
-                <h1 className="text-7xl font-bold text-slate-500">
-                  {authUser.username[0]}
-                </h1>
-              )}
+          <div className="w-40 h-40 rounded-md overflow-hidden shadow drop-shadow flex-center">
+            {profilePic ? (
+              <img
+                src={profilePic}
+                alt="img"
+                className="w-full h-full object-fill"
+              />
+            ) : (
+              <h1 className="text-7xl font-bold text-slate-500">
+                {username[0]}
+              </h1>
+            )}
           </div>
         </div>
         <form
@@ -29,11 +34,10 @@ const LoggedInUserProfile = () => {
           <div className="flex items-center justify-between gap-x-3 gap-y-2">
             <h2 className="font-semibold text-lg">My Profile:</h2>
             <h4 className="font-semibold text-slate-600 ">
-              {authUser.username !== undefined &&
-                authUser.username.includes("-")
-                  ? authUser.username.split("-")[0]
-                  : authUser.username}{" "}
-                | {authUser.role}
+              {username !== undefined && username.includes("-")
+                ? username.split("-")[0]
+                : username}{" "}
+              | {authUser?.role}
             </h4>
           </div>
           <div className="flex items-center justify-between gap-x-3 gap-y-2 my-5 flex-wrap">
@@ -43,8 +47,8 @@ const LoggedInUserProfile = () => {
               placeholder="Name"
               name="name"
               required
-              value={authUser.username}
-              // onChange={handleChange}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="rounded-md outline-neutral-300 px-3 py-1 drop-shadow h-8 border"
             />
           </div>
@@ -54,8 +58,8 @@ const LoggedInUserProfile = () => {
               placeholder="Your email"
               name="email"
               required
-              value={authUser.email}
-              // onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-md outline-neutral-300 px-3 py-1 drop-shadow h-8 border"
             />
           </div>

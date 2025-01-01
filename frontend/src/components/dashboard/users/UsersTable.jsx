@@ -17,6 +17,7 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
     setFilteredUsers(data?.users);
   }, [data, refreshTable]);
 
+  // Search Functionality logic starts here
   const handleInput = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -108,6 +109,7 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
               >
                 <option value="username">Username</option>
                 <option value="email">Email</option>
+                <option value="role">Role</option>
               </select>
             </div>
             <button
@@ -140,7 +142,6 @@ const UsersTable = ({ data, error, loading, onEditClick }) => {
           <table
             className={` w-full mx-auto h-auto text-sm relative text-left text-gray-500 `}
             style={{ width: "1200px" }}
-            // ref={tableRef}
           >
             <thead className="relative">
               <tr className="w-full h-14 bg-white rounded-sm overflow-hidden border-b sticky top-0 z-10">

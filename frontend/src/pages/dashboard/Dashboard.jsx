@@ -15,7 +15,7 @@ const Dashboard = () => {
   console.log(isSidebarOpen);
 
   return (
-    <section className="w-full bg-[#f7fcfc]">
+    <section className="w-full bg-[#f7fcfc] select-none">
       <DashboardNavbar />
       <div className="flex h-[90vh]">
         <Sidebar />

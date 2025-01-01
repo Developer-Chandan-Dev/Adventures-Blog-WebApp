@@ -1,4 +1,5 @@
 const User = require("../models/user.models");
+const bcryptjs = require("bcryptjs");
 const {
   uploadToCloudinary,
   deleteFromCloudinary,
@@ -49,7 +50,7 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userData = req.body;
-    console.log(userData,'52');
+    console.log(userData, "52");
     const profilePic = req.file ? req.file.path : null; // Get local file path
 
     let profilePicUrl = null;
@@ -240,9 +241,9 @@ const getTeamMembers = async (req, res) => {
     const teamMembers = await User.find({ teamMember: true }).select(
       "-password -updatedAt -role -isBlocked"
     );
-    const authors = await User.find({ role: { $in: ["admin", "author"] } }).select(
-      "-password -updatedAt -isBlocked"
-    );
+    const authors = await User.find({
+      role: { $in: ["admin", "author"] },
+    }).select("-password -updatedAt -isBlocked");
 
     res.status(200).json({ status: true, teamMembers, authors });
   } catch (error) {
@@ -250,6 +251,48 @@ const getTeamMembers = async (req, res) => {
     res
       .status(500)
       .json({ status: false, error: "Error fetching team members", error });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { email, password, newPassword } = req.body;
+
+    if (!email || !password || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields",
+      });
+    }
+
+    const user = await User.findById(userId);
+ 
+    const validateEmail = await User.findOne({ email });
+
+    const validatePassword = await bcryptjs.compare(password, user.password);
+
+    if (!validateEmail || !validatePassword) {
+      console.log("Invalid Email or Password");
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid Email or Password" });
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+    user.password = await bcryptjs.hash(newPassword, salt);
+
+    // Save the updated user
+    await user.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Password changed successfully." });
+  } catch (error) {
+    console.error("Failed to get user details", error);
+    res
+      .status(500)
+      .json({ success: false, error: "Failed to get user details", error });
   }
 };
 
@@ -262,4 +305,5 @@ module.exports = {
   promoteToTeamMember,
   getTeamMembers,
   blockUnblockUser,
+  changePassword,
 };

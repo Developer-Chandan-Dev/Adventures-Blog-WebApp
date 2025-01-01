@@ -39,7 +39,7 @@ const PostData = ({
 
   return (
     <>
-      <tr className="w-full h-12 cursor-pointer hover:shadow border-b  hover:bg-gray-50 text-gray-500">
+      <tr className="w-full h-12 hover:shadow border-b  hover:bg-gray-50 text-gray-500">
         <td className="px-4 font-medium">{index + 1}</td>
         <td className="px-4">
           {title.length > 20 ? title.slice(0, 20) + ".." : title || "N/A"}

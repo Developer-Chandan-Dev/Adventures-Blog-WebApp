@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../../utlity/Spinner";
 import Empty from "../../utlity/Empty";
 import PostData from "./PostData";
+import useGrabScroll from "../../../hooks/useGrabScroll";
 
 const PublishedBlogsTable = ({
   currentPage,
@@ -14,6 +15,9 @@ const PublishedBlogsTable = ({
   const [searchBy, setSearchBy] = useState("title");
   const [filteredPosts, setFilteredPosts] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Grab Scroll state
+  const { scrollContainerRef, bindScrollEvents } = useGrabScroll();
 
   useEffect(() => {
     setFilteredPosts(data?.posts);
@@ -40,6 +44,11 @@ const PublishedBlogsTable = ({
 
     setFilteredPosts(filtered);
   };
+
+  useEffect(() => {
+    const unbindEvents = bindScrollEvents();
+    return unbindEvents; // Cleanup on component unmount
+  }, [bindScrollEvents]);
 
   return (
     <div className="w-full relative h-auto ">
@@ -75,72 +84,82 @@ const PublishedBlogsTable = ({
             </button>
           </div>
         </div>
-
-        <table
-          className=" w-full mx-auto h-auto text-sm relative text-left text-gray-500 overflow-x-auto"
-          style={{ width: "1200px" }}
+        <div
+          ref={scrollContainerRef}
+          style={{
+            overflowX: "auto",
+            width: "100%",
+            maxWidth: "100%",
+            cursor: "grab",
+            userSelect: "none",
+          }}
         >
-          <thead className="relative">
-            <tr className="w-full h-12 bg-[#e55370] text-white rounded-sm overflow-hidden border-b sticky top-0">
-              <th className="px-4 text-left">#</th>
-              <th className="px-4 text-left">Title</th>
-              <th className="px-5 text-left">Slug</th>
-              <th className="px-5 text-left">Status</th>
-              <th className="px-5 text-left">Featured Post</th>
-              <th className="px-5 text-left">Author</th>
-              <th className="px-5 text-left">Published Date</th>
-              <th className="px-5 text-left">Category</th>
-              <th className="px-5 text-left flex pt-4">
-                <span className="mr-3">Actions </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 384 512"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                  className=" opacity-60"
-                >
-                  <path d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z" />
-                </svg>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {error && <p>{error !== "Blogs not found" && error}</p>}
-            <tr>
-              <td colSpan={9}>
-                {loading && (
-                  <div className="w-full h-[300px] flex-center">
-                    <Spinner />
-                  </div>
-                )}
-              </td>
-            </tr>
+          <table
+            className=" w-full mx-auto h-auto text-sm relative text-left text-gray-500"
+            style={{ width: "1200px" }}
+          >
+            <thead className="relative">
+              <tr className="w-full h-12 bg-[#e55370] text-white rounded-sm overflow-hidden border-b sticky top-0">
+                <th className="px-4 text-left">#</th>
+                <th className="px-4 text-left">Title</th>
+                <th className="px-5 text-left">Slug</th>
+                <th className="px-5 text-left">Status</th>
+                <th className="px-5 text-left">Featured Post</th>
+                <th className="px-5 text-left">Author</th>
+                <th className="px-5 text-left">Published Date</th>
+                <th className="px-5 text-left">Category</th>
+                <th className="px-5 text-left flex pt-4">
+                  <span className="mr-3">Actions </span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 384 512"
+                    width="14"
+                    height="14"
+                    fill="currentColor"
+                    className=" opacity-60"
+                  >
+                    <path d="M374.6 310.6l-160 160C208.4 476.9 200.2 480 192 480s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 370.8V64c0-17.69 14.33-31.1 31.1-31.1S224 46.31 224 64v306.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0S387.1 298.1 374.6 310.6z" />
+                  </svg>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {error && <p>{error !== "Blogs not found" && error}</p>}
+              <tr>
+                <td colSpan={9}>
+                  {loading && (
+                    <div className="w-full h-[300px] flex-center">
+                      <Spinner />
+                    </div>
+                  )}
+                </td>
+              </tr>
 
-            {filteredPosts && filteredPosts.length > 0 && !loading
-              ? filteredPosts.map((post, index) => (
-                  <PostData
-                    key={index}
-                    index={index}
-                    _id={post._id}
-                    title={post.title}
-                    slug={post.slug}
-                    status={post.status}
-                    author={post?.author}
-                    createdAt={post?.createdAt}
-                    category={post?.category}
-                    featuredBlog={post.featuredBlog}
-                  />
-                ))
-              : !loading && (
-                  <tr>
-                    <td colSpan={9}>
-                      <Empty boxHeight={"400px"} />
-                    </td>
-                  </tr>
-                )}
-          </tbody>
-        </table>
+              {filteredPosts && filteredPosts.length > 0 && !loading
+                ? filteredPosts.map((post, index) => (
+                    <PostData
+                      key={index}
+                      index={index}
+                      _id={post._id}
+                      title={post.title}
+                      slug={post.slug}
+                      status={post.status}
+                      author={post?.author}
+                      createdAt={post?.createdAt}
+                      category={post?.category}
+                      featuredBlog={post.featuredBlog}
+                    />
+                  ))
+                : !loading && (
+                    <tr>
+                      <td colSpan={9}>
+                        <Empty boxHeight={"400px"} />
+                      </td>
+                    </tr>
+                  )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="w-full text-sm px-5 py-2 h-14 flex-center pb-2">
         <div className="flex items-center gap-x-2">

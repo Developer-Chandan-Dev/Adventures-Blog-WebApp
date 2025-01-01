@@ -1,10 +1,40 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import useHandlePostRequest from "../../../hooks/useHandlePostRequest";
+
 const ChangePassword = () => {
+  const authUser = useSelector((state) => state.user.user);
+  console.log(authUser);
+  const [email, setEmail] = useState(authUser?.email || "");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  const { handleSubmit } = useHandlePostRequest();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(email, password, newPassword);
+    const response = await handleSubmit(
+      "PUT",
+      `/api/v1/users/change-password/${authUser?._id}`,
+      {
+        email,
+        password,
+        newPassword,
+      }
+    );
+
+    console.log(response);
+  };
   return (
     <>
-     {/* backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white */}
+      {/* backdrop-filter backdrop-blur-sm bg-opacity-20 bg-white */}
       <div className="rounded-2xl shadow w-80 drop-shadow-lg h-auto bg-white px-6 py-5 text-sm accountActiveBox">
         <div className="flex items-center justify-between border-b py-2">
-          <h2 className="font-semibold text-lg text-gray-600">Change Password</h2>
+          <h2 className="font-semibold text-lg text-gray-600">
+            Change Password
+          </h2>
           <div className="rounded-full w-7 h-7 flex-center border-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -17,24 +47,33 @@ const ChangePassword = () => {
             </svg>
           </div>
         </div>
-        <form className="flex items-center justify-between py-4 flex-col">
+        <form
+          className="flex items-center justify-between py-4 flex-col"
+          onSubmit={onSubmit}
+        >
           <input
             type="text"
             className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="Email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="Current Password"
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <input
             type="password"
             className="w-full px-3 py-2 rounded-md outline-slate-300 border-2 mb-5 h-9"
             placeholder="New Password"
             required
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <input
             type="submit"

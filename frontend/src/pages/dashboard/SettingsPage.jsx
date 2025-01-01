@@ -1,7 +1,23 @@
+import { useDispatch } from "react-redux";
 import ChangePassword from "../../components/dashboard/settings/ChangePassword";
 import LoggedInUserProfile from "../../components/dashboard/settings/LoggedInUserProfile";
+import { logout } from "../../store/features/userSlice";
+import authService from "../../features/auth";
 
 const SettingsPage = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    const res = await authService.logout();
+    if (res.data.sucess === true) {
+      console.log(res.data.message);
+    } else {
+      console.log(res.data.error);
+    }
+
+    // Dispatch the logout action
+    dispatch(logout());
+  };
   return (
     <section>
       <div className="w-full py-6 px-8 flex items-center justify-between">
@@ -61,7 +77,7 @@ const SettingsPage = () => {
             <h2>Active Account</h2>
             <button
               className="px-6 rounded-full py-[6px] text-white font-semibold transition-all hover:drop-shadow "
-              // onClick={handleLogout}
+              onClick={handleLogout}
               style={{ background: "linear-gradient(45deg, #edb855, #ff5959)" }}
             >
               Logout

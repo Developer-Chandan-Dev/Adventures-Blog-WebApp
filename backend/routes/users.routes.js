@@ -9,6 +9,7 @@ const {
   promoteToTeamMember,
   blockUnblockUser,
   getTeamMembers,
+  changePassword,
 } = require("../controller/users.controller");
 
 const {
@@ -71,5 +72,8 @@ router.patch(
 
 // Get all team members
 router.get("/promote/members", getTeamMembers);
+
+//
+router.put("/change-password/:id", isAuthenticated, checkBlockedAfterAuth, changePassword);
 
 module.exports = router;
